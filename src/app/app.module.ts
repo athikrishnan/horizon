@@ -18,6 +18,9 @@ import { MaterialModule } from './material/material.module';
     MaterialModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    ToolbarComponent
+  ]
 })
 export class AppModule { }

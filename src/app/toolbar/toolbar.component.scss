@@ -1,0 +1,8 @@
+.app-toolbar {
+  display: flex;
+  justify-content: space-between;
+  .app-toolbar-item {
+    display: flex;
+    align-items: center;
+  }
+}

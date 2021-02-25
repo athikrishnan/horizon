@@ -1,7 +1,17 @@
-<app-toolbar></app-toolbar>
+<app-toolbar (menuClick)="sidenav.toggle()"></app-toolbar>
 
-<div fxLayout="row" fxLayoutAlign="center start" class="app-container">
-  <div class="app-page">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="over" class="app-sidenav">
+    <mat-nav-list>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/company"> Company </a>
+   </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div fxLayout="row" fxLayoutAlign="center start" class="app-container">
+      <div class="app-page">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+

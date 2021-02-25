@@ -3,9 +3,17 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  background-color: #f0f0f0;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+// mat-card
+.mat-card-title {
+  margin-bottom: 1em;
+}

@@ -69,7 +69,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "horizon:build"
+            "browserTarget": "horizon:build",
+            "ssl": true
           },
           "configurations": {
             "production": {

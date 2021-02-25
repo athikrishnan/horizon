@@ -2,6 +2,7 @@
   <p class="mat-title">Company Details</p>
   <mat-card-content>
     <form [formGroup]="companyForm" fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
+      <input type="hidden" formControlName="id">
       <div fxFlex.gt-xs="48" fxLayout="column">
         <p class="mat-subheding-1">Name & Address</p>
         <mat-form-field appearance="outline">
@@ -59,7 +60,7 @@
       </div>
     </form>
     <div fxLayout="row" fxLayoutAlign="end center">
-      <button mat-raised-button color="primary">Save</button>
+      <button (click)="onSave()" mat-raised-button color="primary">Save</button>
     </div>
   </mat-card-content>
 </mat-card>

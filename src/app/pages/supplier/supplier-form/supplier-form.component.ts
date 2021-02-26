@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-supplier',
+  selector: 'app-supplier-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './supplier.component.html',
-  styleUrls: ['./supplier.component.scss']
+  templateUrl: './supplier-form.component.html',
+  styleUrls: ['./supplier-form.component.scss']
 })
-export class SupplierComponent implements OnInit {
+export class SupplierFormComponent implements OnInit {
 
   constructor() { }
 

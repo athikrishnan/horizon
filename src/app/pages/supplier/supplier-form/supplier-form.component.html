@@ -1,1 +1,21 @@
-<p>supplier-form works!</p>
+<form [formGroup]="supplierForm" fxLayout="column">
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input formControlName="name" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Location</mat-label>
+    <input formControlName="location" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input formControlName="phone" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input formControlName="email" matInput>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="end">
+    <button (click)="onSave()" mat-raised-button color="primary">Save</button>
+  </div>
+</form>

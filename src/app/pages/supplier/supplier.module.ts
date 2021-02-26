@@ -6,9 +6,6 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
 import { SupplierListComponent } from './supplier-list/supplier-list.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-
-
 
 @NgModule({
   declarations: [SupplierComponent, SupplierFormComponent, SupplierListComponent],
@@ -17,8 +14,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SupplierRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule
+    ReactiveFormsModule
   ]
 })
 export class SupplierModule { }

@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
     CommonModule,
   ],
   exports: [
+    FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,

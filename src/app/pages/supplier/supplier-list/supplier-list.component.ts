@@ -5,6 +5,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 
 @Component({
   selector: 'app-supplier-list',
@@ -20,7 +22,8 @@ export class SupplierListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private supplierService: SupplierService,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
@@ -40,6 +43,10 @@ export class SupplierListComponent implements OnInit, OnDestroy {
   }
 
   onDelete(supplier: Supplier): void {
-    this.supplierService.deleteSupplier(supplier);
+    this.dialog.open(DeleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.supplierService.deleteSupplier(supplier);
+      }
+    });
   }
 }

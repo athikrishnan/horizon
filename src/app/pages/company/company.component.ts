@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Company } from 'src/app/models/company.model';
-import { CompanyService } from './company.service';
+import { CompanyService } from '../../services/company.service';
 
 @Component({
   selector: 'app-company',

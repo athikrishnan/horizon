@@ -28,7 +28,6 @@ import { DeleteConfirmationComponent } from './components/delete-confirmation/de
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [],
   bootstrap: [AppComponent],
   exports: [
     ToolbarComponent

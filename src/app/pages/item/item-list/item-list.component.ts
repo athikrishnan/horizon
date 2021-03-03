@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Item } from 'src/app/models/item.model';
-import { ItemService } from '../item.service';
+import { ItemService } from '../../../services/item.service';
 import { takeUntil } from 'rxjs/operators';
 import { combineLatest, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { ListedItem } from '../models/listed-item.model';
 import { Supplier } from 'src/app/models/supplier.model';
+import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
   selector: 'app-item-list',
@@ -27,12 +28,13 @@ export class ItemListComponent implements OnInit, OnDestroy {
   constructor(
     private itemService: ItemService,
     private ref: ChangeDetectorRef,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private supplierService: SupplierService) { }
 
   ngOnInit(): void {
     combineLatest([
       this.itemService.items$.pipe(takeUntil(this.unsubscribe$)),
-      this.itemService.suppliers$.pipe(takeUntil(this.unsubscribe$))
+      this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$))
     ]).subscribe(([items, suppliers]: [Item[], Supplier[]]) => {
       this.suppliers = suppliers;
       this.buildTable(items as ListedItem[]);

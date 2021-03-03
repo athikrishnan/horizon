@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Item } from 'src/app/models/item.model';
-import { Supplier } from 'src/app/models/supplier.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +9,10 @@ import { Supplier } from 'src/app/models/supplier.model';
 export class ItemService {
   private itemCollection: AngularFirestoreCollection<Item>;
   items$: Observable<Item[]>;
-  private supplierCollection: AngularFirestoreCollection<Supplier>;
-  suppliers$: Observable<Supplier[]>; 
 
   constructor(private store: AngularFirestore) {
     this.itemCollection = this.store.collection('items');
     this.items$ = this.itemCollection.valueChanges();
-    this.supplierCollection = this.store.collection('suppliers');
-    this.suppliers$ = this.supplierCollection.valueChanges();
   }
 
   saveItem(item: Item): Promise<void> {

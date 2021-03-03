@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Supplier } from 'src/app/models/supplier.model';
-import { ItemService } from '../item.service';
+import { SupplierService } from '../../../services/supplier.service';
+import { ItemService } from '../../../services/item.service';
 
 @Component({
   selector: 'app-item-form',
@@ -29,7 +30,8 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private itemService: ItemService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private supplierService: SupplierService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -39,7 +41,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
         this.itemForm.patchValue(item);
       }
     });
-    this.itemService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
+    this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
       this.suppliers = suppliers;
     });
   }

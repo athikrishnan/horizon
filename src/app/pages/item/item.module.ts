@@ -6,11 +6,14 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ItemService } from './item.service';
 import { ItemFormComponent } from './item-form/item-form.component';
-
-
+import { ItemListComponent } from './item-list/item-list.component';
 
 @NgModule({
-  declarations: [ItemComponent, ItemFormComponent],
+  declarations: [
+    ItemComponent,
+    ItemFormComponent,
+    ItemListComponent
+  ],
   imports: [
     CommonModule,
     ItemRoutingModule,

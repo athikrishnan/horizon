@@ -5,7 +5,7 @@
       <input formControlName="id" type="hidden">
       <mat-form-field appearance="outline">
         <mat-label>Supplier</mat-label>
-        <mat-select formControlName="supplierId">
+        <mat-select formControlName="supplier">
           <mat-option *ngFor="let supplier of suppliers" [value]="{ id: supplier.id, name: supplier.name }">
             {{ supplier.name }}
           </mat-option>

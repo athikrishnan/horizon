@@ -18,7 +18,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   itemForm: FormGroup = this.fb.group({
     id: [''],
-    supplierId: [''],
+    supplier: [''],
     name: [''],
     quantity: [''],
     price: ['']

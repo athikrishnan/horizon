@@ -16,9 +16,9 @@
     <th mat-header-cell *matHeaderCellDef> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
-  <ng-container matColumnDef="supplierName">
+  <ng-container matColumnDef="supplier">
     <th mat-header-cell *matHeaderCellDef> Supplier Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.supplierName}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.supplier?.name}} </td>
   </ng-container>
   <ng-container matColumnDef="quantity">
     <th mat-header-cell *matHeaderCellDef> Quantity </th>

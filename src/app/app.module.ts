@@ -7,7 +7,6 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MaterialModule } from './material/material.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -22,7 +21,6 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
     MaterialModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),

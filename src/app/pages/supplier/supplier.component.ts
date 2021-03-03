@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-supplier',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  templateUrl: './supplier.component.html',
+  styleUrls: ['./supplier.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class SupplierComponent implements OnInit {
 
   constructor() { }
 

@@ -7,7 +7,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
-import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
   selector: 'app-item-list',
@@ -25,8 +24,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   constructor(
     private itemService: ItemService,
     private ref: ChangeDetectorRef,
-    private dialog: MatDialog,
-    private supplierService: SupplierService) { }
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.itemService.items$.pipe(takeUntil(this.unsubscribe$)).subscribe((items: Item[]) => {

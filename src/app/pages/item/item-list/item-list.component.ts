@@ -2,11 +2,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Item } from 'src/app/models/item.model';
 import { ItemService } from '../item.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
+import { ListedItem } from '../models/listed-item.model';
+import { Supplier } from 'src/app/models/supplier.model';
 
 @Component({
   selector: 'app-item-list',
@@ -16,18 +18,25 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 })
 export class ItemListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
-  displayedColumns: string[] = ['name', 'quantity', 'price', 'actions'];
-  dataSource: MatTableDataSource<Item>;
+  displayedColumns: string[] = ['name', 'supplierName', 'quantity', 'price', 'actions'];
+  dataSource: MatTableDataSource<ListedItem>;
+  private suppliers: Supplier[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private itemService: ItemService,
+  constructor(
+    private itemService: ItemService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.itemService.items$.pipe(takeUntil(this.unsubscribe$)).subscribe((items: Item[]) => {
-      this.buildTable(items);
+    combineLatest([
+      this.itemService.items$.pipe(takeUntil(this.unsubscribe$)),
+      this.itemService.suppliers$.pipe(takeUntil(this.unsubscribe$))
+    ]).subscribe(([items, suppliers]: [Item[], Supplier[]]) => {
+      this.suppliers = suppliers;
+      this.buildTable(items as ListedItem[]);
+      this.ref.detectChanges();
     });
   }
 
@@ -36,10 +45,13 @@ export class ItemListComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  private buildTable(items: Item[]): void {
-    this.dataSource = new MatTableDataSource<Item>(items);
+  private buildTable(items: ListedItem[]): void {
+    items = items.map<ListedItem>((i: ListedItem) => {
+      i.supplierName = this.getSupplierName(i as Item);
+      return i;
+    });
+    this.dataSource = new MatTableDataSource<ListedItem>(items);
     this.dataSource.paginator = this.paginator;
-    this.ref.detectChanges();
   }
 
   onDelete(item: Item): void {
@@ -48,5 +60,10 @@ export class ItemListComponent implements OnInit, OnDestroy {
         this.itemService.deleteItem(item);
       }
     });
+  }
+
+  getSupplierName(item: Item): string {
+    const supplier: Supplier = this.suppliers.find(i => i.id === item.supplierId);
+    return (!!supplier) ? supplier.name : '';
   }
 }

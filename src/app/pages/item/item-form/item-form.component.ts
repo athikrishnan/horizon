@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
+import { Supplier } from 'src/app/models/supplier.model';
 import { ItemService } from '../item.service';
 
 @Component({
@@ -16,13 +17,16 @@ export class ItemFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   itemForm: FormGroup = this.fb.group({
     id: [''],
+    supplierId: [''],
     name: [''],
     quantity: [''],
     price: ['']
   });
+  suppliers: Supplier[] = [];
   editId: string;
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute) { }
@@ -31,10 +35,13 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     this.editId = this.route.snapshot.paramMap.get('id');
     this.itemService.items$.pipe(takeUntil(this.unsubscribe$)).subscribe((items: Item[]) => {
       if (!!this.editId) {
-        const item: Item = items.find(item => item.id == this.editId);
+        const item: Item = items.find(i => i.id === this.editId);
         this.itemForm.patchValue(item);
       }
-    }) 
+    });
+    this.itemService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
+      this.suppliers = suppliers;
+    });
   }
 
   ngOnDestroy(): void {

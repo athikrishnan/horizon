@@ -4,6 +4,14 @@
     <form fxFlex="48" [formGroup]="itemForm" fxLayout="column">
       <input formControlName="id" type="hidden">
       <mat-form-field appearance="outline">
+        <mat-label>Supplier</mat-label>
+        <mat-select formControlName="supplierId">
+          <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+            {{ supplier.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="name" matInput>
       </mat-form-field>

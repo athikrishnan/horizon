@@ -65,7 +65,6 @@ export class ItemListComponent implements OnInit, OnDestroy {
   }
 
   getSupplierName(item: Item): string {
-    const supplier: Supplier = this.suppliers.find(i => i.id === item.supplierId);
-    return (!!supplier) ? supplier.name : '';
+    return (!!item.supplier) ? item.supplier.name : '';
   }
 }

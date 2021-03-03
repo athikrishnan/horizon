@@ -1,6 +1,9 @@
 export class Item {
   id: string;
-  supplierId: string;
+  supplier: {
+    id: string;
+    name: string;
+  };
   name: string;
   quantity: string;
   price: string;

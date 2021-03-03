@@ -1,11 +1,7 @@
 <mat-card class="container">
-  <p class="mat-title">Supplier Details</p>
   <div fxLayout="row" fxLayoutAlign="space-between">
-    <div fxLayout="column" fxFlex="38">
-      <app-supplier-form></app-supplier-form>
-    </div>
-    <div fxFlex="58">
-      <app-supplier-list></app-supplier-list>
-    </div>
+    <p class="mat-title">Supplier Details</p>
+    <p><a routerLink="create" mat-raised-button color="primary">Create</a></p>
   </div>
+  <app-supplier-list></app-supplier-list>
 </mat-card>

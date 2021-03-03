@@ -39,7 +39,7 @@ export class SupplierListComponent implements OnInit, OnDestroy {
     this.ref.detectChanges();
   }
 
-  edit(supplier: Supplier): void {
-    console.log(supplier)
+  onDelete(supplier: Supplier): void {
+    this.supplierService.deleteSupplier(supplier);
   }
 }

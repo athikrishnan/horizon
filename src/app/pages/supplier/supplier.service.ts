@@ -15,7 +15,7 @@ export class SupplierService {
     this.suppliers$ = this.supplierCollection.valueChanges();
   }
 
-  saveSupplier(supplier: Supplier): void {
+  saveSupplier(supplier: Supplier): Promise<void> {
     const isNew: boolean = !supplier.id;
 
     if (isNew) {
@@ -24,6 +24,10 @@ export class SupplierService {
     }
     supplier.updatedAt = Date.now();
 
-    this.supplierCollection.doc(supplier.id).set(supplier);
+    return this.supplierCollection.doc(supplier.id).set(supplier);
+  }
+
+  deleteSupplier(supplier: Supplier): void {
+    this.supplierCollection.doc(supplier.id).delete();
   }
 }

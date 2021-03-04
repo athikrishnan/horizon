@@ -61,7 +61,7 @@ export class ItemFormComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     const item: Item = this.itemForm.getRawValue();
-    const supplier = this.suppliers.find(i => i.id === item.supplier.id);
+    const supplier: Supplier = this.suppliers.find(i => i.id === item.supplier.id);
     item.supplier.name = supplier.name;
 
     this.itemService.saveItem(item).then(() => {

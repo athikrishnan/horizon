@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-item',
+  selector: 'app-pack',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  templateUrl: './pack.component.html',
+  styleUrls: ['./pack.component.scss']
 })
-export class ItemComponent implements OnInit {
+export class PackComponent implements OnInit {
 
   constructor() { }
 

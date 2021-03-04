@@ -11,6 +11,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
+import { USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
+import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,16 @@ import { DeleteConfirmationComponent } from './components/delete-confirmation/de
   bootstrap: [AppComponent],
   exports: [
     ToolbarComponent
+  ],
+  providers: [
+    {
+      provide: FIRESTORE_EMULATOR,
+      useValue: environment.useEmulators ? ['localhost', 5002] : undefined,
+    },
+    {
+      provide: FUNCTIONS_EMULATOR,
+      useValue: environment.useEmulators ? ['localhost', 5001] : undefined,
+    }
   ]
 })
 export class AppModule { }

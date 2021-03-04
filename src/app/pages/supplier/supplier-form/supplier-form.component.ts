@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Supplier } from 'src/app/models/supplier.model';
-import { SupplierService } from '../supplier.service';
+import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
   selector: 'app-supplier-form',

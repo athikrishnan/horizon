@@ -10,12 +10,14 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    DeleteConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,6 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule
   ],
-  providers: [],
   bootstrap: [AppComponent],
   exports: [
     ToolbarComponent

@@ -16,7 +16,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 })
 export class PackListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
-  displayedColumns: string[] = ['name', 'quantity', 'price', 'actions'];
+  displayedColumns: string[] = ['name', 'quantity', 'price', 'contains', 'actions'];
   dataSource: MatTableDataSource<Pack>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

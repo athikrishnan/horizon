@@ -28,6 +28,7 @@ export class PackFormComponent implements OnInit, OnDestroy {
   });
   editId: string;
   items: Item[];
+  packs: Pack[];
 
   constructor(
     private fb: FormBuilder,
@@ -43,8 +44,9 @@ export class PackFormComponent implements OnInit, OnDestroy {
       this.itemService.items$.pipe(takeUntil(this.unsubscribe$))
     ]).subscribe(([packs, items]: [Pack[], Item[]]) => {
       this.items = items;
+      this.packs = packs.filter(i => i.id !== this.editId);
       if (!!this.editId) {
-        const pack: Pack = packs.find(item => item.id === this.editId);
+        const pack: Pack = packs.find(i => i.id === this.editId);
         this.packForm.patchValue(pack);
       }
     });
@@ -61,8 +63,14 @@ export class PackFormComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     const pack: Pack = this.packForm.getRawValue();
-    const item: Item = this.items.find(i => i.id === pack.contains.id);
-    pack.contains.name = item.name;
+
+    if (pack.contains.isPack) {
+      const selectedPack: Pack = this.packs.find(i => i.id === pack.contains.id);
+      pack.contains.name = selectedPack.name;
+    } else {
+      const item: Item = this.items.find(i => i.id === pack.contains.id);
+      pack.contains.name = item.name;
+    }
 
     this.packService.savePack(pack).then(() => {
       if (!this.editId) {

@@ -21,11 +21,19 @@
           <mat-radio-button [value]="false">Item</mat-radio-button>
           <mat-radio-button [value]="true">Pack</mat-radio-button>
         </mat-radio-group>
-        <mat-form-field *ngIf="items" appearance="outline">
-          <mat-label>Item</mat-label>
+        <mat-form-field *ngIf="items && !packForm.get('contains.isPack').value" appearance="outline">
+          <mat-label>Contains Item</mat-label>
           <mat-select formControlName="id">
             <mat-option *ngFor="let item of items" [value]="item.id">
               {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="packs && packForm.get('contains.isPack').value" appearance="outline">
+          <mat-label>Contains Pack</mat-label>
+          <mat-select formControlName="id">
+            <mat-option *ngFor="let pack of packs" [value]="pack.id">
+              {{ pack.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>

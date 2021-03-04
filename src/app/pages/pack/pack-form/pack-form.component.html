@@ -1,1 +1,39 @@
-<p>pack-form works!</p>
+<mat-card class="container">
+  <p class="mat-title"> Create new Pack</p>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <form fxFlex="48" [formGroup]="packForm" fxLayout="column">
+      <input formControlName="id" type="hidden">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input formControlName="quantity" matInput>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <input formControlName="price" matInput>
+      </mat-form-field>
+      <ng-container formGroupName="contains">
+        <p class="mat-subheading-1">Contains</p>
+        <mat-radio-group formControlName="isPack">
+          <mat-radio-button [value]="false">Item</mat-radio-button>
+          <mat-radio-button [value]="true">Pack</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field *ngIf="items" appearance="outline">
+          <mat-label>Item</mat-label>
+          <mat-select formControlName="id">
+            <mat-option *ngFor="let item of items" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <button (click)="onCancel()" mat-stroked-button color="primary">All Packs</button>
+        <button (click)="onSave()" mat-raised-button color="primary">Save</button>
+      </div>
+    </form>
+  </div>
+</mat-card>

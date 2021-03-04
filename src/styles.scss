@@ -22,3 +22,11 @@ body {
 table {
   width: 100%;
 }
+
+// Radio Button
+mat-radio-group {
+  padding-bottom: 1.34375em;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}

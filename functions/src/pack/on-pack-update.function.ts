@@ -1,13 +1,12 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { ItemDoc } from '../models/item-doc.model';
 import { PackDoc } from '../models/pack-doc.model';
 
-exports.onItemUpdate = functions.firestore
-  .document('items/{docId}')
+exports.onPackUpdate = functions.firestore
+  .document('packs/{docId}')
   .onUpdate((change) => {
-    const data: ItemDoc = change.after.data() as ItemDoc;
-    const previousData: ItemDoc = change.before.data() as ItemDoc;
+    const data: PackDoc = change.after.data() as PackDoc;
+    const previousData: PackDoc = change.before.data() as PackDoc;
 
     if (data.name === previousData.name) {
       return null;

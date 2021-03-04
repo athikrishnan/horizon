@@ -4,14 +4,15 @@
 
 export const environment = {
   production: false,
+  useEmulators: true,
   firebase: {
-    apiKey: 'AIzaSyCcJrsCMT_WaTBwKwB5ELB8o8Uwwx0VWtk',
-    authDomain: 'rvs-admin-cb816.firebaseapp.com',
-    projectId: 'rvs-admin-cb816',
-    storageBucket: 'rvs-admin-cb816.appspot.com',
-    messagingSenderId: '900946631280',
-    appId: '1:900946631280:web:0b5c35663e49c88f70b2b5',
-    measurementId: 'G-N20ZP9R1NN'
+    apiKey: 'AIzaSyBBQ4bXWISuWcyLZUx10JOcyjWhgUsHQnw',
+    authDomain: 'topics-c0e78.firebaseapp.com',
+    databaseURL: 'https://topics-c0e78.firebaseio.com',
+    projectId: 'topics-c0e78',
+    storageBucket: 'topics-c0e78.appspot.com',
+    messagingSenderId: '875974332626',
+    appId: '1:875974332626:web:8f77493a441c0fe0549d0b'
   }
 };
 

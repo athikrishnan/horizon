@@ -4,6 +4,7 @@ import * as Faker from 'faker';
 import { Observable } from 'rxjs';
 import { CompanyAddress } from 'src/app/models/company-address.model';
 import { Company } from 'src/app/models/company.model';
+import { Item } from 'src/app/models/item.model';
 import { Supplier } from 'src/app/models/supplier.model';
 
 @Injectable()
@@ -11,11 +12,15 @@ export class MockDataService {
   private companyCollection: AngularFirestoreCollection<Company>;
   private supplierCollection: AngularFirestoreCollection<Supplier>;
   suppliers$: Observable<Supplier[]>;
+  private itemCollection: AngularFirestoreCollection<Item>;
+  items$: Observable<Item[]>;
 
   constructor(private store: AngularFirestore) {
     this.companyCollection = this.store.collection<Company>('companies');
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
     this.suppliers$ =  this.supplierCollection.valueChanges();
+    this.itemCollection = this.store.collection<Item>('items');
+    this.items$ =  this.itemCollection.valueChanges();
   }
 
   generateCompanyDetails(): void {
@@ -51,5 +56,22 @@ export class MockDataService {
     };
 
     this.supplierCollection.doc(supplier.id).set(supplier);
+  }
+
+  generateItem(supplier: Supplier): void {
+    const item: Item = {
+      id: Faker.random.uuid(),
+      supplier: {
+        id: supplier.id,
+        name: supplier.name,
+      },
+      name: Faker.commerce.productName(),
+      quantity: Math.floor(Math.random() * 100) + 1  ,
+      price: Faker.commerce.price(),
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    this.itemCollection.doc(item.id).set(item);
   }
 }

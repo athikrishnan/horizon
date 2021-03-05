@@ -1,1 +1,13 @@
-<p>mock-data works!</p>
+<mat-card class="container">
+  <p class="mat-subheading-1">Company</p>
+  <button (click)="onGenerateCompanyDetails()" mat-raised-button color="primary">
+    Generate Company Details
+  </button>
+  <hr>
+  <p class="mat-subheading-1">Suppliers</p>
+  <button (click)="onGenerateSupplier()" mat-raised-button color="primary">
+    Generate Supplier
+  </button>
+  <p class="mat-subheading-1"> Suppliers Count: {{ suppliers.length }}</p>
+  <hr>
+</mat-card>

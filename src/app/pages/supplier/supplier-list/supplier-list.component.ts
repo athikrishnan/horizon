@@ -16,18 +16,22 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 })
 export class SupplierListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   displayedColumns: string[] = ['name', 'location', 'phone', 'email', 'actions'];
   dataSource: MatTableDataSource<Supplier>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private supplierService: SupplierService,
+  constructor(
+    private supplierService: SupplierService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
       this.buildTable(suppliers);
+      this.showSpinner = false;
+      this.ref.detectChanges();
     });
   }
 
@@ -39,7 +43,6 @@ export class SupplierListComponent implements OnInit, OnDestroy {
   private buildTable(suppliers: Supplier[]): void {
     this.dataSource = new MatTableDataSource<Supplier>(suppliers);
     this.dataSource.paginator = this.paginator;
-    this.ref.detectChanges();
   }
 
   onDelete(supplier: Supplier): void {

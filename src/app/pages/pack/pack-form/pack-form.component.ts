@@ -18,6 +18,7 @@ import { PackService } from '../../../services/pack.service';
 })
 export class PackFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   packForm: FormGroup = this.fb.group({
     id: null,
     supplier: this.fb.group({
@@ -59,6 +60,7 @@ export class PackFormComponent implements OnInit, OnDestroy {
         const pack: Pack = packs.find(i => i.id === this.editId);
         this.packForm.patchValue(pack);
       }
+      this.showSpinner = false;
       this.ref.detectChanges();
     });
   }

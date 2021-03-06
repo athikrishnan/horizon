@@ -15,14 +15,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-
+import { SpinnerComponent } from '../components/spinner/spinner.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    SpinnerComponent,
+  ],
   imports: [
     CommonModule,
   ],
   exports: [
+    SpinnerComponent,
     FlexLayoutModule,
     MatToolbarModule,
     MatButtonModule,

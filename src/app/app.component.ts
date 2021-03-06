@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title: string = 'horizon';
+  showSpinner = true;
+  asyncLoadCount = 0;
+  title = 'horizon';
+
+  constructor(router: Router) {
+    router.events.subscribe((event: RouterEvent): void => {
+      if (event instanceof RouteConfigLoadStart) {
+        this.asyncLoadCount++;
+      } else if (event instanceof RouteConfigLoadEnd) {
+        this.asyncLoadCount--;
+      }
+      this.showSpinner = !!this.asyncLoadCount;
+    });
+  }
 }

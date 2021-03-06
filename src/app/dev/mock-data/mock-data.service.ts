@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import * as Faker from 'faker';
 import { Observable } from 'rxjs';
-import { CompanyAddress } from 'src/app/models/company-address.model';
+import { tap } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
 import { Item } from 'src/app/models/item.model';
+import { Pack } from 'src/app/models/pack.model';
 import { Supplier } from 'src/app/models/supplier.model';
 
 @Injectable()
@@ -12,15 +13,22 @@ export class MockDataService {
   private companyCollection: AngularFirestoreCollection<Company>;
   private supplierCollection: AngularFirestoreCollection<Supplier>;
   suppliers$: Observable<Supplier[]>;
+  private suppliers: Supplier[] = [];
   private itemCollection: AngularFirestoreCollection<Item>;
   items$: Observable<Item[]>;
+  private items: Item[] = [];
+  private packCollection: AngularFirestoreCollection<Pack>;
+  packs$: Observable<Pack[]>;
+  private packs: Pack[] = [];
 
   constructor(private store: AngularFirestore) {
     this.companyCollection = this.store.collection<Company>('companies');
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
-    this.suppliers$ =  this.supplierCollection.valueChanges();
+    this.suppliers$ =  this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
     this.itemCollection = this.store.collection<Item>('items');
-    this.items$ =  this.itemCollection.valueChanges();
+    this.items$ =  this.itemCollection.valueChanges().pipe(tap(all => this.items = all));
+    this.packCollection = this.store.collection<Pack>('packs');
+    this.packs$ =  this.packCollection.valueChanges().pipe(tap(all => this.packs = all));
   }
 
   generateCompanyDetails(): void {
@@ -58,8 +66,9 @@ export class MockDataService {
     this.supplierCollection.doc(supplier.id).set(supplier);
   }
 
-  generateItem(supplier: Supplier): void {
-    const item: Item = {
+  generateItem(): void {
+    const supplier: Supplier = this.getRandom<Supplier>(this.suppliers);
+    const data: Item = {
       id: Faker.random.uuid(),
       supplier: {
         id: supplier.id,
@@ -72,6 +81,50 @@ export class MockDataService {
       updatedAt: Date.now()
     };
 
-    this.itemCollection.doc(item.id).set(item);
+    this.itemCollection.doc(data.id).set(data);
+  }
+
+  generatePack(): void {
+    const isPack: boolean = this.getRandom<boolean>([true, false]);
+    const contains = {
+      isPack,
+      id: null,
+      name: null,
+    };
+
+    if (contains.isPack) {
+      const pack: Pack = this.getRandom<Pack>(this.packs);
+      contains.id = pack.id;
+      contains.name = pack.name;
+    } else {
+      const item: Item = this.getRandom<Item>(this.items);
+      contains.id = item.id;
+      contains.name = item.name;
+    }
+
+    const data: Pack = {
+      id: Faker.random.uuid(),
+      name: Faker.commerce.productName(),
+      quantity: Math.floor(Math.random() * 100) + 1  ,
+      price: Faker.commerce.price(),
+      contains: {
+        isPack,
+        id: contains.id,
+        name: contains.name
+      },
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    this.packCollection.doc(data.id).set(data);
+  }
+
+  private getRandom<T>(collection: T[]): T | null {
+    if (!collection.length) {
+      return null;
+    }
+
+    const random: T = collection[Faker.random.number({ min: 0, max: (collection.length - 1) })];
+    return (random !== undefined) ? random : null;
   }
 }

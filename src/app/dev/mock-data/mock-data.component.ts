@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Item } from 'src/app/models/item.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { MockDataService } from './mock-data.service';
+import { Pack } from 'src/app/models/pack.model';
 
 @Component({
   selector: 'app-mock-data',
@@ -18,6 +19,7 @@ export class MockDataComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   suppliers: Supplier[] = [];
   items: Item[] = [];
+  packs: Pack[] = [];
 
   constructor(
     private mockDataService: MockDataService,
@@ -27,9 +29,11 @@ export class MockDataComponent implements OnInit, OnDestroy {
     combineLatest([
       this.mockDataService.suppliers$.pipe((takeUntil(this.unsubscribe$))),
       this.mockDataService.items$.pipe((takeUntil(this.unsubscribe$))),
-    ]).subscribe(([suppliers, items]: [Supplier[], Item[]]) => {
+      this.mockDataService.packs$.pipe((takeUntil(this.unsubscribe$)))
+    ]).subscribe(([suppliers, items, packs]: [Supplier[], Item[], Pack[]]) => {
       this.suppliers = suppliers;
       this.items = items;
+      this.packs = packs;
       this.ref.detectChanges();
     });
   }
@@ -48,8 +52,10 @@ export class MockDataComponent implements OnInit, OnDestroy {
   }
 
   onGenerateItem(): void {
-    if (!!this.suppliers.length) {
-      this.mockDataService.generateItem(this.suppliers[0]);
-    }
+    this.mockDataService.generateItem();
+  }
+
+  onGeneratePack(): void {
+    this.mockDataService.generatePack();
   }
 }

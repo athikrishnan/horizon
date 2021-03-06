@@ -3,6 +3,16 @@
   <div fxLayout="row" fxLayoutAlign="center">
     <form fxFlex="48" [formGroup]="packForm" fxLayout="column">
       <input formControlName="id" type="hidden">
+      <ng-container formGroupName="supplier">
+        <mat-form-field appearance="outline">
+          <mat-label>Supplier</mat-label>
+          <mat-select formControlName="id">
+            <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
+              {{ supplier.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="name" matInput>

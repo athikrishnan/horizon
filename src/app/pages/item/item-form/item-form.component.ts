@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
@@ -16,6 +16,7 @@ import { ItemService } from '../../../services/item.service';
 })
 export class ItemFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   itemForm: FormGroup = this.fb.group({
     id: [''],
     supplier: this.fb.group({
@@ -33,7 +34,8 @@ export class ItemFormComponent implements OnInit, OnDestroy {
     private itemService: ItemService,
     private router: Router,
     private route: ActivatedRoute,
-    private supplierService: SupplierService) { }
+    private supplierService: SupplierService,
+    private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -47,6 +49,8 @@ export class ItemFormComponent implements OnInit, OnDestroy {
         const item: Item = items.find(i => i.id === this.editId);
         this.itemForm.patchValue(item);
       }
+      this.showSpinner = false;
+      this.ref.detectChanges();
     });
   }
 

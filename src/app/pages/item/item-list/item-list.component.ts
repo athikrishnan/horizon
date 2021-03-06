@@ -16,6 +16,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 })
 export class ItemListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   displayedColumns: string[] = ['name', 'supplier', 'quantity', 'price', 'actions'];
   dataSource: MatTableDataSource<Item>;
 
@@ -29,6 +30,7 @@ export class ItemListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.itemService.items$.pipe(takeUntil(this.unsubscribe$)).subscribe((items: Item[]) => {
       this.buildTable(items);
+      this.showSpinner = false;
       this.ref.detectChanges();
     });
   }

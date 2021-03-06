@@ -1,0 +1,25 @@
+<mat-card class="container">
+  <p class="mat-subheading-1">Company</p>
+  <button (click)="onGenerateCompanyDetails()" mat-raised-button color="primary">
+    Generate Company Details
+  </button>
+  <hr>
+  <p class="mat-subheading-1">Suppliers</p>
+  <button (click)="onGenerateSupplier()" mat-raised-button color="primary">
+    Generate Supplier
+  </button>
+  <p class="mat-subheading-1"> Suppliers Count: {{ suppliers.length }}</p>
+  <hr>
+  <p class="mat-subheading-1">Items</p>
+  <button (click)="onGenerateItem()" mat-raised-button color="primary">
+    Generate Item
+  </button>
+  <p class="mat-subheading-1"> Items Count: {{ items.length }}</p>
+  <hr>
+  <p class="mat-subheading-1">Packs</p>
+  <button (click)="onGeneratePack()" mat-raised-button color="primary">
+    Generate Pack
+  </button>
+  <p class="mat-subheading-1"> Packs Count: {{ packs.length }}</p>
+  <hr>
+</mat-card>

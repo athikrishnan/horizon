@@ -1,6 +1,6 @@
-import { CompanyAddress } from "./company-address.model";
+import { CompanyAddress } from './company-address.model';
 
-export class Company {
+export interface Company {
   id: string;
   name: string;
   address: CompanyAddress;

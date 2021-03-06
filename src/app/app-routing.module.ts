@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { DevEnvGuard } from './dev/dev-env.guard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path: 'pack',
     loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule)
+  },
+  {
+    path: 'mock-data',
+    loadChildren: () => import('./dev/mock-data/mock-data.module').then(m => m.MockDataModule),
+    canLoad: [DevEnvGuard]
   },
   { path: '**', component: PageNotFoundComponent }
 ];

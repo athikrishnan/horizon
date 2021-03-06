@@ -85,6 +85,7 @@ export class MockDataService {
   }
 
   generatePack(): void {
+    const supplier: Supplier = this.getRandom<Supplier>(this.suppliers);
     const isPack: boolean = this.getRandom<boolean>([true, false]);
     const contains = {
       isPack,
@@ -104,6 +105,10 @@ export class MockDataService {
 
     const data: Pack = {
       id: Faker.random.uuid(),
+      supplier: {
+        id: supplier.id,
+        name: supplier.name,
+      },
       name: Faker.commerce.productName(),
       quantity: Math.floor(Math.random() * 100) + 1  ,
       price: Faker.commerce.price(),

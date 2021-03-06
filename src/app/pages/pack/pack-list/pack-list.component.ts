@@ -16,6 +16,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 })
 export class PackListComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   displayedColumns: string[] = ['name', 'supplier', 'quantity', 'price', 'contains', 'actions'];
   dataSource: MatTableDataSource<Pack>;
 
@@ -29,6 +30,8 @@ export class PackListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.packService.packs$.pipe(takeUntil(this.unsubscribe$)).subscribe((packs: Pack[]) => {
       this.buildTable(packs);
+      this.showSpinner = false;
+      this.ref.detectChanges();
     });
   }
 
@@ -40,7 +43,6 @@ export class PackListComponent implements OnInit, OnDestroy {
   private buildTable(packs: Pack[]): void {
     this.dataSource = new MatTableDataSource<Pack>(packs);
     this.dataSource.paginator = this.paginator;
-    this.ref.detectChanges();
   }
 
   onDelete(pack: Pack): void {

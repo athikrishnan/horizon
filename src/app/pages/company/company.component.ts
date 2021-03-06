@@ -10,6 +10,7 @@ import { CompanyService } from '../../services/company.service';
   styleUrls: ['./company.component.scss'],
 })
 export class CompanyComponent implements OnInit {
+  showSpinner = true;
   companyForm: FormGroup = this.fb.group({
     id: ['1'],
     name: [''],
@@ -27,19 +28,21 @@ export class CompanyComponent implements OnInit {
     currency: [{ value: 'INR', disabled: 'true' }]
   });
 
-  constructor(private fb: FormBuilder,
+  constructor(
+    private fb: FormBuilder,
     private companyService: CompanyService) { }
 
   ngOnInit(): void {
     this.companyService.companies$.subscribe((companies: Company[]) => {
       if (companies.length > 0) {
         this.companyForm.patchValue(companies[0]);
+        this.showSpinner = false;
       }
-    })
+    });
   }
 
   onSave(): void {
-    const company: Company = <Company>this.companyForm.getRawValue();
+    const company: Company = this.companyForm.getRawValue() as Company;
     this.companyService.saveCompany(company);
   }
 }

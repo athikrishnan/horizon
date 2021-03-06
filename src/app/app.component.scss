@@ -7,6 +7,9 @@
   .app-sidenav {
     min-width: 200px;
     max-width: 300px;
+    mat-icon {
+      margin-right: 5px;
+    }
   }
   .app-container {
     margin: 1.5rem;

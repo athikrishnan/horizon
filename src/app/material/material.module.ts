@@ -16,6 +16,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { SpinnerComponent } from '../components/spinner/spinner.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { SpinnerComponent } from '../components/spinner/spinner.component';
     MatPaginatorModule,
     MatDialogModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule { }

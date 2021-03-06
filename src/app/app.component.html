@@ -3,11 +3,38 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="over" class="app-sidenav">
     <mat-nav-list>
-      <a (click)="sidenav.toggle()" mat-list-item routerLink="/company"> Company </a>
-      <a (click)="sidenav.toggle()" mat-list-item routerLink="/supplier"> Supplier </a>
-      <a (click)="sidenav.toggle()" mat-list-item routerLink="/item"> Item </a>
-      <a (click)="sidenav.toggle()" mat-list-item routerLink="/pack"> Pack </a>
-   </mat-nav-list>
+      <div mat-subheader>Menu</div>
+      <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+          Sale
+        </mat-expansion-panel-header>
+        <mat-nav-list dense>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/invoice">
+            <mat-icon>receipt</mat-icon> Invoice
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+      <div mat-subheader>Settings</div>
+      <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+          Resources
+        </mat-expansion-panel-header>
+        <mat-nav-list dense>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/company">
+            <mat-icon>business</mat-icon> Company
+          </a>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/supplier">
+            <mat-icon>local_shipping</mat-icon> Supplier
+          </a>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/item">
+            <mat-icon>shopping_cart</mat-icon> Item
+          </a>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/pack">
+            <mat-icon>inventory_2</mat-icon> Pack
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <div fxLayout="row" fxLayoutAlign="center start" class="app-container">
@@ -18,4 +45,3 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <app-spinner *ngIf="showSpinner"></app-spinner>
-

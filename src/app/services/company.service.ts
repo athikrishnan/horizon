@@ -15,7 +15,7 @@ export class CompanyService {
     this.companies$ = this.companyCollection.valueChanges();
   }
 
-  saveCompany(company: Company): void {
-    this.companyCollection.doc(company.id).set(company);
+  saveCompany(company: Company): Promise<void> {
+    return this.companyCollection.doc(company.id).set(company);
   }
 }

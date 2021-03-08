@@ -25,6 +25,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule)
   },
   {
+    path: 'invoice',
+    loadChildren: () => import('./pages/invoice/invoice.module').then(m => m.InvoiceModule)
+  },
+  {
     path: 'mock-data',
     loadChildren: () => import('./dev/mock-data/mock-data.module').then(m => m.MockDataModule),
     canLoad: [DevEnvGuard]

@@ -1,0 +1,12 @@
+<mat-list>
+  <mat-list-item>
+    <button (click)="onNewCustomer()" mat-stroked-button color="primary">
+      New Customer <mat-icon>add</mat-icon> 
+    </button>
+  </mat-list-item>
+  <div mat-subheader>All Customers</div>
+  <mat-list-item>
+    <p mat-line> There are no customers.</p>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

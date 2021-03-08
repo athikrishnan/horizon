@@ -30,3 +30,8 @@ mat-radio-group {
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
 }
+
+// expansion panel
+.app-sidenav .mat-expansion-panel-body {
+  padding: 0 !important;
+}

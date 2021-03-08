@@ -1,6 +1,6 @@
 .sidenav-container {
   position: absolute;
-  top: 64px;
+  top: 56px;
   bottom: 0;
   left: 0;
   right: 0;
@@ -9,6 +9,11 @@
     max-width: 300px;
     mat-icon {
       margin-right: 5px;
+    }
+    .mat-expansion-panel {
+      .mat-expansion-panel-header {
+        padding: 0 16px;
+      }      
     }
   }
   .app-container {

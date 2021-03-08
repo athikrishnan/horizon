@@ -1,1 +1,10 @@
-<p>client-selection works!</p>
+<mat-list>
+  <mat-list-item>
+    <p>find a client</p>
+  </mat-list-item>
+  <div mat-subheader>Clients</div>
+  <mat-list-item>
+    <p mat-line> There are no clients.</p>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

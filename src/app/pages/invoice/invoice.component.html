@@ -1,1 +1,19 @@
-<p>invoice works!</p>
+<mat-list>
+  <mat-list-item>
+    <button (click)="onNewInvoice()" mat-stroked-button color="primary">
+      New Invoice <mat-icon>add</mat-icon> 
+    </button>
+  </mat-list-item>
+  <div mat-subheader>Active Invoices (unsaved)</div>
+  <mat-list-item *ngIf="!activeInvoices.length">
+    <p mat-line> There are no active invoices.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let invoice of activeInvoices">
+    <p mat-line (click)="editInvoice(invoice.id)"> {{ invoice.id }}</p>
+  </mat-list-item>
+  <div mat-subheader>Recent Invoices</div>
+  <mat-list-item>
+    <p mat-line> There are no recent invoices.</p>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

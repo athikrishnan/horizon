@@ -14,8 +14,4 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.showSpinner = false;
   }
-
-  onNewCustomer(): void {
-
-  }
 }

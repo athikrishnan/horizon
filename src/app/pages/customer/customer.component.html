@@ -4,8 +4,11 @@
       New Customer <mat-icon>add</mat-icon> 
     </a>
   </mat-list-item>
-  <div mat-subheader>All Customers</div>
-  <mat-list-item>
+  <div mat-subheader>Recently Added</div>
+  <a routerLink="/customer/{{customer.id}}/view" mat-list-item *ngFor="let customer of recents">
+    {{ customer.name }}
+  </a>
+  <mat-list-item *ngIf="!recents.length">
     <p mat-line> There are no customers.</p>
   </mat-list-item>
 </mat-list>

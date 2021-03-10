@@ -14,6 +14,7 @@ export class CustomerFormComponent implements OnInit {
   showSpinner = true;
   customerForm: FormGroup = this.fb.group({
     id: null,
+    createdAt: null,
     name: [null, Validators.required],
     address: this.fb.group({
       street: null,

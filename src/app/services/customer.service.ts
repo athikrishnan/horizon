@@ -9,9 +9,11 @@ import { Customer } from '../models/customer.model';
 })
 export class CustomerService {
   private customerCollection: AngularFirestoreCollection<Customer>;
+  private recentCollection: AngularFirestoreCollection<Customer>;
 
   constructor(private store: AngularFirestore) {
     this.customerCollection = this.store.collection<Customer>('customers');
+    this.recentCollection = this.store.collection<Customer>('customers', ref => ref.orderBy('createdAt').limit(5));
   }
 
   async saveCustomer(customer: Customer): Promise<string> {
@@ -30,5 +32,9 @@ export class CustomerService {
 
   getCustomer(id: string): Observable<Customer> {
     return this.customerCollection.doc(id).valueChanges().pipe(take(1));
+  }
+
+  getRecents(): Observable<Customer[]> {
+    return this.recentCollection.valueChanges().pipe(take(1));
   }
 }

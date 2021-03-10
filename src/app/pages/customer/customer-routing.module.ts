@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: ':id/view',
     component: CustomerViewComponent
+  },
+  {
+    path: ':id/edit',
+    component: CustomerFormComponent
   }
 ];
 

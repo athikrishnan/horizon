@@ -2,7 +2,7 @@
   <div fxLayout="row">
     <p fxFlex="90" class="mat-display-1"> {{ customer.name }}</p>
     <div fxFlex="10">
-      <a mat-icon-button routerLink="{{ customer.id }}/edit">
+      <a mat-icon-button routerLink="/customer/{{ customer.id }}/edit">
         <mat-icon>create</mat-icon>
       </a>
     </div>

@@ -43,7 +43,10 @@
     <mat-label>Email</mat-label>
     <input formControlName="email" matInput autocomplete="none">
   </mat-form-field>
-  <div fxLayout="row" fxLayoutAlign="end">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <a *ngIf="editId" routerLink="/customer/{{editId}}/view" mat-stroked-button>Cancel</a>
+    </div>
     <button (click)="onSave()" [disabled]="!customerForm.dirty || !customerForm.valid" mat-raised-button
       color="primary">Save</button>
   </div>

@@ -1,0 +1,11 @@
+<div *ngIf="customer">
+  <div fxLayout="row">
+    <p fxFlex="90" class="mat-display-1"> {{ customer.name }}</p>
+    <div fxFlex="10">
+      <a mat-icon-button routerLink="{{ customer.id }}/edit">
+        <mat-icon>create</mat-icon>
+      </a>
+    </div>
+  </div>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

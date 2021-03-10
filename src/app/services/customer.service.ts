@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Customer } from '../models/customer.model';
 
 @Injectable({
@@ -9,7 +11,7 @@ export class CustomerService {
   private customerCollection: AngularFirestoreCollection<Customer>;
 
   constructor(private store: AngularFirestore) {
-    this.customerCollection = this.store.collection('customers');
+    this.customerCollection = this.store.collection<Customer>('customers');
   }
 
   async saveCustomer(customer: Customer): Promise<string> {
@@ -24,5 +26,9 @@ export class CustomerService {
     return await this.customerCollection.doc(customer.id).set(customer).then(() => {
       return customer.id;
     });
+  }
+
+  getCustomer(id: string): Observable<Customer> {
+    return this.customerCollection.doc(id).valueChanges().pipe(take(1));
   }
 }

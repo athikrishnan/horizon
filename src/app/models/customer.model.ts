@@ -6,6 +6,7 @@ export interface Customer {
   address: CustomerAddress;
   phone: number;
   email: string;
+  keywords: string[];
   createdAt: number;
   updatedAt: number;
 }

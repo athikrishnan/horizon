@@ -3,17 +3,18 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Customer } from '../models/customer.model';
+import { KeywordService } from './keyword.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CustomerService {
   private customerCollection: AngularFirestoreCollection<Customer>;
-  private recentCollection: AngularFirestoreCollection<Customer>;
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private keywordService: KeywordService) {
     this.customerCollection = this.store.collection<Customer>('customers');
-    this.recentCollection = this.store.collection<Customer>('customers', ref => ref.orderBy('createdAt').limit(5));
   }
 
   async saveCustomer(customer: Customer): Promise<string> {
@@ -24,6 +25,7 @@ export class CustomerService {
       customer.createdAt = Date.now();
     }
     customer.updatedAt = Date.now();
+    customer.keywords = this.keywordService.generateKeywords(customer.name);
 
     return await this.customerCollection.doc(customer.id).set(customer).then(() => {
       return customer.id;
@@ -35,10 +37,18 @@ export class CustomerService {
   }
 
   getRecents(): Observable<Customer[]> {
-    return this.recentCollection.valueChanges().pipe(take(1));
+    return this.store.collection<Customer>('customers', ref => ref.orderBy('createdAt').limit(5))
+      .valueChanges().pipe(take(1));
   }
 
   deleteCustomer(customer: Customer): Promise<void> {
     return this.customerCollection.doc(customer.id).delete();
+  }
+
+  searchCustomersByName(search: string): Observable<Customer[]> {
+    return this.store.collection<Customer>(
+      'customers',
+      ref => ref.where('keywords', 'array-contains', search.toLowerCase()).limit(5)
+    ).valueChanges().pipe(take(1));
   }
 }

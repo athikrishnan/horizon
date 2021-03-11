@@ -1,15 +1,18 @@
 <mat-list>
   <mat-list-item>
     <a routerLink="create" mat-stroked-button color="primary">
-      New Customer <mat-icon>add</mat-icon> 
+      New Customer <mat-icon>add</mat-icon>
     </a>
   </mat-list-item>
   <div mat-subheader>Recently Added</div>
-  <a routerLink="/customer/{{customer.id}}/view" mat-list-item *ngFor="let customer of recents">
-    {{ customer.name }}
-  </a>
-  <mat-list-item *ngIf="!recents.length">
-    <p mat-line> There are no customers.</p>
-  </mat-list-item>
+  <mat-nav-list>
+    <a routerLink="/customer/{{customer.id}}/view" mat-list-item *ngFor="let customer of recents">
+      {{ customer.name }}
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!recents.length">
+      <p mat-line> There are no customers.</p>
+    </mat-list-item>
+  </mat-nav-list>
 </mat-list>
 <app-spinner *ngIf="showSpinner"></app-spinner>

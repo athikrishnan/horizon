@@ -37,11 +37,15 @@ export class CustomerFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
-    this.customerService.getCustomer(this.editId).subscribe((customer: Customer) => {
-      this.customerForm.patchValue(customer);
+    if (!!this.editId) {
+      this.customerService.getCustomer(this.editId).subscribe((customer: Customer) => {
+        this.customerForm.patchValue(customer);
+        this.showSpinner = false;
+        this.ref.detectChanges();
+      });
+    } else {
       this.showSpinner = false;
-      this.ref.detectChanges();
-    });
+    }
   }
 
   onSave(): void {

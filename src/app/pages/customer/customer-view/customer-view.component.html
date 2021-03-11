@@ -7,5 +7,21 @@
       </a>
     </div>
   </div>
+  <div fxlayout="column">
+    <p class="mat-title">Contact Information</p>
+    <p>{{ customer.phone }}</p>
+    <p>{{ customer.email }}</p>
+    <mat-divider></mat-divider>
+    <p class="mat-title">Address Information</p>
+    <ng-container *ngIf="customer.address">
+      <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
+      <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
+      <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
+      <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
+    </ng-container>
+    <mat-divider></mat-divider>
+    <p class="mat-title">Settings</p>
+    <button (click)="onDelete(customer)" mat-stroked-button>Delete</button>
+  </div>
 </div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

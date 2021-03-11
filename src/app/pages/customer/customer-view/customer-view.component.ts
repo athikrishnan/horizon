@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -17,7 +19,9 @@ export class CustomerViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private customerService: CustomerService,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.customerId = this.route.snapshot.paramMap.get('id');
@@ -28,4 +32,15 @@ export class CustomerViewComponent implements OnInit {
     });
   }
 
+  onDelete(customer: Customer): void {
+    this.dialog.open(DeleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.showSpinner = true;
+        this.ref.detectChanges();
+        this.customerService.deleteCustomer(customer).then(() => {
+          this.router.navigate(['customer']);
+        });
+      }
+    });
+  }
 }

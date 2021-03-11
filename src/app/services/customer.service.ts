@@ -37,4 +37,8 @@ export class CustomerService {
   getRecents(): Observable<Customer[]> {
     return this.recentCollection.valueChanges().pipe(take(1));
   }
+
+  deleteCustomer(customer: Customer): Promise<void> {
+    return this.customerCollection.doc(customer.id).delete();
+  }
 }

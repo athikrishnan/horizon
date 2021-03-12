@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
 import { Customer } from 'src/app/models/customer.model';
-import { Item } from 'src/app/models/item.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { KeywordService } from 'src/app/services/keyword.service';
 
@@ -15,9 +14,6 @@ export class MockDataService {
   private supplierCollection: AngularFirestoreCollection<Supplier>;
   suppliers$: Observable<Supplier[]>;
   private suppliers: Supplier[] = [];
-  private itemCollection: AngularFirestoreCollection<Item>;
-  items$: Observable<Item[]>;
-  private items: Item[] = [];
   private customerCollection: AngularFirestoreCollection<Customer>;
   customers$: Observable<Customer[]>;
 
@@ -27,8 +23,6 @@ export class MockDataService {
     this.companyCollection = this.store.collection<Company>('companies');
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
     this.suppliers$ =  this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
-    this.itemCollection = this.store.collection<Item>('items');
-    this.items$ =  this.itemCollection.valueChanges().pipe(tap(all => this.items = all));
     this.customerCollection = this.store.collection<Customer>('customers');
     this.customers$ = this.customerCollection.valueChanges();
   }
@@ -66,24 +60,6 @@ export class MockDataService {
     };
 
     this.supplierCollection.doc(supplier.id).set(supplier);
-  }
-
-  generateItem(): void {
-    const supplier: Supplier = this.getRandom<Supplier>(this.suppliers);
-    const data: Item = {
-      id: Faker.random.uuid(),
-      supplier: {
-        id: supplier.id,
-        name: supplier.name,
-      },
-      name: Faker.commerce.productName(),
-      quantity: Math.floor(Math.random() * 100) + 1  ,
-      price: Faker.commerce.price(),
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
-
-    this.itemCollection.doc(data.id).set(data);
   }
 
   generateCustomer(): void {

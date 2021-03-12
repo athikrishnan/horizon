@@ -21,10 +21,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/item/item.module').then(m => m.ItemModule)
   },
   {
-    path: 'pack',
-    loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule)
-  },
-  {
     path: 'invoice',
     loadChildren: () => import('./pages/invoice/invoice.module').then(m => m.InvoiceModule)
   },

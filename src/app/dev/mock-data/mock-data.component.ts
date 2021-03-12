@@ -5,6 +5,7 @@ import { Item } from 'src/app/models/item.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { MockDataService } from './mock-data.service';
 import { Pack } from 'src/app/models/pack.model';
+import { Customer } from 'src/app/models/customer.model';
 
 @Component({
   selector: 'app-mock-data',
@@ -17,9 +18,11 @@ import { Pack } from 'src/app/models/pack.model';
 })
 export class MockDataComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
   suppliers: Supplier[] = [];
   items: Item[] = [];
   packs: Pack[] = [];
+  customers: Customer[] = [];
 
   constructor(
     private mockDataService: MockDataService,
@@ -29,11 +32,14 @@ export class MockDataComponent implements OnInit, OnDestroy {
     combineLatest([
       this.mockDataService.suppliers$.pipe((takeUntil(this.unsubscribe$))),
       this.mockDataService.items$.pipe((takeUntil(this.unsubscribe$))),
-      this.mockDataService.packs$.pipe((takeUntil(this.unsubscribe$)))
-    ]).subscribe(([suppliers, items, packs]: [Supplier[], Item[], Pack[]]) => {
+      this.mockDataService.packs$.pipe((takeUntil(this.unsubscribe$))),
+      this.mockDataService.customers$.pipe((takeUntil(this.unsubscribe$)))
+    ]).subscribe(([suppliers, items, packs, customers]: [Supplier[], Item[], Pack[], Customer[]]) => {
       this.suppliers = suppliers;
       this.items = items;
       this.packs = packs;
+      this.customers = customers;
+      this.showSpinner = false;
       this.ref.detectChanges();
     });
   }
@@ -57,5 +63,9 @@ export class MockDataComponent implements OnInit, OnDestroy {
 
   onGeneratePack(): void {
     this.mockDataService.generatePack();
+  }
+
+  onGenerateCustomer(): void {
+    this.mockDataService.generateCustomer();
   }
 }

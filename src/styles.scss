@@ -4,7 +4,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: white;
 }
 body {
   margin: 0;
@@ -12,6 +12,10 @@ body {
 }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+// mat-drawer
+.mat-drawer-content {
+  background-color: white;
+}
 
 // mat-card
 .mat-card-title {
@@ -29,4 +33,9 @@ mat-radio-group {
 }
 .mat-radio-button ~ .mat-radio-button {
   margin-left: 16px;
+}
+
+// expansion panel
+.app-sidenav .mat-expansion-panel-body {
+  padding: 0 !important;
 }

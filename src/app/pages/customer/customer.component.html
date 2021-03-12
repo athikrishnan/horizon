@@ -1,0 +1,36 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Customer <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Find Customer</div>
+  <mat-list>
+    <mat-list-item>
+      <form [formGroup]="searchForm" fxFlex="100">
+        <mat-form-field appearance="outline" fxFlex="100">
+          <input formControlName="search" matInput placeholder="Type customer's name here.." 
+            name="customerSearch" autocomplete="new-customer-search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </form>
+    </mat-list-item>
+  </mat-list>
+  <mat-nav-list>
+    <a routerLink="/customer/{{customer.id}}/view" mat-list-item *ngFor="let customer of results">
+      {{ customer.name }}
+      <mat-divider></mat-divider>
+    </a>
+  </mat-nav-list>
+  <div mat-subheader>Recently Added</div>
+  <mat-nav-list>
+    <a routerLink="/customer/{{customer.id}}/view" mat-list-item *ngFor="let customer of recents">
+      {{ customer.name }}
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!recents.length">
+      <p mat-line> There are no customers.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

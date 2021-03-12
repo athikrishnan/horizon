@@ -1,0 +1,55 @@
+<form [formGroup]="customerForm" fxLayout="column">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Customer</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required autocomplete="none">
+    <mat-error *ngIf="customerForm.get('name').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <p class="mat-subheading-1">Address</p>
+  <ng-container formGroupName="address">
+    <mat-form-field appearance="outline">
+      <mat-label>Street Address</mat-label>
+      <input matInput formControlName="street" autocomplete="none">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Locality / Village</mat-label>
+      <input matInput formControlName="locality" autocomplete="none">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Pin Code</mat-label>
+      <input matInput formControlName="zip" autocomplete="none">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city" autocomplete="none">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>State</mat-label>
+      <input matInput formControlName="state" autocomplete="none">
+    </mat-form-field>
+  </ng-container>
+  <p class="mat-subheading-1">Contact</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input formControlName="phone" matInput required autocomplete="none">
+    <mat-error *ngIf="customerForm.get('phone').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input formControlName="email" matInput autocomplete="none">
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <a *ngIf="editId" routerLink="/customer/{{editId}}/view" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!customerForm.dirty || !customerForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

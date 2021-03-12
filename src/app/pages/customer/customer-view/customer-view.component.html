@@ -1,0 +1,39 @@
+<div *ngIf="customer">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p class="mat-display-1"> {{ customer.name }}</p>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="customerMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #customerMenu="matMenu">
+        <a mat-menu-item routerLink="/customer/{{ customer.id }}/edit">
+          Edit
+        </a>
+        <mat-divider></mat-divider>
+        <button (click)="onDelete(customer)" mat-menu-item>Delete</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div fxlayout="column">
+    <p class="mat-title">Contact Information</p>
+    <p>{{ customer.phone }}</p>
+    <p>{{ customer.email }}</p>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
+    <p class="mat-title">Address Information</p>
+    <ng-container *ngIf="customer.address">
+      <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
+      <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
+      <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
+      <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
+    </ng-container>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
+    <p>
+      <a routerLink="/customer" mat-stroked-button>Back to Search</a>
+    </p>
+  </div>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

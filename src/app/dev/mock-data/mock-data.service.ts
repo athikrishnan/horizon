@@ -4,9 +4,11 @@ import * as Faker from 'faker';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
+import { Customer } from 'src/app/models/customer.model';
 import { Item } from 'src/app/models/item.model';
 import { Pack } from 'src/app/models/pack.model';
 import { Supplier } from 'src/app/models/supplier.model';
+import { KeywordService } from 'src/app/services/keyword.service';
 
 @Injectable()
 export class MockDataService {
@@ -20,8 +22,12 @@ export class MockDataService {
   private packCollection: AngularFirestoreCollection<Pack>;
   packs$: Observable<Pack[]>;
   private packs: Pack[] = [];
+  private customerCollection: AngularFirestoreCollection<Customer>;
+  customers$: Observable<Customer[]>;
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private keywordService: KeywordService) {
     this.companyCollection = this.store.collection<Company>('companies');
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
     this.suppliers$ =  this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
@@ -29,6 +35,8 @@ export class MockDataService {
     this.items$ =  this.itemCollection.valueChanges().pipe(tap(all => this.items = all));
     this.packCollection = this.store.collection<Pack>('packs');
     this.packs$ =  this.packCollection.valueChanges().pipe(tap(all => this.packs = all));
+    this.customerCollection = this.store.collection<Customer>('customers');
+    this.customers$ = this.customerCollection.valueChanges();
   }
 
   generateCompanyDetails(): void {
@@ -122,6 +130,28 @@ export class MockDataService {
     };
 
     this.packCollection.doc(data.id).set(data);
+  }
+
+  generateCustomer(): void {
+    const name = Faker.name.firstName();
+    const customer: Customer = {
+      id: Faker.random.uuid(),
+      name,
+      address: {
+        street: Faker.address.streetName(),
+        locality: Faker.address.secondaryAddress(),
+        city: Faker.address.city(),
+        state: '33-Tamilnadu',
+        zip: Faker.address.zipCode()
+      },
+      phone: Faker.phone.phoneNumber(),
+      email: Faker.internet.email(),
+      keywords: this.keywordService.generateKeywords(name),
+      createdAt: Date.now(),
+      updatedAt: Date.now()
+    };
+
+    this.customerCollection.doc(customer.id).set(customer);
   }
 
   private getRandom<T>(collection: T[]): T | null {

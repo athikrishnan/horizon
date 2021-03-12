@@ -1,0 +1,36 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Product <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Find Product</div>
+  <mat-list>
+    <mat-list-item>
+      <form [formGroup]="searchForm" fxFlex="100">
+        <mat-form-field appearance="outline" fxFlex="100">
+          <input formControlName="search" matInput placeholder="Type product's name here.." 
+            name="productSearch" autocomplete="new-product-search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </form>
+    </mat-list-item>
+  </mat-list>
+  <mat-nav-list>
+    <a routerLink="/product/{{product.id}}/view" mat-list-item *ngFor="let product of results">
+      {{ product.name }}
+      <mat-divider></mat-divider>
+    </a>
+  </mat-nav-list>
+  <div mat-subheader>Recently Added</div>
+  <mat-nav-list>
+    <a routerLink="/product/{{product.id}}/view" mat-list-item *ngFor="let product of recents">
+      {{ product.name }}
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!recents.length">
+      <p mat-line> There are no products.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

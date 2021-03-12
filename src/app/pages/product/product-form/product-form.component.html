@@ -1,0 +1,20 @@
+<form [formGroup]="productForm" fxLayout="column">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Product</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required autocomplete="none">
+    <mat-error *ngIf="productForm.get('name').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <a *ngIf="editId" routerLink="/product/{{editId}}/view" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!productForm.dirty || !productForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

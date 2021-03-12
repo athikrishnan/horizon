@@ -1,0 +1,23 @@
+<div *ngIf="product">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p class="mat-display-1"> {{ product.name }}</p>
+    <div>
+      <button mat-icon-button [matMenuTriggerFor]="productMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #productMenu="matMenu">
+        <a mat-menu-item routerLink="/product/{{ product.id }}/edit">
+          Edit
+        </a>
+        <mat-divider></mat-divider>
+        <button (click)="onDelete(product)" mat-menu-item>Delete</button>
+      </mat-menu>
+    </div>
+  </div>
+  <div fxlayout="column">
+    <p>
+      <a routerLink="/product" mat-stroked-button>Back to Search</a>
+    </p>
+  </div>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

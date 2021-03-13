@@ -1,6 +1,8 @@
+import { KeyValue } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -14,10 +16,17 @@ export class ProductFormComponent implements OnInit {
   showSpinner = true;
   productForm: FormGroup = this.fb.group({
     id: null,
+    hsn: null,
+    unit: null,
     createdAt: null,
     name: [null, Validators.required]
   });
   editId: string;
+  unitList: KeyValue<ProductUnit, string>[] = [
+    { key: ProductUnit.Grams, value: 'in gms' },
+    { key: ProductUnit.Litre, value: 'in mls' },
+    { key: ProductUnit.Each, value: 'in nos' }
+  ];
 
   constructor(
     private fb: FormBuilder,

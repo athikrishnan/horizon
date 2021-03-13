@@ -9,6 +9,18 @@
       Required.
     </mat-error>
   </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>HSN / SAC</mat-label>
+    <input matInput formControlName="hsn" required autocomplete="none">
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Unit</mat-label>
+    <mat-select formControlName="unit" ngDefaultControl>
+      <mat-option *ngFor="let option of unitList" [value]="option.key">
+        {{ option.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between">
     <div>
       <a *ngIf="editId" routerLink="/product/{{editId}}/view" mat-stroked-button>Cancel</a>

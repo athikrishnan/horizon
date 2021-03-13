@@ -1,67 +1,65 @@
-<mat-card class="container">
-  <p class="mat-title">Company Details</p>
-  <mat-card-content>
-    <form [formGroup]="companyForm" fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
-      <input type="hidden" formControlName="id">
-      <div fxFlex.gt-xs="48" fxLayout="column">
-        <p class="mat-subheding-1">Name & Address</p>
+<p class="mat-title">Company Details</p>
+<mat-card-content>
+  <form [formGroup]="companyForm" fxLayout="row" fxLayoutAlign="space-between" fxLayout.xs="column">
+    <input type="hidden" formControlName="id">
+    <div fxFlex.gt-xs="48" fxLayout="column">
+      <p class="mat-subheding-1">Name & Address</p>
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+      <div formGroupName="address" fxLayout="column">
         <mat-form-field appearance="outline">
-          <mat-label>Name</mat-label>
-          <input matInput formControlName="name">
-        </mat-form-field>
-        <div formGroupName="address" fxLayout="column">
-          <mat-form-field appearance="outline">
-            <mat-label>Street Address</mat-label>
-            <input matInput formControlName="street">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>City</mat-label>
-            <input matInput formControlName="city">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>State</mat-label>
-            <input matInput formControlName="state">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Country</mat-label>
-            <input matInput formControlName="country">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Pin Code</mat-label>
-            <input matInput formControlName="zip">
-          </mat-form-field>
-        </div>
-      </div>
-      <div fxFlex.gt-xs="48" fxLayout="column">
-        <p class="mat-subheding-1">Contact Details</p>
-        <mat-form-field appearance="outline">
-          <mat-label>Phone</mat-label>
-          <input matInput formControlName="phone">
-          <span matPrefix>+91</span>
+          <mat-label>Street Address</mat-label>
+          <input matInput formControlName="street">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input type="email" matInput formControlName="email">
-        </mat-form-field>
-        <p class="mat-subheding-1">Taxation Details</p>
-        <mat-form-field appearance="outline">
-          <mat-label>Pan No</mat-label>
-          <input matInput formControlName="pan">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>GST No</mat-label>
-          <input matInput formControlName="gstin">
+          <mat-label>State</mat-label>
+          <input matInput formControlName="state">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Currency</mat-label>
-          <input matInput formControlName="currency">
-          <span matSuffix>&#8377;</span>
+          <mat-label>Country</mat-label>
+          <input matInput formControlName="country">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Pin Code</mat-label>
+          <input matInput formControlName="zip">
         </mat-form-field>
       </div>
-    </form>
-    <div fxLayout="row" fxLayoutAlign="end center">
-      <button (click)="onSave()" [disabled]="!companyForm.dirty" mat-raised-button color="primary">Save</button>
     </div>
-  </mat-card-content>
-</mat-card>
+    <div fxFlex.gt-xs="48" fxLayout="column">
+      <p class="mat-subheding-1">Contact Details</p>
+      <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone">
+        <span matPrefix>+91</span>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="email">
+      </mat-form-field>
+      <p class="mat-subheding-1">Taxation Details</p>
+      <mat-form-field appearance="outline">
+        <mat-label>Pan No</mat-label>
+        <input matInput formControlName="pan">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>GST No</mat-label>
+        <input matInput formControlName="gstin">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Currency</mat-label>
+        <input matInput formControlName="currency">
+        <span matSuffix>&#8377;</span>
+      </mat-form-field>
+    </div>
+  </form>
+  <div fxLayout="row" fxLayoutAlign="end center">
+    <button (click)="onSave()" [disabled]="!companyForm.dirty" mat-raised-button color="primary">Save</button>
+  </div>
+</mat-card-content>
 <app-spinner *ngIf="showSpinner"></app-spinner>

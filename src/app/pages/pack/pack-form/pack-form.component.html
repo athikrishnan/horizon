@@ -1,0 +1,33 @@
+<form [formGroup]="packForm" fxLayout="column" #form="ngForm">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Pack</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required autocomplete="none">
+    <mat-error *ngIf="packForm.get('name').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Count</mat-label>
+    <input matInput formControlName="count" type="number" required autocomplete="none">
+    <mat-error *ngIf="packForm.get('count').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
+    <div>
+      <a routerLink="/pack" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!packForm.dirty || !packForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!editId" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Pack } from 'src/app/models/pack.model';
 
 @Injectable({
@@ -8,11 +9,17 @@ import { Pack } from 'src/app/models/pack.model';
 })
 export class PackService {
   private packCollection: AngularFirestoreCollection<Pack>;
-  packs$: Observable<Pack[]>;
 
   constructor(private store: AngularFirestore) {
-    this.packCollection = this.store.collection('packs');
-    this.packs$ = this.packCollection.valueChanges();
+    this.packCollection = this.store.collection<Pack>('packs');
+  }
+
+  getPacks(): Observable<Pack[]> {
+    return this.packCollection.valueChanges().pipe(take(1));
+  }
+
+  getPack(id: string): Observable<Pack> {
+    return this.packCollection.doc(id).valueChanges().pipe(take(1));
   }
 
   savePack(pack: Pack): Promise<void> {
@@ -27,7 +34,7 @@ export class PackService {
     return this.packCollection.doc(pack.id).set(pack);
   }
 
-  deletePack(pack: Pack): void {
-    this.packCollection.doc(pack.id).delete();
+  deletePack(pack: Pack): Promise<void> {
+    return this.packCollection.doc(pack.id).delete();
   }
 }

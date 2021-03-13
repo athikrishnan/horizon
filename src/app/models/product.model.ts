@@ -1,4 +1,5 @@
 import { ProductUnit } from '../enums/product-unit.enum';
+import { ProductVariant } from './product-variant.model';
 
 export interface Product {
   id: string;
@@ -6,6 +7,7 @@ export interface Product {
   hsn: number;
   unit: ProductUnit;
   keywords: string[];
+  variants: ProductVariant[];
   createdAt: number;
   updatedAt: number;
 }

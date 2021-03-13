@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ProductVariant } from '../models/product-variant.model';
 import { Product } from '../models/product.model';
 import { KeywordService } from './keyword.service';
 
@@ -50,5 +51,32 @@ export class ProductService {
       'products',
       ref => ref.where('keywords', 'array-contains', search.toLowerCase()).limit(5)
     ).valueChanges().pipe(take(1));
+  }
+
+  async saveVariant(product: Product, variant: ProductVariant): Promise<string> {
+    if (!product.variants) {
+      product.variants = [];
+    }
+
+    const isNew: boolean = !variant.id;
+
+    variant.updatedAt = Date.now();
+    if (isNew) {
+      variant.id = this.store.createId();
+      variant.createdAt = Date.now();
+      product.variants.push(variant);
+    } else {
+      const index: number = product.variants.findIndex(i => i.id === variant.id);
+      product.variants.splice(index, 1, variant);
+    }
+
+    return await this.saveProduct(product);
+  }
+
+  async deleteVariant(product: Product, variant: ProductVariant): Promise<string> {
+    const index: number = product.variants.findIndex(i => i.id === variant.id);
+    product.variants.splice(index, 1);
+
+    return await this.saveProduct(product);
   }
 }

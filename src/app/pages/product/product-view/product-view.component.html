@@ -9,6 +9,9 @@
         <a mat-menu-item routerLink="/product/{{ product.id }}/edit">
           Edit
         </a>
+        <a mat-menu-item routerLink="/product/{{ product.id }}/variant/create">
+          Add Variant
+        </a>
         <mat-divider></mat-divider>
         <button (click)="onDelete(product)" mat-menu-item>Delete</button>
       </mat-menu>
@@ -18,6 +21,19 @@
     <p class="mat-title">Product Information</p>
     <p>HSN / SAC: {{ product.hsn }}</p>
     <p>Measured in: {{ product.unit }}</p>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
+    <p class="mat-title">Product Variants</p>
+    <mat-nav-list>
+      <a *ngFor="let variant of product.variants" routerLink="/product/{{product.id}}/variant/{{variant.id}}/edit"
+        mat-list-item>
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
+          <p>{{ variant.size }} {{ product.unit }}</p>
+          <p>{{ variant.price }} &#8377;</p>
+        </div>
+      </a>
+    </mat-nav-list>
     <p>
       <mat-divider></mat-divider>
     </p>

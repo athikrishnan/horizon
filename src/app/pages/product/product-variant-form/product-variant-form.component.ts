@@ -2,9 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
+import { Pack } from 'src/app/models/pack.model';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
+import { PackService } from 'src/app/services/pack.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,10 +23,12 @@ export class ProductVariantFormComponent implements OnInit {
     createdAt: null,
     size: [null, Validators.required],
     price: [null, Validators.required],
-    quantity: 0
+    quantity: 0,
+    packs: null,
   });
   product: Product;
   variant: ProductVariant;
+  packs: Pack[];
 
   constructor(
     private fb: FormBuilder,
@@ -31,13 +36,18 @@ export class ProductVariantFormComponent implements OnInit {
     private productService: ProductService,
     private ref: ChangeDetectorRef,
     private router: Router,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private packService: PackService) { }
 
   ngOnInit(): void {
     const productId: string = this.route.snapshot.paramMap.get('productId');
     const variantId: string = this.route.snapshot.paramMap.get('variantId');
-    this.productService.getProduct(productId).subscribe((product: Product) => {
+    combineLatest([
+      this.productService.getProduct(productId),
+      this.packService.getPacks()
+    ]).subscribe(([product, packs]: [Product, Pack[]]) => {
       this.product = product;
+      this.packs = packs;
       if (!!variantId) {
         this.variant = product.variants.find(i => i.id === variantId);
         this.productVariantForm.patchValue(this.variant);
@@ -65,5 +75,9 @@ export class ProductVariantFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  comparePack(a: Pack, b: Pack): boolean {
+    return a && b && a.id === b.id;
   }
 }

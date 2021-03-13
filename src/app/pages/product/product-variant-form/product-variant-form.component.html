@@ -28,6 +28,12 @@
       Required.
     </mat-error>
   </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Sold In</mat-label>
+    <mat-select formControlName="packs" multiple [compareWith]="comparePack">
+      <mat-option *ngFor="let pack of packs" [value]="pack">{{pack.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 12px;">
     <div>
       <a *ngIf="product.id" routerLink="/product/{{product.id}}/view" mat-stroked-button>Cancel</a>

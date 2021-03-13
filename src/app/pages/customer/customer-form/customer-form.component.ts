@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -10,7 +12,8 @@ import { CustomerService } from 'src/app/services/customer.service';
   templateUrl: './customer-form.component.html',
   styleUrls: ['./customer-form.component.scss']
 })
-export class CustomerFormComponent implements OnInit {
+export class CustomerFormComponent implements OnInit, OnDestroy {
+  private unsubscribe$ = new Subject<void>();
   showSpinner = true;
   customerForm: FormGroup = this.fb.group({
     id: null,
@@ -46,6 +49,19 @@ export class CustomerFormComponent implements OnInit {
     } else {
       this.showSpinner = false;
     }
+
+    this.customerForm.get('email').valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.customerForm.get('email').markAsTouched();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   onSave(): void {

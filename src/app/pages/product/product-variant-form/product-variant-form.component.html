@@ -1,0 +1,51 @@
+<form [formGroup]="productVariantForm" fxLayout="column" *ngIf="product">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Product Variant</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Size</mat-label>
+    <input matInput formControlName="size" required type="number" name="productVariantSize"
+      autocomplete="new-product-variant-size">
+    <span matSuffix>{{product.unit}}</span>
+    <mat-error *ngIf="productVariantForm.get('size').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Price per unit</mat-label>
+    <input matInput formControlName="price" required type="number" name="productVariantPrice"
+      autocomplete="new-product-variant-price">
+    <span matSuffix>&#8377;</span>
+    <mat-error *ngIf="productVariantForm.get('price').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Quantity</mat-label>
+    <input matInput formControlName="quantity" readonly type="number" name="productVariantQuantity"
+      autocomplete="new-product-variant-quantity">
+    <mat-error *ngIf="productVariantForm.get('quantity').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Sold In</mat-label>
+    <mat-select formControlName="packs" multiple [compareWith]="comparePack">
+      <mat-option *ngFor="let pack of packs" [value]="pack">{{pack.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 12px;">
+    <div>
+      <a *ngIf="product.id" routerLink="/product/{{product.id}}/view" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!productVariantForm.dirty || !productVariantForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!variant" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -17,20 +17,20 @@ const routes: Routes = [
     loadChildren: () => import('./pages/supplier/supplier.module').then(m => m.SupplierModule)
   },
   {
-    path: 'item',
-    loadChildren: () => import('./pages/item/item.module').then(m => m.ItemModule)
-  },
-  {
-    path: 'pack',
-    loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule)
-  },
-  {
     path: 'invoice',
     loadChildren: () => import('./pages/invoice/invoice.module').then(m => m.InvoiceModule)
   },
   {
     path: 'customer',
     loadChildren: () => import('./pages/customer/customer.module').then(m => m.CustomerModule)
+  },
+  {
+    path: 'product',
+    loadChildren: () => import('./pages/product/product.module').then(m => m.ProductModule)
+  },
+  {
+    path: 'pack',
+    loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule)
   },
   {
     path: 'mock-data',

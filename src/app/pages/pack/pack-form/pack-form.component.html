@@ -1,58 +1,33 @@
-<mat-card class="container">
-  <p class="mat-title"> Create new Pack</p>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <form fxFlex="48" [formGroup]="packForm" fxLayout="column">
-      <input formControlName="id" type="hidden">
-      <ng-container formGroupName="supplier">
-        <mat-form-field appearance="outline">
-          <mat-label>Supplier</mat-label>
-          <mat-select formControlName="id">
-            <mat-option *ngFor="let supplier of suppliers" [value]="supplier.id">
-              {{ supplier.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input formControlName="name" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Quantity</mat-label>
-        <input formControlName="quantity" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Price</mat-label>
-        <input formControlName="price" matInput>
-      </mat-form-field>
-      <ng-container formGroupName="contains">
-        <p class="mat-subheading-1">Contains</p>
-        <mat-radio-group formControlName="isPack">
-          <mat-radio-button [value]="false">Item</mat-radio-button>
-          <mat-radio-button [value]="true">Pack</mat-radio-button>
-        </mat-radio-group>
-        <mat-form-field *ngIf="items && !packForm.get('contains.isPack').value" appearance="outline">
-          <mat-label>Contains Item</mat-label>
-          <mat-select formControlName="id">
-            <mat-option *ngFor="let item of items" [value]="item.id">
-              {{ item.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field *ngIf="packs && packForm.get('contains.isPack').value" appearance="outline">
-          <mat-label>Contains Pack</mat-label>
-          <mat-select formControlName="id">
-            <mat-option *ngFor="let pack of packs" [value]="pack.id">
-              {{ pack.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <button (click)="onCancel()" mat-stroked-button color="primary">All Packs</button>
-        <button (click)="onSave()" mat-raised-button color="primary">Save</button>
-      </div>
-    </form>
+<form [formGroup]="packForm" fxLayout="column" #form="ngForm">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Pack</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required autocomplete="none">
+    <mat-error *ngIf="packForm.get('name').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Count</mat-label>
+    <input matInput formControlName="count" type="number" required autocomplete="none">
+    <mat-error *ngIf="packForm.get('count').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
+    <div>
+      <a routerLink="/pack" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!packForm.dirty || !packForm.valid" mat-raised-button
+      color="primary">Save</button>
   </div>
-</mat-card>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!editId" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
 <app-spinner *ngIf="showSpinner"></app-spinner>

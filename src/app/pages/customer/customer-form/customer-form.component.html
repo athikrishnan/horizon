@@ -1,6 +1,5 @@
 <form [formGroup]="customerForm" fxLayout="column">
   <input formControlName="id" type="hidden">
-  <input formControlName="createdAt" type="hidden">
   <p class="mat-subheading-1">Customer</p>
   <mat-form-field appearance="outline">
     <mat-label>Name</mat-label>
@@ -43,6 +42,9 @@
   <mat-form-field appearance="outline">
     <mat-label>Email</mat-label>
     <input formControlName="email" matInput autocomplete="none">
+    <mat-error *ngIf="customerForm.get('email').hasError('email')">
+      Invalid.
+    </mat-error>
   </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between">
     <div>

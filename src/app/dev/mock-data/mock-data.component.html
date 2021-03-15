@@ -15,16 +15,4 @@
 </button>
 <p class="mat-subheading-1"> Customers Count: {{ customers.length }}</p>
 <hr>
-<p class="mat-subheading-1">Items</p>
-<button (click)="onGenerateItem()" mat-raised-button color="primary">
-  Generate Item
-</button>
-<p class="mat-subheading-1"> Items Count: {{ items.length }}</p>
-<hr>
-<p class="mat-subheading-1">Packs</p>
-<button (click)="onGeneratePack()" mat-raised-button color="primary">
-  Generate Pack
-</button>
-<p class="mat-subheading-1"> Packs Count: {{ packs.length }}</p>
-<hr>
 <app-spinner *ngIf="showSpinner"></app-spinner>

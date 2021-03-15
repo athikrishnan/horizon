@@ -1,7 +1,21 @@
-<mat-card class="container">
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <p class="mat-title">Pack Details</p>
-    <p><a routerLink="create" mat-raised-button color="primary">Create</a></p>
-  </div>
-  <app-pack-list></app-pack-list>
-</mat-card>
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Pack <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>All Packs</div>
+  <mat-nav-list>
+    <a routerLink="/pack/{{pack.id}}/edit" mat-list-item *ngFor="let pack of packs">
+      <div fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ pack.name }}</div>
+        <div>{{ pack.count }} Nos</div>
+      </div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!packs.length">
+      <p mat-line> There are no packs.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -17,7 +17,6 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   showSpinner = true;
   customerForm: FormGroup = this.fb.group({
     id: null,
-    createdAt: null,
     name: [null, Validators.required],
     address: this.fb.group({
       street: null,
@@ -29,6 +28,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     phone: [null, Validators.required],
     email: [null, Validators.email],
   });
+  customer: Customer;
   editId: string;
 
   constructor(
@@ -42,6 +42,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     this.editId = this.route.snapshot.paramMap.get('id');
     if (!!this.editId) {
       this.customerService.getCustomer(this.editId).subscribe((customer: Customer) => {
+        this.customer = customer;
         this.customerForm.patchValue(customer);
         this.showSpinner = false;
         this.ref.detectChanges();
@@ -66,7 +67,12 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     this.showSpinner = true;
-    const customer: Customer = this.customerForm.getRawValue() as Customer;
+    let customer: Customer = this.customerForm.getRawValue() as Customer;
+
+    if (this.customer) {
+      customer = Object.assign(this.customer, customer);
+    }
+
     this.customerService.saveCustomer(customer).then(() => {
       this.showSpinner = false;
       this.router.navigate(['customer/' + customer.id + '/view']);

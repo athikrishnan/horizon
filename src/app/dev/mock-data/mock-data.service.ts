@@ -67,6 +67,7 @@ export class MockDataService {
     const customer: Customer = {
       id: Faker.random.uuid(),
       name,
+      code: 0,
       address: {
         street: Faker.address.streetName(),
         locality: Faker.address.secondaryAddress(),

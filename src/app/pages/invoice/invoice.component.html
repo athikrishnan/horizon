@@ -1,8 +1,8 @@
 <mat-list>
   <mat-list-item>
-    <button (click)="onNewInvoice()" mat-stroked-button color="primary">
+    <a routerLink="new-invoice" mat-stroked-button color="primary">
       New Invoice <mat-icon>add</mat-icon> 
-    </button>
+    </a>
   </mat-list-item>
   <div mat-subheader>Active Invoices (unsaved)</div>
   <mat-list-item *ngIf="!activeInvoices.length">

@@ -27,6 +27,9 @@
     "hosting": {
       "port": 5000
     },
+    "auth": {
+      "port": 5003
+    },
     "ui": {
       "enabled": true
     }

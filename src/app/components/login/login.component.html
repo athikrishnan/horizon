@@ -1,0 +1,7 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="login-container">
+  <p class="mat-display-3">Horizon</p>
+  <button (click)="onLogin()" mat-raised-button color="primary">
+    <mat-icon style="margin-right: 10px;">login</mat-icon> Login
+  </button>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

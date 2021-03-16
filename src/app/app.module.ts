@@ -13,13 +13,16 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
 import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
+import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     PageNotFoundComponent,
-    DeleteConfirmationComponent
+    DeleteConfirmationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,10 @@ import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
     {
       provide: FUNCTIONS_EMULATOR,
       useValue: environment.useEmulators ? ['localhost', 5001] : undefined,
+    },
+    {
+      provide: AUTH_EMULATOR,
+      useValue: environment.useEmulators ? ['localhost', 5003] : undefined,
     }
   ]
 })

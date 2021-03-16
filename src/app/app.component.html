@@ -42,6 +42,9 @@
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/company">
             <mat-icon>business</mat-icon> Company
           </a>
+          <a (click)="sidenav.toggle();onLogout()" mat-list-item>
+            <mat-icon>logout</mat-icon> Logout
+          </a>
         </mat-nav-list>
       </mat-expansion-panel>
     </mat-nav-list>

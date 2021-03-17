@@ -15,15 +15,14 @@
   </mat-list>
 </div>
 <div fxLayout="column" *ngIf="customer">
-  <p class="mat-title">Selected Customer</p>
   <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
-    <span>#{{ customer.code }} {{ customer.name }}</span>
+    <p class="mat-title">#{{ customer.code }} {{ customer.name }}</p>
     <button (click)="onChangeCustomer()" mat-icon-button>
       <mat-icon>highlight_off</mat-icon>
     </button>
   </div>
   <div fxLayout="column" *ngIf="customer.address">
-    <p class="mat-title">Address Information</p>
+    <p class="mat-header-cell">Address</p>
     <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
     <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
     <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
@@ -31,6 +30,6 @@
   </div>
   <br>
   <br>
-  <button mat-raised-button color="primary"> Create Invoice </button>
+  <button (click)="onCreateInvoice(customer)" mat-raised-button color="primary"> Create Invoice </button>
 </div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

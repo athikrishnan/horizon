@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
 
 @Component({
   selector: 'app-new-invoice',
@@ -23,7 +25,9 @@ export class NewInvoiceComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private invoiceService: InvoiceService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.showSpinner = false;
@@ -49,5 +53,11 @@ export class NewInvoiceComponent implements OnInit, OnDestroy {
 
   onChangeCustomer(): void {
     this.customer = undefined;
+  }
+
+  onCreateInvoice(customer: Customer): void {
+    this.invoiceService.createInvoiceForCustomer(customer).then((invoiceId: string) => {
+      this.router.navigate(['invoice/' + invoiceId + '/view']);
+    });
   }
 }

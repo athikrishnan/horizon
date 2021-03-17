@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientSelectionComponent } from './client-selection/client-selection.component';
+import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { InvoiceComponent } from './invoice.component';
 import { NewInvoiceComponent } from './new-invoice/new-invoice.component';
 
@@ -14,8 +14,8 @@ const routes: Routes = [
     component: NewInvoiceComponent
   },
   {
-    path: 'active-invoice/:id/client-selection',
-    component: ClientSelectionComponent
+    path: ':invoiceId/view',
+    component: InvoiceViewComponent
   }
 ];
 

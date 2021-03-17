@@ -48,10 +48,8 @@ export class CustomerService {
   searchCustomersByName(search: string): Observable<Customer[]> {
     if (!isNaN(+search) && !isNaN(parseFloat(search))) {
       const code: number = +(search.padStart(3, '0'));
-      return this.store.collection<Customer>(
-        'customers',
-        ref => ref.where('code', '==', code).limit(1)
-      ).valueChanges().pipe(take(1));
+      return this.store.collection<Customer>('customers', ref => ref.where('code', '==', code).limit(1))
+        .valueChanges().pipe(take(1));
     } else {
       return this.store.collection<Customer>(
         'customers',

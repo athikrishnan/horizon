@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ActiveInvoice } from 'src/app/models/active-invoice.model';
+import { Invoice } from 'src/app/models/invoice.model';
+import { InvoiceService } from 'src/app/services/invoice.service';
 
 @Component({
   selector: 'app-invoice',
@@ -12,14 +13,19 @@ import { ActiveInvoice } from 'src/app/models/active-invoice.model';
 export class InvoiceComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  activeInvoices: ActiveInvoice[] = [];
+  activeInvoices: Invoice[] = [];
 
   constructor(
     private router: Router,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    this.showSpinner = false;
+    this.invoiceService.getActiveInvoices().subscribe((invoices: Invoice[]) => {
+      this.activeInvoices = invoices;
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

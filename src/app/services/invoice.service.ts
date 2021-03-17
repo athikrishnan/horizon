@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { Customer } from '../models/customer.model';
 import { Invoice } from '../models/invoice.model';
 
@@ -10,14 +12,20 @@ export class InvoiceService {
 
   constructor(private store: AngularFirestore) { }
 
-  async createInvoiceForCustomer(customer: Customer): Promise<string> {
-    console.log('creating invoice for: ', customer.name);
+  getActiveInvoices(): Observable<Invoice[]> {
+    return this.store.collection<Invoice>(
+      'invoices',
+      (ref) => ref.where('completedAt', '==', null).orderBy('updatedAt', 'desc')
+    ).valueChanges().pipe(take(1));
+  }
 
+  async createInvoiceForCustomer(customer: Customer): Promise<string> {
     const invoice = {
       id: this.store.createId(),
       customer,
       createdAt: Date.now(),
-      updatedAt: Date.now()
+      updatedAt: Date.now(),
+      completedAt: null
     } as Invoice;
 
     return await this.store.collection<Invoice>('invoices').doc(invoice.id).set(invoice).then(() => {

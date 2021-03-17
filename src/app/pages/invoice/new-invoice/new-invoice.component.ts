@@ -56,6 +56,7 @@ export class NewInvoiceComponent implements OnInit, OnDestroy {
   }
 
   onCreateInvoice(customer: Customer): void {
+    this.showSpinner = true;
     this.invoiceService.createInvoiceForCustomer(customer).then((invoiceId: string) => {
       this.router.navigate(['invoice/' + invoiceId + '/view']);
     });

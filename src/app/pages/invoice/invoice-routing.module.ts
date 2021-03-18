@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientSelectionComponent } from './client-selection/client-selection.component';
+import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { InvoiceComponent } from './invoice.component';
+import { NewInvoiceComponent } from './new-invoice/new-invoice.component';
 
 const routes: Routes = [
   {
@@ -9,8 +10,12 @@ const routes: Routes = [
     component: InvoiceComponent
   },
   {
-    path: 'active-invoice/:id/client-selection',
-    component: ClientSelectionComponent
+    path: 'new-invoice',
+    component: NewInvoiceComponent
+  },
+  {
+    path: ':invoiceId/view',
+    component: InvoiceViewComponent
   }
 ];
 

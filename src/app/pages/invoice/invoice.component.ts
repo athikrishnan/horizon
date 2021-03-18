@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ActiveInvoice } from 'src/app/models/active-invoice.model';
-import { ActiveInvoiceService } from './active-invoice.service';
+import { Invoice } from 'src/app/models/invoice.model';
+import { InvoiceService } from 'src/app/services/invoice.service';
 
 @Component({
   selector: 'app-invoice',
@@ -14,20 +13,19 @@ import { ActiveInvoiceService } from './active-invoice.service';
 export class InvoiceComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  activeInvoices: ActiveInvoice[] = [];
+  activeInvoices: Invoice[] = [];
 
   constructor(
-    private activeInvoiceService: ActiveInvoiceService,
     private router: Router,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
-    this.activeInvoiceService.getActiveinvoices().pipe(takeUntil(this.unsubscribe$))
-      .subscribe((activeInvoices: ActiveInvoice[]) => {
-        this.activeInvoices = activeInvoices;
-        this.showSpinner = false;
-        this.ref.detectChanges();
-      });
+    this.invoiceService.getActiveInvoices().subscribe((invoices: Invoice[]) => {
+      this.activeInvoices = invoices;
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {
@@ -35,14 +33,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onNewInvoice(): void {
-    this.showSpinner = true;
-    this.activeInvoiceService.createNew().then((id: string) => {
-      this.editInvoice(id);
-    });
-  }
-
   editInvoice(id: string): void {
-    this.router.navigate(['invoice/active-invoice/' + id + '/client-selection']);
+    this.router.navigate(['invoice/' + id + '/view']);
   }
 }

@@ -4,7 +4,7 @@ on:
   push:
     branches: [master]
     paths:
-      - '.github/workflows/deploy-functions.yaml' ## This file
+      - '.github/workflows/deploy-functions.yml' ## This file
       - 'functions/**'
 env:
   RESOURCE_DIR: functions

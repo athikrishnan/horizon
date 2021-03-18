@@ -1,4 +1,4 @@
-<div *ngIf="invoice">
+<div *ngIf="invoice" fxLayout="column">
   <mat-expansion-panel [class.mat-elevation-z5]="true">
     <mat-expansion-panel-header>
       Invoice # {{ invoice.code }}
@@ -22,5 +22,23 @@
       <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
     </div>
   </mat-expansion-panel>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p fxFlex="1 0 70%" class="mat-subheading-1">Particulars</p>
+    <button (click)="onAddItem()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
+    </button>
+  </div>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
+      [expanded]="true" [hideToggle]="true">
+      <mat-expansion-panel-header>
+        # {{ i + 1 }}
+      </mat-expansion-panel-header>
+      <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

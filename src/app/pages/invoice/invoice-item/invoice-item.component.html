@@ -1,0 +1,6 @@
+<div *ngIf="isEditMode">
+  <app-invoice-item-form [invoice]="invoice" [item]="item"></app-invoice-item-form>
+</div>
+<div *ngIf="!isEditMode">
+  show details
+</div>

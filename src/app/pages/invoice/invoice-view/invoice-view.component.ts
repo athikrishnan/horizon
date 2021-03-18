@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
+import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 
@@ -54,5 +55,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  onAddItem(): void {
+    this.invoiceService.saveInvoiceItem(this.invoice, {} as InvoiceItem);
   }
 }

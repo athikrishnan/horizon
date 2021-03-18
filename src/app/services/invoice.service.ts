@@ -9,6 +9,7 @@ import { Invoice } from '../models/invoice.model';
   providedIn: 'root'
 })
 export class InvoiceService {
+  private current$: Observable<Invoice>;
 
   constructor(private store: AngularFirestore) { }
 
@@ -31,5 +32,14 @@ export class InvoiceService {
     return await this.store.collection<Invoice>('invoices').doc(invoice.id).set(invoice).then(() => {
       return invoice.id;
     });
+  }
+
+  loadCurrentInvoice(invoiceId: string): Observable<Invoice> {
+    this.current$ = this.store.collection<Invoice>('invoices').doc(invoiceId).valueChanges();
+    return this.current$;
+  }
+
+  deleteInvoice(invoice: Invoice): Promise<void> {
+    return this.store.collection<Invoice>('invoices').doc(invoice.id).delete();
   }
 }

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
@@ -32,12 +32,14 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
-    this.invoiceService.loadCurrentInvoice(invoiceId).pipe(takeUntil(this.unsubscribe$))
-      .subscribe((invoice: Invoice) => {
-        this.invoice = invoice;
-        this.showSpinner = false;
-        this.ref.detectChanges();
-      });
+    this.invoiceService.loadCurrentInvoice(invoiceId).pipe(
+      takeUntil(this.unsubscribe$),
+      distinctUntilChanged((a, b) => a.updatedAt === b.updatedAt)
+    ).subscribe((invoice: Invoice) => {
+      this.invoice = invoice;
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

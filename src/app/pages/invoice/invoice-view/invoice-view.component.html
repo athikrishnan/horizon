@@ -34,8 +34,18 @@
   <mat-accordion [multi]="true">
     <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
       [expanded]="true" [hideToggle]="true">
-      <mat-expansion-panel-header>
-        # {{ i + 1 }}
+      <mat-expansion-panel-header style="padding: 0 5px;">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div fxFlex="20">
+            # {{ i + 1 }}
+          </div>
+          <div fxFlex="60">
+            {{ item.product?.name }} ({{ item.variant?.size }} {{ item.product?.unit }} - {{ item.pack?.name }})
+          </div>
+          <div fxFlex="20">
+            {{ item.price }}
+          </div>
+        </div>
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>
     </mat-expansion-panel>

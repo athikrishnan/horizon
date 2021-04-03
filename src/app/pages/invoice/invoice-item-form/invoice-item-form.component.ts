@@ -106,7 +106,6 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   }
 
   idCompare(a: any, b: any): boolean {
-    console.log(a, b, a.id === b.id);
     return a.id === b.id;
   }
 }

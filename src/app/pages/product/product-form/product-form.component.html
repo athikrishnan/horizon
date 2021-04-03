@@ -10,8 +10,17 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>HSN / SAC</mat-label>
-    <input matInput formControlName="hsn" required autocomplete="none">
+    <mat-select formControlName="slab">
+      <mat-option [value]="slab" *ngIf="slab" style="display: none">
+        {{ slab.name }} ({{ slab.hsn }})
+      </mat-option>
+      <mat-option *ngFor="let item of slabList" [value]="item" [compareWith]="idCompare">
+        {{ item.name }} ({{ item.hsn }})
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="productForm.get('slab').hasError('required')">
+      Required.
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Unit</mat-label>

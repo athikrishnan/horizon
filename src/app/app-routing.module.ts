@@ -52,6 +52,12 @@ const routes: Routes = [
     data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
+    path: 'slab',
+    loadChildren: () => import('./pages/slab/slab.module').then(m => m.SlabModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
     path: 'pack',
     loadChildren: () => import('./pages/pack/pack.module').then(m => m.PackModule),
     canActivate: [AngularFireAuthGuard],

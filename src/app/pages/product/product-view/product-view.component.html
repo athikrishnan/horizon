@@ -19,7 +19,7 @@
   </div>
   <div fxlayout="column">
     <p class="mat-title">Product Information</p>
-    <p>HSN / SAC: {{ product.hsn }}</p>
+    <p>HSN / SAC: {{ product.slab?.hsn }} ({{ product.slab?.name }})</p>
     <p>Measured in: {{ product.unit }}</p>
     <p>
       <mat-divider></mat-divider>

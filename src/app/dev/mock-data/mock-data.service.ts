@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
 import { Customer } from 'src/app/models/customer.model';
+import { Pack } from 'src/app/models/pack.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { KeywordService } from 'src/app/services/keyword.service';
 
@@ -16,6 +17,8 @@ export class MockDataService {
   private suppliers: Supplier[] = [];
   private customerCollection: AngularFirestoreCollection<Customer>;
   customers$: Observable<Customer[]>;
+  private packCollection: AngularFirestoreCollection<Pack>;
+  packs$: Observable<Pack[]>;
 
   constructor(
     private store: AngularFirestore,
@@ -25,6 +28,8 @@ export class MockDataService {
     this.suppliers$ =  this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
     this.customerCollection = this.store.collection<Customer>('customers');
     this.customers$ = this.customerCollection.valueChanges();
+    this.packCollection = this.store.collection<Pack>('packs');
+    this.packs$ = this.packCollection.valueChanges();
   }
 
   generateCompanyDetails(): void {
@@ -83,6 +88,18 @@ export class MockDataService {
     };
 
     this.customerCollection.doc(customer.id).set(customer);
+  }
+
+  generatePacks(): void {
+    const packs: Pack[] = [
+      { id: Faker.random.uuid(), name: 'Dozen', count: 12, createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Box', count: 100, createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Packet', count: 100, createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Half Dozen', count: 6, createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Pack', count: 50, createdAt: Date.now(), updatedAt: Date.now() }
+    ];
+
+    packs.forEach(pack => this.packCollection.doc(pack.id).set(pack));
   }
 
   private getRandom<T>(collection: T[]): T | null {

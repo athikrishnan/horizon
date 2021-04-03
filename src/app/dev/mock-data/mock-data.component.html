@@ -3,16 +3,22 @@
   Generate Company Details
 </button>
 <hr>
-<p class="mat-subheading-1">Suppliers</p>
+<!-- <p class="mat-subheading-1">Suppliers</p>
 <button (click)="onGenerateSupplier()" mat-raised-button color="primary">
   Generate Supplier
 </button>
 <p class="mat-subheading-1"> Suppliers Count: {{ suppliers.length }}</p>
-<hr>
+<hr> -->
 <p class="mat-subheading-1">Customers</p>
 <button (click)="onGenerateCustomer()" mat-raised-button color="primary">
   Generate Customer
 </button>
 <p class="mat-subheading-1"> Customers Count: {{ customers.length }}</p>
+<hr>
+<p class="mat-subheading-1">Packs</p>
+<button (click)="onGeneratePack()" *ngIf="!packs.length" mat-raised-button color="primary">
+  Generate Packs
+</button>
+<p class="mat-subheading-1"> Packs Count: {{ packs.length }}</p>
 <hr>
 <app-spinner *ngIf="showSpinner"></app-spinner>

@@ -1,50 +1,60 @@
 <div *ngIf="invoice" fxLayout="column">
-  <mat-expansion-panel [class.mat-elevation-z5]="true">
-    <mat-expansion-panel-header>
-      Invoice # {{ invoice.code }}
-    </mat-expansion-panel-header>
-    <p> {{ invoice.updatedAt | timeAgo }}</p>
-    <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
-      Delete this Invoice
-    </button>
-  </mat-expansion-panel>
+  <div fxFlex="row" fxLayoutAlign="space-between" fxFlex="100">
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ invoice.code }}
+      </mat-expansion-panel-header>
+      <p> {{ invoice.updatedAt | timeAgo }}</p>
+      <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
+        Delete
+      </button>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ customer.name }}
+      </mat-expansion-panel-header>
+      <p> # {{ customer.code }}</p>
+      <div *ngIf="customer.address">
+        <p class="mat-header-cell">Address</p>
+        <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
+        <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
+        <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
+        <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
+      </div>
+    </mat-expansion-panel>
+  </div>
   <br>
-  <mat-expansion-panel [class.mat-elevation-z5]="true">
-    <mat-expansion-panel-header>
-      Customer : {{ customer.name }}
-    </mat-expansion-panel-header>
-    <p> # {{ customer.code }}</p>
-    <div *ngIf="customer.address">
-      <p class="mat-header-cell">Address</p>
-      <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
-      <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
-      <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
-      <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
-    </div>
-  </mat-expansion-panel>
-  <br>
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <p fxFlex="1 0 70%" class="mat-subheading-1">Particulars</p>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <span fxFlex="1 0 70%">Particulars</span>
     <button (click)="onAddItem()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
     </button>
   </div>
   <br>
-  <mat-divider></mat-divider>
+  <mat-divider ></mat-divider>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding: 0 5px;color: #9a9a9a">
+    <div fxFlex="5">#</div>
+    <div fxFlex="70">Product</div>
+    <div fxFlex="5">Qty</div>
+    <div fxFlex="15" style="text-align: right;">&#8377;</div>
+  </div>
   <br>
   <mat-accordion [multi]="true">
     <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
-      [expanded]="true" [hideToggle]="true">
-      <mat-expansion-panel-header style="padding: 0 5px;">
+      [expanded]="isIncompleteItem(item)" [hideToggle]="true">
+      <mat-expansion-panel-header style="padding: 0 8px;">
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
-          <div fxFlex="20">
-            # {{ i + 1 }}
+          <div fxFlex="5">
+            <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
           </div>
-          <div fxFlex="60">
+          <div fxFlex="70" *ngIf="item.pack">
             {{ item.product?.name }} ({{ item.variant?.size }} {{ item.product?.unit }} - {{ item.pack?.name }})
           </div>
-          <div fxFlex="20">
-            {{ item.price }}
+          <div fxFlex="70" *ngIf="!item.pack">
+            <span style="color: red">Missing Details</span>
           </div>
+          <div fxFlex="5">{{ item.quantity }}</div>
+          <div fxFlex="15" style="text-align: right;">{{ item.price }}</div>
         </div>
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>

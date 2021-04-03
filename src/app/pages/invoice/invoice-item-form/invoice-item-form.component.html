@@ -9,12 +9,15 @@
     </div>
   </ng-container>
   <ng-container *ngIf="!product">
-    <form [formGroup]="searchForm" fxFlex="100">
+    <form [formGroup]="searchForm" fxFlex="100" fxLayout="column">
       <mat-form-field fxFlex="100">
         <input formControlName="search" matInput placeholder="Type product's name here.." name="productSearch"
           autocomplete="new-product-search">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
+      <div fxLayout="row">
+        <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
+      </div>
     </form>
     <mat-nav-list>
       <a (click)="onSelectProduct(product)" mat-list-item *ngFor="let product of results">
@@ -29,8 +32,11 @@
     <input type="hidden" formControlName="product">
     <mat-form-field fxFlex="100">
       <mat-select formControlName="variant">
-        <mat-option *ngFor="let variant of product?.variants" [value]="variant" [compareWith]="idCompare">
+        <mat-option [value]="variant" *ngIf="variant" style="display: none">
           {{ variant.size }} {{ product.unit }}
+        </mat-option>
+        <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
+          {{ item.size }} {{ product.unit }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="invoiceItemForm.get('variant').hasError('required')">
@@ -39,8 +45,11 @@
     </mat-form-field>
     <mat-form-field>
       <mat-select formControlName="pack">
-        <mat-option *ngFor="let pack of packList" [value]="pack" [compareWith]="idCompare">
+        <mat-option [value]="pack" *ngIf="pack" style="display: none">
           {{ pack.name }} ({{ pack.count }} Nos)
+        </mat-option>
+        <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
+          {{ item.name }} ({{ item.count }} Nos)
         </mat-option>
       </mat-select>
       <mat-error *ngIf="invoiceItemForm.get('pack').hasError('required')">
@@ -63,8 +72,9 @@
     </mat-form-field>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
-      <button (click)="onSave()" [disabled]="!invoiceItemForm.dirty || !invoiceItemForm.valid" mat-raised-button
+      <button (click)="onSave()" [disabled]="!invoiceItemForm.valid" mat-raised-button
         color="primary">Save</button>
     </div>
   </form>
 </div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

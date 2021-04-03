@@ -62,4 +62,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   onAddItem(): void {
     this.invoiceService.saveInvoiceItem(this.invoice, {} as InvoiceItem);
   }
+
+  isIncompleteItem(item: InvoiceItem): boolean {
+    return !(!!item && !!item.product && !!item.variant && !!item.pack
+      && !!item.quantity && !!item.price);
+  }
 }

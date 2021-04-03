@@ -1,0 +1,21 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Slab <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>All Slabs</div>
+  <mat-nav-list>
+    <a routerLink="/slab/{{slab.id}}/edit" mat-list-item *ngFor="let slab of slabs">
+      <div fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ slab.name }} ({{ slab.hsn }})</div>
+        <div>{{ slab.cgst }} / {{ slab.sgst }} %</div>
+      </div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!slabs.length">
+      <p mat-line> There are no slabs.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

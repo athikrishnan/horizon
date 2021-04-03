@@ -1,0 +1,47 @@
+<form [formGroup]="slabForm" fxLayout="column" #form="ngForm">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Slab</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required autocomplete="none">
+    <mat-error *ngIf="slabForm.get('name').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>HSN / SAC</mat-label>
+    <input matInput formControlName="hsn" required autocomplete="none">
+    <mat-error *ngIf="slabForm.get('hsn').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>CGST</mat-label>
+    <input matInput formControlName="cgst" type="number" required autocomplete="none">
+    <mat-error *ngIf="slabForm.get('cgst').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>SGST</mat-label>
+    <input matInput formControlName="sgst" type="number" required autocomplete="none">
+    <mat-error *ngIf="slabForm.get('sgst').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
+    <div>
+      <a routerLink="/slab" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!slabForm.dirty || !slabForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!editId" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

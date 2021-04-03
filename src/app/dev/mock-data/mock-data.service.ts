@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
 import { Customer } from 'src/app/models/customer.model';
 import { Pack } from 'src/app/models/pack.model';
+import { Slab } from 'src/app/models/slab.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { KeywordService } from 'src/app/services/keyword.service';
 
@@ -19,17 +20,21 @@ export class MockDataService {
   customers$: Observable<Customer[]>;
   private packCollection: AngularFirestoreCollection<Pack>;
   packs$: Observable<Pack[]>;
+  private slabCollection: AngularFirestoreCollection<Slab>;
+  slabs$: Observable<Slab[]>;
 
   constructor(
     private store: AngularFirestore,
     private keywordService: KeywordService) {
     this.companyCollection = this.store.collection<Company>('companies');
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
-    this.suppliers$ =  this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
+    this.suppliers$ = this.supplierCollection.valueChanges().pipe(tap(all => this.suppliers = all));
     this.customerCollection = this.store.collection<Customer>('customers');
     this.customers$ = this.customerCollection.valueChanges();
     this.packCollection = this.store.collection<Pack>('packs');
     this.packs$ = this.packCollection.valueChanges();
+    this.slabCollection = this.store.collection<Slab>('slabs');
+    this.slabs$ = this.slabCollection.valueChanges();
   }
 
   generateCompanyDetails(): void {
@@ -100,6 +105,19 @@ export class MockDataService {
     ];
 
     packs.forEach(pack => this.packCollection.doc(pack.id).set(pack));
+  }
+
+  generateSlabs(): void {
+    const slabs: Slab[] = [
+      { id: Faker.random.uuid(), name: 'High', hsn: '1234365', cgst: 9, sgst: 9,
+        createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Medium', hsn: '9875465', cgst: 8, sgst: 8,
+        createdAt: Date.now(), updatedAt: Date.now() },
+      { id: Faker.random.uuid(), name: 'Low', hsn: '9893434', cgst: 6, sgst: 6,
+        createdAt: Date.now(), updatedAt: Date.now() }
+    ];
+
+    slabs.forEach(slab => this.slabCollection.doc(slab.id).set(slab));
   }
 
   private getRandom<T>(collection: T[]): T | null {

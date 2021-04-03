@@ -21,4 +21,10 @@
 </button>
 <p class="mat-subheading-1"> Packs Count: {{ packs.length }}</p>
 <hr>
+<p class="mat-subheading-1">Slabs</p>
+<button (click)="onGenerateSlab()" *ngIf="!slabs.length" mat-raised-button color="primary">
+  Generate Slabs
+</button>
+<p class="mat-subheading-1"> Slabs Count: {{ slabs.length }}</p>
+<hr>
 <app-spinner *ngIf="showSpinner"></app-spinner>

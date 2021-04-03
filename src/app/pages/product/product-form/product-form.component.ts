@@ -4,7 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
+import { Slab } from 'src/app/models/slab.model';
 import { ProductService } from 'src/app/services/product.service';
+import { SlabService } from 'src/app/services/slab.service';
 
 @Component({
   selector: 'app-product-form',
@@ -16,7 +18,7 @@ export class ProductFormComponent implements OnInit {
   showSpinner = true;
   productForm: FormGroup = this.fb.group({
     id: null,
-    hsn: null,
+    slab: [null, Validators.required],
     unit: null,
     createdAt: null,
     name: [null, Validators.required]
@@ -27,13 +29,18 @@ export class ProductFormComponent implements OnInit {
     { key: ProductUnit.Litre, value: 'in mls' },
     { key: ProductUnit.Each, value: 'in nos' }
   ];
+  get slab(): Slab {
+    return this.productForm.get('slab').value as Slab;
+  }
+  slabList: Slab[] = [];
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private slabService: SlabService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -46,6 +53,11 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.showSpinner = false;
     }
+
+    this.slabService.getSlabs().subscribe((slabs: Slab[]) => {
+      this.slabList = slabs;
+      this.ref.detectChanges();
+    });
   }
 
   onSave(): void {
@@ -55,5 +67,9 @@ export class ProductFormComponent implements OnInit {
       this.showSpinner = false;
       this.router.navigate(['product/' + product.id + '/view']);
     });
+  }
+
+  idCompare(a: any, b: any): boolean {
+    return a.id === b.id;
   }
 }

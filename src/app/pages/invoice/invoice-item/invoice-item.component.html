@@ -1,0 +1,6 @@
+<div *ngIf="isEditMode">
+  <app-invoice-item-form [invoice]="invoice" [item]="item" (save)="isEditMode = false"></app-invoice-item-form>
+</div>
+<div *ngIf="!isEditMode" fxLayoutAlign="end">
+  <button (click)="isEditMode = true" mat-stroked-button color="primary">Edit</button>
+</div>

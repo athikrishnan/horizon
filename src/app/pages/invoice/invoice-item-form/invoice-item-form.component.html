@@ -1,0 +1,80 @@
+<div fxLayout="column">
+  <ng-container *ngIf="product">
+    <p class="mat-header-cell">Product</p>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <span>{{ product.name }}</span>
+      <button (click)="onChangeProduct()" mat-icon-button>
+        <mat-icon>highlight_off</mat-icon>
+      </button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!product">
+    <form [formGroup]="searchForm" fxFlex="100" fxLayout="column">
+      <mat-form-field fxFlex="100">
+        <input formControlName="search" matInput placeholder="Type product's name here.." name="productSearch"
+          autocomplete="new-product-search">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <div fxLayout="row">
+        <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
+      </div>
+    </form>
+    <mat-nav-list>
+      <a (click)="onSelectProduct(product)" mat-list-item *ngFor="let product of results">
+        {{ product.name }}
+        <mat-divider></mat-divider>
+      </a>
+    </mat-nav-list>
+    <br>
+  </ng-container>
+  <br>
+  <form [formGroup]="invoiceItemForm" *ngIf="product" fxFlex="100" fxLayout="column">
+    <input type="hidden" formControlName="product">
+    <mat-form-field fxFlex="100">
+      <mat-select formControlName="variant">
+        <mat-option [value]="variant" *ngIf="variant" style="display: none">
+          {{ variant.size }} {{ product.unit }}
+        </mat-option>
+        <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
+          {{ item.size }} {{ product.unit }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="invoiceItemForm.get('variant').hasError('required')">
+        Required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select formControlName="pack">
+        <mat-option [value]="pack" *ngIf="pack" style="display: none">
+          {{ pack.name }} ({{ pack.count }} Nos)
+        </mat-option>
+        <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
+          {{ item.name }} ({{ item.count }} Nos)
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="invoiceItemForm.get('pack').hasError('required')">
+        Required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Quantity</mat-label>
+      <input matInput formControlName="quantity" required autocomplete="none">
+      <mat-error *ngIf="invoiceItemForm.get('quantity').hasError('required')">
+        Required.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput formControlName="price" required autocomplete="none">
+      <mat-error *ngIf="invoiceItemForm.get('price').hasError('required')">
+        Required.
+      </mat-error>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
+      <button (click)="onSave()" [disabled]="!invoiceItemForm.valid" mat-raised-button
+        color="primary">Save</button>
+    </div>
+  </form>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

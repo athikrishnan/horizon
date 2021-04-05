@@ -3,9 +3,12 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import * as Faker from 'faker';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Company } from 'src/app/models/company.model';
 import { Customer } from 'src/app/models/customer.model';
 import { Pack } from 'src/app/models/pack.model';
+import { ProductVariant } from 'src/app/models/product-variant.model';
+import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
 import { Supplier } from 'src/app/models/supplier.model';
 import { KeywordService } from 'src/app/services/keyword.service';
@@ -22,6 +25,8 @@ export class MockDataService {
   packs$: Observable<Pack[]>;
   private slabCollection: AngularFirestoreCollection<Slab>;
   slabs$: Observable<Slab[]>;
+  private productCollection: AngularFirestoreCollection<Product>;
+  products$: Observable<Product[]>;
 
   constructor(
     private store: AngularFirestore,
@@ -35,6 +40,8 @@ export class MockDataService {
     this.packs$ = this.packCollection.valueChanges();
     this.slabCollection = this.store.collection<Slab>('slabs');
     this.slabs$ = this.slabCollection.valueChanges();
+    this.productCollection = this.store.collection<Product>('products');
+    this.products$ = this.productCollection.valueChanges();
   }
 
   generateCompanyDetails(): void {
@@ -101,7 +108,7 @@ export class MockDataService {
       { id: Faker.random.uuid(), name: 'Box', count: 100, createdAt: Date.now(), updatedAt: Date.now() },
       { id: Faker.random.uuid(), name: 'Packet', count: 100, createdAt: Date.now(), updatedAt: Date.now() },
       { id: Faker.random.uuid(), name: 'Half Dozen', count: 6, createdAt: Date.now(), updatedAt: Date.now() },
-      { id: Faker.random.uuid(), name: 'Pack', count: 50, createdAt: Date.now(), updatedAt: Date.now() }
+      { id: Faker.random.uuid(), name: 'Single', count: 1, createdAt: Date.now(), updatedAt: Date.now() }
     ];
 
     packs.forEach(pack => this.packCollection.doc(pack.id).set(pack));
@@ -118,6 +125,44 @@ export class MockDataService {
     ];
 
     slabs.forEach(slab => this.slabCollection.doc(slab.id).set(slab));
+  }
+
+  generateProduct(slabs: Slab[], packs: Pack[]): void {
+    const name = Faker.commerce.productName();
+    const product: Product = {
+      id: Faker.random.uuid(),
+      name,
+      slab: this.getRandom<Slab>(slabs),
+      unit: this.getRandom<ProductUnit>([ProductUnit.Grams, ProductUnit.Litre, ProductUnit.Each]),
+      keywords: this.keywordService.generateKeywords(name),
+      variants: [],
+      updatedAt: Date.now(),
+      createdAt: Date.now()
+    } as Product;
+
+    for (let i = 0; i < 3; i++) {
+      const variant: ProductVariant = {
+        id: Faker.random.uuid(),
+        size: Faker.random.number({ min: 1, max: 100}),
+        price: Faker.random.number({ min: 1, max: 100}),
+        quantity: 0,
+        packs: [],
+        updatedAt: Date.now(),
+        createdAt: Date.now()
+      } as ProductVariant;
+
+      for (let j = 0; j < 3; j++) {
+        const pack: Pack = this.getRandom<Pack>(packs);
+
+        if (variant.packs.indexOf(pack) === -1) {
+          variant.packs.push(pack);
+        }
+      }
+
+      product.variants.push(variant);
+    }
+
+    this.productCollection.doc(product.id).set(product);
   }
 
   private getRandom<T>(collection: T[]): T | null {

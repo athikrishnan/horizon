@@ -26,7 +26,7 @@
   <br>
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <span fxFlex="1 0 70%">Particulars</span>
-    <button (click)="onAddItem()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
+    <button (click)="onProductSearchOpen()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
     </button>
   </div>
   <br>
@@ -51,7 +51,7 @@
             {{ item.product?.name }} ({{ item.variant?.size }} {{ item.product?.unit }} - {{ item.pack?.name }})
           </div>
           <div fxFlex="70" *ngIf="!item.pack">
-            <span style="color: red">Missing Details</span>
+            <span style="color: red">{{ item.product?.name }}</span>
           </div>
           <div fxFlex="5">{{ item.quantity }}</div>
           <div fxFlex="15" style="text-align: right;">{{ item.price }}</div>
@@ -61,4 +61,6 @@
     </mat-expansion-panel>
   </mat-accordion>
 </div>
+<app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
+  (productSelect)="onProductSelect($event)"></app-product-search>
 <app-spinner *ngIf="showSpinner"></app-spinner>

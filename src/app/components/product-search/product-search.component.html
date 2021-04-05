@@ -1,0 +1,35 @@
+<div class="product-search-container">
+  <div fxLayout="column" fxFlex="100">
+    <mat-toolbar color="primary" class="app-toolbar">
+      <mat-toolbar-row>
+        <form [formGroup]="searchForm" fxFlex="100" style="margin-top: 10px;">
+          <mat-form-field fxFlex="100" appearance="none">
+            <input formControlName="search" matInput placeholder="Type product's id or name" #search
+              name="productSearch{{ timestamp }}" autocomplete="new-product-search-{{ timestamp }}">
+          </mat-form-field>
+        </form>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-list>
+      <mat-list-item>
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <span fxFlex="1 0 70%">Results</span>
+          <button (click)="onClose()" mat-stroked-button color="primary"> Close
+          </button>
+        </div>
+      </mat-list-item>      
+    </mat-list>
+    <mat-nav-list>
+      <a (click)="onSelectProduct(product)" mat-list-item *ngFor="let product of results">
+        {{ product.name }}
+        <mat-divider></mat-divider>
+      </a>
+      <span class="mat-header-cell header-top-searches">Top Searches</span>
+      <a (click)="onSelectProduct(product)" mat-list-item *ngFor="let product of recents">
+        {{ product.name }}
+        <mat-divider></mat-divider>
+      </a>
+    </mat-nav-list>
+    <br>
+  </div>
+</div>

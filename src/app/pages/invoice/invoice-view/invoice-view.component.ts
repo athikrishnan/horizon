@@ -7,6 +7,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 import { Customer } from 'src/app/models/customer.model';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
+import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 
 @Component({
@@ -18,6 +19,7 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 export class InvoiceViewComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
+  showProductSearch = false;
   invoice: Invoice;
   get customer(): Customer | null {
     return (!this.invoice) ? null : this.invoice.customer;
@@ -59,12 +61,23 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  onAddItem(): void {
-    this.invoiceService.saveInvoiceItem(this.invoice, {} as InvoiceItem);
+  onProductSearchOpen(): void {
+    this.showProductSearch = true;
+  }
+
+  onProductSearchCancel(): void {
+    this.showProductSearch = false;
   }
 
   isIncompleteItem(item: InvoiceItem): boolean {
     return !(!!item && !!item.product && !!item.variant && !!item.pack
       && !!item.quantity && !!item.price);
+  }
+
+  onProductSelect(product: Product): void {
+    this.showProductSearch = false;
+    this.invoiceService.saveInvoiceItem(this.invoice, {
+      product,
+    } as InvoiceItem);
   }
 }

@@ -9,9 +9,18 @@ import { InvoiceViewComponent } from './invoice-view/invoice-view.component';
 import { TimeAgoPipe } from 'src/app/pipes/time-ago.pipe';
 import { InvoiceItemFormComponent } from './invoice-item-form/invoice-item-form.component';
 import { InvoiceItemComponent } from './invoice-item/invoice-item.component';
+import { ProductSearchComponent } from 'src/app/components/product-search/product-search.component';
 
 @NgModule({
-  declarations: [InvoiceComponent, NewInvoiceComponent, InvoiceViewComponent, TimeAgoPipe, InvoiceItemFormComponent, InvoiceItemComponent],
+  declarations: [
+    InvoiceComponent,
+    NewInvoiceComponent,
+    InvoiceViewComponent,
+    TimeAgoPipe,
+    InvoiceItemFormComponent,
+    InvoiceItemComponent,
+    ProductSearchComponent
+  ],
   imports: [
     CommonModule,
     InvoiceRoutingModule,

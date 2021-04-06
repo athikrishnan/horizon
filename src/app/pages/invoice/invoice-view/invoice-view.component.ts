@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +15,8 @@ import { InvoiceService } from 'src/app/services/invoice.service';
   selector: 'app-invoice-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './invoice-view.component.html',
-  styleUrls: ['./invoice-view.component.scss']
+  styleUrls: ['./invoice-view.component.scss'],
+  providers: [DecimalPipe]
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();

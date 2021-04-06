@@ -32,29 +32,29 @@
   <br>
   <mat-divider ></mat-divider>
   <br>
-  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding: 0 5px;color: #9a9a9a">
-    <div fxFlex="5">#</div>
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding:0 24px;color: #9a9a9a">
+    <div fxFlex="8">#</div>
     <div fxFlex="60">Product</div>
-    <div fxFlex="5">Qty</div>
+    <div fxFlex="4">Qty</div>
     <div fxFlex="25" style="text-align: right;">&#8377;</div>
   </div>
   <br>
   <mat-accordion [multi]="true">
     <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
       [expanded]="isIncompleteItem(item)" [hideToggle]="true">
-      <mat-expansion-panel-header style="padding: 0 8px;">
+      <mat-expansion-panel-header>
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
-          <div fxFlex="5">
+          <div fxFlex="8">
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} ({{ item.variant?.size }} {{ item.product?.unit }} - {{ item.pack?.name }})
+            {{ item.product?.name }} <br> ({{ item.variant?.size }} {{ item.product?.unit }} * {{ item.pack?.count }})
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
             <span style="color: red">{{ item.product?.name }}</span>
           </div>
-          <div fxFlex="5">{{ item.quantity }}</div>
-          <div fxFlex="25" style="text-align: right;">{{ item.price }}</div>
+          <div fxFlex="4">{{ item.quantity }}</div>
+          <div fxFlex="25" style="text-align: right;">{{ item.price | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>

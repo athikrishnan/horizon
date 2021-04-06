@@ -93,6 +93,7 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
       this.showSpinner = true;
       let item = this.invoiceItemForm.getRawValue() as InvoiceItem;
       item = Object.assign(this.item, item);
+      item.price = +(item.price.toString().replace(',', ''));
       this.invoiceService.saveInvoiceItem(this.invoice, item).then(() => {
         this.save.emit(true);
         this.showSpinner = false;

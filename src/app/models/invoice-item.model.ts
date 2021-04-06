@@ -9,6 +9,8 @@ export interface InvoiceItem {
   pack: Pack;
   price: number;
   quantity: number;
+  cgst: number;
+  sgst: number;
   createdAt: number;
   updatedAt: number;
 }

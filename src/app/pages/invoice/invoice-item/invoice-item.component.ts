@@ -36,7 +36,6 @@ export class InvoiceItemComponent implements OnInit {
   }
 
   getTaxAmount(): number {
-    if (!this.item.price) { return 0; }
-    return (+this.item.price / 100) * (this.item.product.slab.cgst + this.item.product.slab.sgst);
+    return +(this.item.cgst + this.item.sgst);
   }
 }

@@ -4,6 +4,7 @@ import { Slab } from './slab.model';
 
 export interface Product {
   id: string;
+  code: number;
   name: string;
   slab: Slab;
   unit: ProductUnit;

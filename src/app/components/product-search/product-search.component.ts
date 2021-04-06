@@ -16,6 +16,7 @@ import { ProductSearchService } from 'src/app/services/product-search.service';
 })
 export class ProductSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
+  showSpinner = false;
   @Output() cancel = new EventEmitter<boolean>();
   @Output() productSelect = new EventEmitter<Product>();
   @ViewChild('search') search: ElementRef;
@@ -61,8 +62,15 @@ export class ProductSearchComponent implements OnInit, AfterViewInit, OnDestroy 
     this.cancel.emit(true);
   }
 
-  onSelectProduct(product: Product): void {
-    this.productSelect.emit(product);
+  async onSelectProduct(product: Product, isRecent: boolean = false): Promise<void> {
     this.productSearchService.upVote(product);
+    if (isRecent) {
+      this.showSpinner = true;
+      await this.productSearchService.refreshRecent(product).then((refreshed: Product) => {
+        product = refreshed;
+      });
+    }
+    this.showSpinner = false;
+    this.productSelect.emit(product);
   }
 }

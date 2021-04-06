@@ -38,7 +38,7 @@ export class ProductService {
   }
 
   getRecents(): Observable<Product[]> {
-    return this.store.collection<Product>('products', ref => ref.orderBy('createdAt').limit(5))
+    return this.store.collection<Product>('products', ref => ref.orderBy('createdAt', 'desc').limit(5))
       .valueChanges().pipe(take(1));
   }
 

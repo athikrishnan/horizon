@@ -24,8 +24,8 @@
         {{ product.name }}
         <mat-divider></mat-divider>
       </a>
-      <span class="mat-header-cell header-top-searches">Top Searches</span>
-      <a (click)="onSelectProduct(product)" mat-list-item *ngFor="let product of recents">
+      <span class="mat-header-cell header-top-searches">Recent Searches</span>
+      <a (click)="onSelectProduct(product, true)" mat-list-item *ngFor="let product of recents">
         {{ product.name }}
         <mat-divider></mat-divider>
       </a>
@@ -33,3 +33,4 @@
     <br>
   </div>
 </div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -4,6 +4,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { Product } from '../models/product.model';
 import { SearchResult } from '../models/search-result.model';
+import { ProductService } from './product.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class ProductSearchService {
   results$ = this.results.asObservable();
   private archive: SearchResult<Product>[] = [];
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private productService: ProductService) {
     const archivedItems = localStorage.getItem(this.PRODUCT_SEARCH_ARCHIVE_KEY);
     if (archivedItems) {
       this.archive = JSON.parse(archivedItems);
@@ -33,10 +36,11 @@ export class ProductSearchService {
     products.forEach((product: Product) => {
       const archivedItem = this.archive.find(i => i.result.id === product.id);
       if (archivedItem) {
+        archivedItem.result = product;
         archivedItem.hits++;
         this.archive.splice(this.archive.indexOf(archivedItem), 1, archivedItem);
       } else {
-        this.archive.push({ result: product, hits: 0});
+        this.archive.push({ result: product, hits: 0 });
       }
     });
     this.publishResults();
@@ -56,6 +60,22 @@ export class ProductSearchService {
     const archivedItem = this.archive.find(i => i.result.id === product.id);
     archivedItem.hits++;
     this.archive.splice(this.archive.indexOf(archivedItem), 1, archivedItem);
+    this.publishResults();
+  }
+
+  async refreshRecent(product: Product): Promise<Product> {
+    return await this.productService.getProduct(product.id).toPromise().then((refreshed) => {
+      this.updateArchive(refreshed);
+      return refreshed;
+    });
+  }
+
+  private updateArchive(product: Product): void {
+    const archivedItem = this.archive.find(i => i.result.id === product.id);
+    if (archivedItem) {
+      archivedItem.result = product;
+      this.archive.splice(this.archive.indexOf(archivedItem), 1, archivedItem);
+    }
     this.publishResults();
   }
 }

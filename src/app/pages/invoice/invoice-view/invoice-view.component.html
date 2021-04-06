@@ -34,9 +34,9 @@
   <br>
   <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding: 0 5px;color: #9a9a9a">
     <div fxFlex="5">#</div>
-    <div fxFlex="70">Product</div>
+    <div fxFlex="60">Product</div>
     <div fxFlex="5">Qty</div>
-    <div fxFlex="15" style="text-align: right;">&#8377;</div>
+    <div fxFlex="25" style="text-align: right;">&#8377;</div>
   </div>
   <br>
   <mat-accordion [multi]="true">
@@ -47,14 +47,14 @@
           <div fxFlex="5">
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
           </div>
-          <div fxFlex="70" *ngIf="item.pack">
+          <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
             {{ item.product?.name }} ({{ item.variant?.size }} {{ item.product?.unit }} - {{ item.pack?.name }})
           </div>
-          <div fxFlex="70" *ngIf="!item.pack">
+          <div fxFlex="60" *ngIf="isIncompleteItem(item)">
             <span style="color: red">{{ item.product?.name }}</span>
           </div>
           <div fxFlex="5">{{ item.quantity }}</div>
-          <div fxFlex="15" style="text-align: right;">{{ item.price }}</div>
+          <div fxFlex="25" style="text-align: right;">{{ item.price }}</div>
         </div>
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>

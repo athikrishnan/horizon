@@ -1,8 +1,10 @@
+import { DecimalPipe } from '@angular/common';
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output 
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { Pack } from 'src/app/models/pack.model';
@@ -14,7 +16,8 @@ import { InvoiceService } from 'src/app/services/invoice.service';
   selector: 'app-invoice-item-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './invoice-item-form.component.html',
-  styleUrls: ['./invoice-item-form.component.scss']
+  styleUrls: ['./invoice-item-form.component.scss'],
+  providers: [DecimalPipe]
 })
 export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
@@ -27,7 +30,7 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
     variant: [null, Validators.required],
     pack: [null, Validators.required],
     quantity: [null, Validators.required],
-    price: [null, Validators.required]
+    price: [{ value: null, disabled: true }, Validators.required]
   });
   get product(): Product {
     return this.invoiceItemForm.get('product').value as Product;
@@ -48,9 +51,22 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private ref: ChangeDetectorRef,
-    private invoiceService: InvoiceService) { }
+    private invoiceService: InvoiceService,
+    private decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
+    this.applyDefaults();
+
+    combineLatest([
+      this.invoiceItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
+      this.invoiceItemForm.get('pack').valueChanges.pipe(takeUntil(this.unsubscribe$)),
+      this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
+    ]).subscribe(([variant, pack, quantity]: [ProductVariant, Pack, number]) => {
+      const price = variant.price * pack.count * quantity;
+      this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+      this.ref.detectChanges();
+    });
+
     this.invoiceItemForm.patchValue(this.item);
     this.ref.detectChanges();
   }
@@ -58,6 +74,18 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  private applyDefaults(): void {
+    if (!this.item.variant && this.item.product.variants && this.item.product.variants.length > 0) {
+      this.item.variant = this.item.product.variants[0];
+    }
+
+    if (this.item.variant && !this.item.pack) {
+      if (this.item.variant.packs && this.item.variant.packs.length > 0) {
+        this.item.pack = this.item.variant.packs[0];
+      }
+    }
   }
 
   onSave(): void {
@@ -82,5 +110,10 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
 
   idCompare(a: any, b: any): boolean {
     return a.id === b.id;
+  }
+
+  onCancel(): void {
+    this.save.emit(true);
+    this.ref.detectChanges();
   }
 }

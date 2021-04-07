@@ -15,7 +15,7 @@
       <p>{{ item.product?.slab?.hsn }}</p>
     </div>
   </ng-container>
-  <div fxLayoutAlign="end">
+  <div fxLayoutAlign="end" *ngIf="!invoice.completedAt">
     <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
   </div>
 </div>

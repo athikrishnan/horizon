@@ -6,13 +6,15 @@
       </mat-expansion-panel-header>
       <p>last updated at:</p>
       <p><b>{{ invoice.updatedAt | timeAgo }}</b></p>
-      <form>
-        <mat-checkbox [checked]="!invoice.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
-      </form>
-      <br>
-      <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
-        Delete
-      </button>
+      <ng-container *ngIf="!invoice.completedAt">
+        <form>
+          <mat-checkbox [checked]="!invoice.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
+        </form>
+        <br>
+        <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
+          Delete
+        </button>
+      </ng-container>
     </mat-expansion-panel>
     <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
       <mat-expansion-panel-header>
@@ -84,6 +86,13 @@
       </ng-container>
     </mat-expansion-panel>
   </mat-accordion>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
+    <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
+    <button *ngIf="invoice.completedAt" mat-raised-button color="primary">Print</button>
+  </div>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>

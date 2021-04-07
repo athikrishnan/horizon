@@ -11,7 +11,7 @@ import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
-import { InvoiceTaxStateService } from '../invoice-tax-state.service';
+import { InvoiceStateService } from '../invoice-state.service';
 
 @Component({
   selector: 'app-invoice-view',
@@ -35,13 +35,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     private invoiceService: InvoiceService,
     private dialog: MatDialog,
     private router: Router,
-    private invoiceTaxStateService: InvoiceTaxStateService) { }
+    private invoiceStateService: InvoiceStateService) { }
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
     this.invoiceService.loadCurrentInvoice(invoiceId).pipe(
       takeUntil(this.unsubscribe$),
-      distinctUntilChanged((a, b) => a.updatedAt === b.updatedAt)
+      distinctUntilChanged((a, b) => a && b && a.updatedAt === b.updatedAt)
     ).subscribe((invoice: Invoice) => {
       this.invoice = invoice;
       this.showSpinner = false;
@@ -87,9 +87,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   onTaxStateChange(event: MatCheckboxChange): void {
+    console.log(event.checked);
     this.showSpinner = true;
     this.invoice.hideTax = !event.checked;
-    this.invoiceTaxStateService.taxStateChanged(this.invoice);
+    this.invoiceStateService.stateChanged(this.invoice);
     this.invoiceService.saveInvoice(this.invoice).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
@@ -102,5 +103,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   getTaxAmount(): number {
     return this.invoice.totalCgst + this.invoice.totalSgst;
+  }
+
+  onComplete(): void {
+    this.showSpinner = true;
+    this.invoice.completedAt = Date.now();
+    this.invoiceStateService.stateChanged(this.invoice);
+    this.invoiceService.saveInvoice(this.invoice).then(() => {
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 }

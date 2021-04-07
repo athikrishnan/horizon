@@ -10,7 +10,7 @@ import { TimeAgoPipe } from 'src/app/pipes/time-ago.pipe';
 import { InvoiceItemFormComponent } from './invoice-item-form/invoice-item-form.component';
 import { InvoiceItemComponent } from './invoice-item/invoice-item.component';
 import { ProductSearchComponent } from 'src/app/components/product-search/product-search.component';
-import { InvoiceTaxStateService } from './invoice-tax-state.service';
+import { InvoiceStateService } from './invoice-state.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { InvoiceTaxStateService } from './invoice-tax-state.service';
     ReactiveFormsModule
   ],
   providers: [
-    InvoiceTaxStateService
+    InvoiceStateService
   ]
 })
 export class InvoiceModule { }

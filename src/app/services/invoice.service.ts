@@ -30,7 +30,8 @@ export class InvoiceService {
       customer,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      completedAt: null
+      completedAt: null,
+      hideTax: false
     } as Invoice;
 
     return await this.store.collection<Invoice>('invoices').doc(invoice.id).set(invoice).then(() => {
@@ -45,6 +46,7 @@ export class InvoiceService {
       invoice.id = this.store.createId();
       invoice.createdAt = Date.now();
     }
+
     invoice.updatedAt = Date.now();
     invoice.total = invoice.items.reduce((a, b) => a + (b.price || 0), 0);
     invoice.totalCgst = invoice.items.reduce((a, b) => a + (b.cgst || 0), 0);

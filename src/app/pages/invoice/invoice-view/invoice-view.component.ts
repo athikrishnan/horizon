@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -10,6 +11,7 @@ import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { InvoiceTaxStateService } from '../invoice-tax-state.service';
 
 @Component({
   selector: 'app-invoice-view',
@@ -32,7 +34,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private invoiceService: InvoiceService,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private invoiceTaxStateService: InvoiceTaxStateService) { }
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
@@ -81,5 +84,15 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceService.saveInvoiceItem(this.invoice, {
       product,
     } as InvoiceItem);
+  }
+
+  onTaxStateChange(event: MatCheckboxChange): void {
+    this.showSpinner = true;
+    this.invoice.hideTax = !event.checked;
+    this.invoiceTaxStateService.taxStateChanged(this.invoice);
+    this.invoiceService.saveInvoice(this.invoice).then(() => {
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 }

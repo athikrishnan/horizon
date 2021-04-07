@@ -1,7 +1,10 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
+import { InvoiceTaxStateService } from '../invoice-tax-state.service';
 
 @Component({
   selector: 'app-invoice-item',
@@ -11,18 +14,25 @@ import { Invoice } from 'src/app/models/invoice.model';
   providers: [DecimalPipe]
 })
 export class InvoiceItemComponent implements OnInit {
+  private unsubscribe$ = new Subject<void>();
   @Input() item: InvoiceItem;
   @Input() invoice: Invoice;
   isEditMode = false;
 
-
-  constructor(private ref: ChangeDetectorRef) { }
+  constructor(
+    private ref: ChangeDetectorRef,
+    private invoiceTaxStateService: InvoiceTaxStateService) { }
 
   ngOnInit(): void {
     if (this.isIncompleteItem()) {
       this.isEditMode = true;
       this.ref.detectChanges();
     }
+
+    this.invoiceTaxStateService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((invoice: Invoice) => {
+      this.invoice.hideTax = invoice.hideTax;
+      this.ref.detectChanges();
+    });
   }
 
   isIncompleteItem(): boolean {

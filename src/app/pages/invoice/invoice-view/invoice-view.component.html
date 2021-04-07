@@ -4,7 +4,12 @@
       <mat-expansion-panel-header>
         {{ invoice.code }}
       </mat-expansion-panel-header>
-      <p> {{ invoice.updatedAt | timeAgo }}</p>
+      <p>last updated at:</p>
+      <p><b>{{ invoice.updatedAt | timeAgo }}</b></p>
+      <form>
+        <mat-checkbox [checked]="!invoice.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
+      </form>
+      <br>
       <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
         Delete
       </button>
@@ -42,7 +47,7 @@
   <mat-accordion [multi]="true">
     <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
       [expanded]="isIncompleteItem(item)" [hideToggle]="true">
-      <mat-expansion-panel-header>
+      <mat-expansion-panel-header class="invoice-item-header">
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
           <div fxFlex="8">
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            

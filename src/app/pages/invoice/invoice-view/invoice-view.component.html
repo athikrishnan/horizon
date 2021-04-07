@@ -64,6 +64,25 @@
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>
     </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="invoice.items?.length" [class.mat-elevation-z1]="true"
+      [expanded]="false" [hideToggle]="true">
+      <mat-expansion-panel-header class="invoice-item-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div>Total</div>
+          <div style="text-align: right;">{{ (invoice.total || 0) | number : '.2-2' }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="!invoice.hideTax">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Taxable Amount</p>
+          <p>{{ getTaxableAmount() | number : '.2-2' }}</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Total Tax</p>
+          <p>{{ getTaxAmount() | number : '.2-2' }}</p>
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
   </mat-accordion>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"

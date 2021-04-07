@@ -8,6 +8,9 @@ export interface Invoice {
   customer: Customer;
   createdAt: number;
   items: InvoiceItem[];
+  total: number;
+  totalCgst: number;
+  totalSgst: number;
   updatedAt: number;
   completedAt: number;
 }

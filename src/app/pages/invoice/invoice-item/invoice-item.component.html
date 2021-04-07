@@ -15,5 +15,7 @@
       <p>{{ item.product?.slab?.hsn }}</p>
     </div>
   </ng-container>
-  <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
+  <div fxLayoutAlign="end">
+    <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
+  </div>
 </div>

@@ -95,4 +95,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
     });
   }
+
+  getTaxableAmount(): number {
+    return this.invoice.total - this.getTaxAmount();
+  }
+
+  getTaxAmount(): number {
+    return this.invoice.totalCgst + this.invoice.totalSgst;
+  }
 }

@@ -20,7 +20,7 @@ exports.onInvoiceCreate = functions.firestore
     const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
     const customerCode = invoiceDoc.customer.code.toString() + '-';
     const code: string = statDoc.count.toString();
-    invoiceDoc.code = date + customerCode + code;
+    invoiceDoc.code = 'I' + date + customerCode + code;
 
     await admin.firestore().collection('stats').doc('invoices').set(statDoc);
     await admin.firestore().collection('invoices').doc(invoiceDoc.id).set(invoiceDoc);

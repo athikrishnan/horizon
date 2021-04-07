@@ -46,6 +46,9 @@ export class InvoiceService {
       invoice.createdAt = Date.now();
     }
     invoice.updatedAt = Date.now();
+    invoice.total = invoice.items.reduce((a, b) => a + (b.price || 0), 0);
+    invoice.totalCgst = invoice.items.reduce((a, b) => a + (b.cgst || 0), 0);
+    invoice.totalSgst = invoice.items.reduce((a, b) => a + (b.sgst || 0), 0);
 
     return await this.invoiceCollection.doc(invoice.id).set(invoice).then(() => {
       return invoice.id;

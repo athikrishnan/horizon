@@ -1,4 +1,6 @@
+import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -9,12 +11,14 @@ import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { InvoiceStateService } from '../invoice-state.service';
 
 @Component({
   selector: 'app-invoice-view',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './invoice-view.component.html',
-  styleUrls: ['./invoice-view.component.scss']
+  styleUrls: ['./invoice-view.component.scss'],
+  providers: [DecimalPipe]
 })
 export class InvoiceViewComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
@@ -30,13 +34,14 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private invoiceService: InvoiceService,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private invoiceStateService: InvoiceStateService) { }
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
     this.invoiceService.loadCurrentInvoice(invoiceId).pipe(
       takeUntil(this.unsubscribe$),
-      distinctUntilChanged((a, b) => a.updatedAt === b.updatedAt)
+      distinctUntilChanged((a, b) => a && b && a.updatedAt === b.updatedAt)
     ).subscribe((invoice: Invoice) => {
       this.invoice = invoice;
       this.showSpinner = false;
@@ -79,5 +84,34 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceService.saveInvoiceItem(this.invoice, {
       product,
     } as InvoiceItem);
+  }
+
+  onTaxStateChange(event: MatCheckboxChange): void {
+    console.log(event.checked);
+    this.showSpinner = true;
+    this.invoice.hideTax = !event.checked;
+    this.invoiceStateService.stateChanged(this.invoice);
+    this.invoiceService.saveInvoice(this.invoice).then(() => {
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
+  }
+
+  getTaxableAmount(): number {
+    return this.invoice.total - this.getTaxAmount();
+  }
+
+  getTaxAmount(): number {
+    return this.invoice.totalCgst + this.invoice.totalSgst;
+  }
+
+  onComplete(): void {
+    this.showSpinner = true;
+    this.invoice.completedAt = Date.now();
+    this.invoiceStateService.stateChanged(this.invoice);
+    this.invoiceService.saveInvoice(this.invoice).then(() => {
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 }

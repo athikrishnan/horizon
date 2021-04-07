@@ -1,7 +1,8 @@
 <div fxLayout="column">
   <form [formGroup]="invoiceItemForm" *ngIf="product" fxFlex="100" fxLayout="column">
     <input type="hidden" formControlName="product">
-    <mat-form-field fxFlex="100">
+    <div fxLayout="row" fxLayoutAlign="space-between">      
+    <mat-form-field fxFlex="48">
       <mat-select formControlName="variant" placeholder="Variant">
         <mat-option [value]="variant" *ngIf="variant" style="display: none">
           {{ variant.size }} {{ product.unit }}
@@ -14,7 +15,7 @@
         Required.
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field fxFlex="48">
       <mat-select formControlName="pack" placeholder="Pack">
         <mat-option [value]="pack" *ngIf="pack" style="display: none">
           {{ pack.name }} ({{ pack.count }} Nos)
@@ -27,23 +28,30 @@
         Required.
       </mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <mat-label>Quantity</mat-label>
-      <input matInput formControlName="quantity" required autocomplete="none">
-      <mat-error *ngIf="invoiceItemForm.get('quantity').hasError('required')">
-        Required.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Price</mat-label>
-      <input matInput formControlName="price" required autocomplete="none">
-      <mat-error *ngIf="invoiceItemForm.get('price').hasError('required')">
-        Required.
-      </mat-error>
-    </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field fxFlex="48">
+        <mat-label>Quantity</mat-label>
+        <input matInput formControlName="quantity" required type="number" autocomplete="new-quantity"
+          name="new-quantity">
+        <mat-error *ngIf="invoiceItemForm.get('quantity').hasError('required')">
+          Required.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="48">
+        <mat-label>Price</mat-label>
+        <input matInput formControlName="price" required type="tel" autocomplete="new-price" name="new-price">
+        <span matSuffix>&#8377;</span>
+        <mat-error *ngIf="invoiceItemForm.get('price').hasError('required')">
+          Required.
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
-      <button (click)="onSave()" [disabled]="!invoiceItemForm.valid" mat-raised-button
+      <button (click)="onCancel()" *ngIf="!invoiceItemForm.dirty" mat-raised-button
+        color="secondary">Cancel</button>
+      <button (click)="onSave()" *ngIf="invoiceItemForm.dirty" [disabled]="!invoiceItemForm.valid" mat-raised-button
         color="primary">Save</button>
     </div>
   </form>

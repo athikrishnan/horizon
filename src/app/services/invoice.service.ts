@@ -30,7 +30,8 @@ export class InvoiceService {
       customer,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      completedAt: null
+      completedAt: null,
+      hideTax: false
     } as Invoice;
 
     return await this.store.collection<Invoice>('invoices').doc(invoice.id).set(invoice).then(() => {
@@ -45,7 +46,11 @@ export class InvoiceService {
       invoice.id = this.store.createId();
       invoice.createdAt = Date.now();
     }
+
     invoice.updatedAt = Date.now();
+    invoice.total = invoice.items.reduce((a, b) => a + (b.price || 0), 0);
+    invoice.totalCgst = invoice.items.reduce((a, b) => a + (b.cgst || 0), 0);
+    invoice.totalSgst = invoice.items.reduce((a, b) => a + (b.sgst || 0), 0);
 
     return await this.invoiceCollection.doc(invoice.id).set(invoice).then(() => {
       return invoice.id;
@@ -68,6 +73,7 @@ export class InvoiceService {
 
     const isNew: boolean = !item.id;
     item.updatedAt = Date.now();
+    item = this.applyTax(item);
     if (isNew) {
       item.id = this.store.createId();
       item.createdAt = Date.now();
@@ -78,6 +84,12 @@ export class InvoiceService {
     }
 
     return await this.saveInvoice(invoice);
+  }
+
+  private applyTax(item: InvoiceItem): InvoiceItem {
+    item.cgst = (item.product) ? (item.price / 100) * item.product.slab.cgst : 0;
+    item.sgst = (item.product) ? (item.price / 100) * item.product.slab.sgst : 0;
+    return item;
   }
 
   async deleteInvoiceItem(invoice: Invoice, item: InvoiceItem): Promise<string> {

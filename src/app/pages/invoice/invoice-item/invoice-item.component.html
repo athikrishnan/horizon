@@ -1,6 +1,21 @@
 <div *ngIf="isEditMode">
   <app-invoice-item-form [invoice]="invoice" [item]="item" (save)="isEditMode = false"></app-invoice-item-form>
 </div>
-<div *ngIf="!isEditMode" fxLayoutAlign="end">
-  <button (click)="isEditMode = true" mat-stroked-button color="primary">Edit</button>
+<div *ngIf="!isEditMode && item.product" fxLayout="column">
+  <ng-container *ngIf="!invoice.hideTax">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <p>Taxable Amount</p>
+      <p>{{ getTaxableAmount() | number : '.2-2' }}</p>
+    </div><div fxLayout="row" fxLayoutAlign="space-between">
+      <p>Tax ({{ item.product?.slab?.cgst }} / {{ item.product?.slab?.sgst }} %)</p>
+      <p>{{ getTaxAmount() | number : '.2-2' }}</p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <p>HSN ({{ item.product?.slab?.name }})</p>
+      <p>{{ item.product?.slab?.hsn }}</p>
+    </div>
+  </ng-container>
+  <div fxLayoutAlign="end" *ngIf="!invoice.completedAt">
+    <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
+  </div>
 </div>

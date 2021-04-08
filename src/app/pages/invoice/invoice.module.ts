@@ -11,6 +11,8 @@ import { InvoiceItemFormComponent } from './invoice-item-form/invoice-item-form.
 import { InvoiceItemComponent } from './invoice-item/invoice-item.component';
 import { ProductSearchComponent } from 'src/app/components/product-search/product-search.component';
 import { InvoiceStateService } from './invoice-state.service';
+import { InvoicePrintComponent } from './invoice-print/invoice-print.component';
+import { InvoicePrintService } from './invoice-print.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { InvoiceStateService } from './invoice-state.service';
     TimeAgoPipe,
     InvoiceItemFormComponent,
     InvoiceItemComponent,
-    ProductSearchComponent
+    ProductSearchComponent,
+    InvoicePrintComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +33,8 @@ import { InvoiceStateService } from './invoice-state.service';
     ReactiveFormsModule
   ],
   providers: [
-    InvoiceStateService
+    InvoiceStateService,
+    InvoicePrintService
   ]
 })
 export class InvoiceModule { }

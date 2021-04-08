@@ -91,9 +91,10 @@
   <br>
   <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
     <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
-    <button *ngIf="invoice.completedAt" mat-raised-button color="primary">Print</button>
+    <button (click)="onPrint()" *ngIf="invoice.completedAt" mat-raised-button color="primary">Print</button>
   </div>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>
+<app-invoice-print [invoice]="invoice" #print style="display: none;"></app-invoice-print>
 <app-spinner *ngIf="showSpinner"></app-spinner>

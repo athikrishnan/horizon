@@ -1,5 +1,7 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild
+} from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +13,8 @@ import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { InvoicePrintService } from '../invoice-print.service';
+import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
 import { InvoiceStateService } from '../invoice-state.service';
 
 @Component({
@@ -28,6 +32,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   get customer(): Customer | null {
     return (!this.invoice) ? null : this.invoice.customer;
   }
+  @ViewChild(InvoicePrintComponent) print: InvoicePrintComponent;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -35,7 +40,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     private invoiceService: InvoiceService,
     private dialog: MatDialog,
     private router: Router,
-    private invoiceStateService: InvoiceStateService) { }
+    private invoiceStateService: InvoiceStateService,
+    private invoicePrintService: InvoicePrintService) { }
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
@@ -113,5 +119,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  onPrint(): void {
+    this.invoicePrintService.print(this.invoice, this.print.content.nativeElement.innerHTML);
   }
 }

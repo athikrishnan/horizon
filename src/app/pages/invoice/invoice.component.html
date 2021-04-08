@@ -14,8 +14,13 @@
     <mat-divider></mat-divider>
   </mat-list-item>
   <div mat-subheader>Recently Completed</div>
-  <mat-list-item>
+  <mat-list-item *ngIf="!recentInvoices.length">
     <p mat-line> There are no recent invoices.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let invoice of recentInvoices">
+    <p mat-line (click)="editInvoice(invoice.id)"> {{ invoice.customer.name }} (#{{ invoice.customer.code }})</p>
+    <p mat-line> {{ invoice.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
   </mat-list-item>
 </mat-list>
 <app-spinner *ngIf="showSpinner"></app-spinner>

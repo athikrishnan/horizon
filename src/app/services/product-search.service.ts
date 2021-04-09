@@ -65,7 +65,7 @@ export class ProductSearchService {
 
   async refreshRecent(product: Product): Promise<Product> {
     return await this.productService.getProduct(product.id).toPromise().then((refreshed) => {
-      this.updateArchive(refreshed);
+      (refreshed) ? this.updateArchive(refreshed) : this.removeArchive(product);
       return refreshed;
     });
   }
@@ -76,6 +76,12 @@ export class ProductSearchService {
       archivedItem.result = product;
       this.archive.splice(this.archive.indexOf(archivedItem), 1, archivedItem);
     }
+    this.publishResults();
+  }
+
+  private removeArchive(product: Product): void {
+    const archivedItem = this.archive.find(i => i.result.id === product.id);
+    this.archive.splice(this.archive.indexOf(archivedItem), 1);
     this.publishResults();
   }
 }

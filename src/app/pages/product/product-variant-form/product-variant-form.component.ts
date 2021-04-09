@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { combineLatest } from 'rxjs';
@@ -24,11 +25,15 @@ export class ProductVariantFormComponent implements OnInit {
     size: [null, Validators.required],
     price: [null, Validators.required],
     quantity: 0,
-    packs: null,
+    packs: this.fb.array([], Validators.required),
   });
+  get packArray(): FormArray {
+    return this.productVariantForm.get('packs') as FormArray;
+  }
   product: Product;
   variant: ProductVariant;
-  packs: Pack[];
+  packs: Pack[] = [];
+  packList: Pack[];
 
   constructor(
     private fb: FormBuilder,
@@ -47,14 +52,34 @@ export class ProductVariantFormComponent implements OnInit {
       this.packService.getPacks()
     ]).subscribe(([product, packs]: [Product, Pack[]]) => {
       this.product = product;
-      this.packs = packs;
+      this.packList = packs;
       if (!!variantId) {
         this.variant = product.variants.find(i => i.id === variantId);
         this.productVariantForm.patchValue(this.variant);
+        this.packs = this.variant.packs;
       }
       this.showSpinner = false;
+      this.buildPackForm();
       this.ref.detectChanges();
     });
+  }
+
+  buildPackForm(): void {
+    this.packArray.clear();
+
+    this.packs.forEach(() => {
+      this.packArray.push(this.fb.group({
+        id: [null, Validators.required],
+        name: [null, Validators.required],
+        count: [null, Validators.required],
+        price: [null, Validators.required],
+        createdAt: [null, Validators.required],
+        updatedAt: [null, Validators.required]
+      }));
+    });
+
+    this.packArray.patchValue(this.packs);
+    this.ref.detectChanges();
   }
 
   onSave(): void {
@@ -77,7 +102,18 @@ export class ProductVariantFormComponent implements OnInit {
     });
   }
 
-  comparePack(a: Pack, b: Pack): boolean {
-    return a && b && a.id === b.id;
+  isSelectedPack(pack: Pack): boolean {
+    return !!this.packs.find((item: Pack) => item.id === pack.id);
+  }
+
+  onPackToggle($event: MatCheckboxChange, pack: Pack): void {
+    if ($event.checked) {
+      pack.price = +this.productVariantForm.get('price').value * pack.count;
+      this.packs.push(pack);
+    } else {
+      this.packs.splice(this.packs.findIndex(i => i.id === pack.id), 1);
+    }
+    this.buildPackForm();
+    this.productVariantForm.markAsDirty();
   }
 }

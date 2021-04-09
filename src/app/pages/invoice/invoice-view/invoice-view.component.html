@@ -43,7 +43,7 @@
     <div fxFlex="8">#</div>
     <div fxFlex="60">Product</div>
     <div fxFlex="4">Qty</div>
-    <div fxFlex="25" style="text-align: right;">&#8377;</div>
+    <div fxFlex="25" style="text-align: right;">Amount</div>
   </div>
   <br>
   <mat-accordion [multi]="true">
@@ -55,13 +55,13 @@
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} <br> ({{ item.variant?.size }} {{ item.product?.unit }} * {{ item.pack?.count }})
+            {{ item.product?.name }} <br> ({{ item.variant?.size }}{{ item.product?.unit }} * {{ item.pack?.count }})
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
             <span style="color: red">{{ item.product?.name }}</span>
           </div>
           <div fxFlex="4">{{ item.quantity }}</div>
-          <div fxFlex="25" style="text-align: right;">{{ item.price | number : '.2-2' }}</div>
+          <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
       <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>
@@ -71,17 +71,17 @@
       <mat-expansion-panel-header class="invoice-item-header">
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
           <div>Total</div>
-          <div style="text-align: right;">{{ (invoice.total || 0) | number : '.2-2' }}</div>
+          <div style="text-align: right;">&#8377;{{ (invoice.total || 0) | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
       <ng-container *ngIf="!invoice.hideTax">
         <div fxLayout="row" fxLayoutAlign="space-between">
           <p>Taxable Amount</p>
-          <p>{{ getTaxableAmount() | number : '.2-2' }}</p>
+          <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
         </div>
         <div fxLayout="row" fxLayoutAlign="space-between">
           <p>Total Tax</p>
-          <p>{{ getTaxAmount() | number : '.2-2' }}</p>
+          <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
         </div>
       </ng-container>
     </mat-expansion-panel>

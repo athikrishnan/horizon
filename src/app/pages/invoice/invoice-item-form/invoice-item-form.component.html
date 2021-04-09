@@ -18,10 +18,10 @@
     <mat-form-field fxFlex="48">
       <mat-select formControlName="pack" placeholder="Pack">
         <mat-option [value]="pack" *ngIf="pack" style="display: none">
-          {{ pack.name }} ({{ pack.count }} Nos)
+          {{ pack.name }} of {{ pack.count }} for &#8377; {{ pack.price }}
         </mat-option>
         <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
-          {{ item.name }} ({{ item.count }} Nos)
+          {{ item.name }} of {{ item.count }} for &#8377; {{ item.price }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="invoiceItemForm.get('pack').hasError('required')">

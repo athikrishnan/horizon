@@ -155,6 +155,7 @@ export class MockDataService {
         const pack: Pack = this.getRandom<Pack>(packs);
 
         if (variant.packs.indexOf(pack) === -1) {
+          pack.price = pack.count * variant.price;
           variant.packs.push(pack);
         }
       }

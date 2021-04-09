@@ -43,7 +43,7 @@ export class ProductSearchComponent implements OnInit, AfterViewInit, OnDestroy 
       });
     });
 
-    this.productSearchService.results$.pipe(take(1)).subscribe((products: Product[]) => {
+    this.productSearchService.results$.pipe(takeUntil(this.unsubscribe$)).subscribe((products: Product[]) => {
       this.recents = products;
       this.ref.detectChanges();
     });
@@ -63,14 +63,17 @@ export class ProductSearchComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   async onSelectProduct(product: Product, isRecent: boolean = false): Promise<void> {
-    this.productSearchService.upVote(product);
+    this.showSpinner = true;
     if (isRecent) {
-      this.showSpinner = true;
       await this.productSearchService.refreshRecent(product).then((refreshed: Product) => {
         product = refreshed;
       });
     }
+    if (product) {
+      this.productSearchService.upVote(product);
+      this.productSelect.emit(product);
+    }
     this.showSpinner = false;
-    this.productSelect.emit(product);
+    this.ref.detectChanges();
   }
 }

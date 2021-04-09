@@ -24,6 +24,13 @@ export class InvoiceService {
     ).valueChanges().pipe(take(1));
   }
 
+  getRecentInvoices(): Observable<Invoice[]> {
+    return this.store.collection<Invoice>(
+      'invoices',
+      (ref) => ref.where('completedAt', '!=', null).orderBy('completedAt', 'desc').limit(5)
+    ).valueChanges().pipe(take(1));
+  }
+
   async createInvoiceForCustomer(customer: Customer): Promise<string> {
     const invoice = {
       id: this.store.createId(),

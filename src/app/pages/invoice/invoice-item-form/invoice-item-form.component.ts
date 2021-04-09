@@ -58,11 +58,10 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
     this.applyDefaults();
 
     combineLatest([
-      this.invoiceItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
       this.invoiceItemForm.get('pack').valueChanges.pipe(takeUntil(this.unsubscribe$)),
       this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([variant, pack, quantity]: [ProductVariant, Pack, number]) => {
-      const price = variant.price * pack.count * quantity;
+    ]).subscribe(([pack, quantity]: [Pack, number]) => {
+      const price = pack.price * quantity;
       this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
       this.ref.detectChanges();
     });

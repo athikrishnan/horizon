@@ -1,0 +1,73 @@
+<div *ngIf="invoice && company" #content>
+  <div class="no-print">
+    <br>
+    <button onclick="window.close()" class="no-print">Close Window</button>
+    <br>
+  </div>
+  <div class="page" size="A4">
+    <div style="display: flex; justify-content: space-between;">
+      <div class="left-50">
+        <div class="dark-header">Sold By:</div>
+        <div class="content">
+          <p class="company-name"><b>{{ company.name }}</b></p>
+          <span> {{ company.address.street }}, {{ company.address.city }}</span> <br>
+          <span> {{ company.address.state }} - {{ company.address.zip }}</span> <br>
+          <span> Email: {{ company.email }}</span> <br>
+          <span> Gst No: {{ company.gstin }} </span> <br>
+          <span><b>State Code:</b> 33</span> <br>
+        </div>
+      </div>
+      <div class="right-50">
+        <div class="dark-header">Billed To:</div>
+        <div class="content">
+          <span> {{ invoice.customer.name }}</span> <br>
+          <span> {{ invoice.customer.address.street }}, {{ invoice.customer.address.city }}</span> <br>
+          <span> {{ invoice.customer.address.state }} - {{ invoice.customer.address.zip }}</span> <br>
+          <span><b>State Code:</b> 33</span> <br>
+        </div>
+        <br>
+        <div class="light-header">Invoice Details:</div>
+        <div class="content">
+          <span>Invoice Number: {{ invoice.code }}</span> <br>
+          <span>Invoice Date: {{ invoice.completedAt }}</span> <br>
+          <span>Place of Supply: {{ invoice.customer.address.state }}</span>
+        </div>
+      </div>
+    </div>    
+    <div class="particulars">
+      <div class="dark-header">
+        <div style="display: flex; justify-content: space-between;">
+          <div style="width: 5%;">#</div>
+          <div style="width: 40%;">Descriptin</div>
+          <div style="width: 5%;">Qty</div>
+          <div style="width: 20%;">Taxable Amount</div>
+          <div style="width: 10%;">Tax</div>
+          <div style="width: 20%;">Amount</div>
+        </div>
+      </div>
+      <div class="particular" *ngFor="let item of invoice.items; let i = index">
+        <div style="width: 5%;">{{ (i + 1).toString().padStart(2, '0') }}</div>
+        <div style="width: 40%;">{{ item.product.name }}</div>
+        <div style="width: 5%;">{{ item.quantity }}</div>
+        <div style="width: 20%;">{{ item.price - (item.sgst + item.cgst) }}</div>
+        <div style="width: 10%;">{{ item.sgst + item.cgst }}</div>
+        <div style="width: 20%;">{{ item.price }}</div>
+      </div>
+      <div class="particular">
+        <div style="width: 45%;">Total</div>
+        <div style="width: 5%;">10</div>
+        <div style="width: 20%;"></div>
+        <div style="width: 10%;"></div>
+        <div style="width: 20%;"> {{ invoice.total }}</div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+      <div class="left-50">
+        <div class="dark-header">Invoice Amount in words</div>
+      </div>
+      <div class="right-50">
+        <div class="dark-header">Amounts</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -19,6 +19,6 @@ export class InvoicePrintService {
     printWindow.document.write('</body></html>');
     printWindow.document.close();
     printWindow.focus();
-    // printWindow.print();
+    printWindow.print();
   }
 }

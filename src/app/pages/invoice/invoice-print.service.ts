@@ -9,7 +9,7 @@ export class InvoicePrintService {
   print(invoice: Invoice, contents: string): void {
     const printWindow = window.open('', 'horizon_invoice_print');
     if (invoice.hideTax) {
-      printWindow.document.write('<html><head><title> Invoice' + invoice.code + '</title>');
+      printWindow.document.write('<html><head><title> Invoice ' + invoice.code + '</title>');
     } else {
       printWindow.document.write('<html><head><title> Tax Invoice - ' + invoice.code + '</title>');
     }

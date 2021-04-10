@@ -93,7 +93,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   onTaxStateChange(event: MatCheckboxChange): void {
-    console.log(event.checked);
     this.showSpinner = true;
     this.invoice.hideTax = !event.checked;
     this.invoiceStateService.stateChanged(this.invoice);

@@ -18,6 +18,9 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
   @ViewChild('content') content: ElementRef;
   @ViewChild('particulars') particulars: ElementRef;
   company: Company;
+  get isTaxInvoice(): boolean {
+    return !this.invoice.hideTax;
+  }
 
   constructor(
     private companyService: CompanyService,

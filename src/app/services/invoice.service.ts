@@ -47,6 +47,9 @@ export class InvoiceService {
   }
 
   async saveInvoice(invoice: Invoice): Promise<string> {
+    if (!invoice.items) {
+      invoice.items = [];
+    }
     const isNew: boolean = !invoice.id;
 
     if (isNew) {

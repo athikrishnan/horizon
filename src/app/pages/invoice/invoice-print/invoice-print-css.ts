@@ -6,10 +6,8 @@ body {
 div[size="A4"] {
   background: white;
   width: 21cm;
-  height: 29.7cm;
   display: block;
   margin: 0 auto;
-  border: 1px solid black;
 }
 @media print {
   body, div[size="A4"] {
@@ -20,18 +18,26 @@ div[size="A4"] {
     display: none !important;
   }
 }
+.close-button {
+  background-color: #e7e7e7;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 10px;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
 .left-50, .right-50 {
   width: 50%;
   border: 1px solid black;
   border-top: none;
   height: 56mm;
 }
-.left-50 {
-  border-left: none;
-}
 .right-50 {
   border-left: none;
-  border-right: none;
 }
 .company-name {
   text-transform: uppercase;
@@ -49,14 +55,28 @@ div[size="A4"] {
   background-color: #545454;
   color: white;
 }
-.particulars {
-  height: 185mm;
-}
-.particular {
+.totals {
   display: flex;
   justify-content: space-between;
+  page-break-inside: avoid;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
   padding: 1mm;
-  min-height: fit-content;
-  margin: 6px 0;
+}
+th, td {
+  text-align: right;
+}
+th.align-left, td.align-left {
+  text-align: left;
+}
+.amount-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 2px;
+}
+.bb-1 {
+  border-bottom: 1px solid black;
 }
 `;

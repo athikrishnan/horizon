@@ -21,20 +21,18 @@ div[size="A4"] {
 .close-button {
   background-color: #e7e7e7;
   border: none;
-  color: white;
+  color: black;
   padding: 8px 16px;
   margin: 10px;
-  color: black;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 32px;
+  width: 90%;
 }
 .left-50, .right-50 {
   width: 50%;
   border: 1px solid black;
-  border-top: none;
-  height: 56mm;
 }
 .right-50 {
   border-left: none;

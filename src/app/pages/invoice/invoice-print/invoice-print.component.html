@@ -1,7 +1,9 @@
 <div *ngIf="invoice && company" #content>
   <div class="no-print" size="A4">
     <div style="display: flex; justify-content: center;">
-      <button onclick="window.close()" class="no-print close-button">Close Print Invoice</button>
+      <button onclick="window.close()" class="no-print close-button">
+        Click here to close print window
+      </button>
     </div>
   </div>
   <div class="page" size="A4">
@@ -25,7 +27,6 @@
           <span> {{ invoice.customer.address.state }} - {{ invoice.customer.address.zip }}</span> <br>
           <span><b>State Code:</b> 33</span> <br>
         </div>
-        <br>
         <div class="light-header">Invoice Details:</div>
         <div class="content">
           <span>Invoice Number: {{ invoice.code }}</span> <br>

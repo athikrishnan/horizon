@@ -96,5 +96,5 @@
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>
-<app-invoice-print [invoice]="invoice" #print style="display: none;"></app-invoice-print>
+<app-invoice-print [invoice]="invoice" *ngIf="invoice?.completedAt" #print style="display: none;"></app-invoice-print>
 <app-spinner *ngIf="showSpinner"></app-spinner>

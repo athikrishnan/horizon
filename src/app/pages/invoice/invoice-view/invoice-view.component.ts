@@ -113,10 +113,11 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   onComplete(): void {
     this.showSpinner = true;
     this.invoice.completedAt = Date.now();
+    this.ref.detectChanges();
     this.invoiceStateService.stateChanged(this.invoice);
     this.invoiceService.saveInvoice(this.invoice).then(() => {
-      this.showSpinner = false;
       this.ref.detectChanges();
+      this.showSpinner = false;
     });
   }
 

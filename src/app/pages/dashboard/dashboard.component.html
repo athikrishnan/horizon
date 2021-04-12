@@ -1,0 +1,16 @@
+<div fxLayoutAlign="end" fxFlex="100">
+  <button mat-mini-fab color="accent" [matMenuTriggerFor]="menu">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<mat-menu #menu="matMenu">
+  <a mat-menu-item routerLink="invoice/new-invoice">
+    <mat-icon>receipt</mat-icon>
+    <span>Invoice</span>
+  </a>
+  <a mat-menu-item routerLink="product/create">
+    <mat-icon>shopping_cart</mat-icon>
+    <span>Product</span>
+  </a>
+</mat-menu>

@@ -4,6 +4,9 @@
   <mat-sidenav #sidenav mode="over" class="app-sidenav">
     <mat-nav-list>
       <div mat-subheader>Menu</div>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </a>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>
           Sale

@@ -3,6 +3,9 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="over" class="app-sidenav">
     <mat-nav-list>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/profile">
+        <mat-icon>face</mat-icon> {{ user?.displayName }}
+      </a>
       <div mat-subheader>Menu</div>
       <a (click)="sidenav.toggle()" mat-list-item routerLink="/">
         <mat-icon>dashboard</mat-icon> Dashboard

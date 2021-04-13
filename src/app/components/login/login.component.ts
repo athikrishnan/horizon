@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import firebase from 'firebase/app';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -13,7 +12,7 @@ export class LoginComponent implements OnInit {
   showSpinner = true;
 
   constructor(
-    private auth: AngularFireAuth,
+    private authService: AuthService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -22,7 +21,7 @@ export class LoginComponent implements OnInit {
 
   onLogin(): void {
     this.showSpinner = true;
-    this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(() => {
+    this.authService.login().then(() => {
       this.router.navigate(['']);
     }).catch(() => this.showSpinner = false);
   }

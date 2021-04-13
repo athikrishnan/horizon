@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { ProfileService } from './profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,25 +10,34 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class ProfileComponent implements OnInit {
   showSpinner = true;
   user: User;
+  profileForm: FormGroup = this.fb.group({
+    displayName: [null, Validators.required]
+  });
 
   constructor(
     private ref: ChangeDetectorRef,
-    private authService: AuthService) { }
+    private profileService: ProfileService,
+    private fb: FormBuilder) { }
 
-  ngOnInit(): void {
-    this.authService.user$.pipe(takeUntil(this.unsubscribe$)).subscribe((user: User) => {
+  async ngOnInit(): Promise<void> {
+    await this.profileService.getProfile().then((user: User) => {
       this.user = user;
+      this.profileForm.patchValue(this.user);
       this.showSpinner = false;
       this.ref.detectChanges();
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  onSave(): void {
+    this.showSpinner = true;
+    let user: User = this.profileForm.getRawValue() as User;
+    user = Object.assign(this.user, user);
+    this.profileService.updateProfile(user).then(() => {
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 }

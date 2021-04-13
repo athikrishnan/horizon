@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
@@ -17,7 +16,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private auth: AngularFireAuth,
     private authService: AuthService) {
     this.router.events.subscribe((event: RouterEvent): void => {
       if (event instanceof RouteConfigLoadStart) {
@@ -30,17 +28,13 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.onAuthStateChanged((user: User) => {
-      if (user) {
-        this.user = user;
-        this.authService.setUser(user);
-      }
+    this.authService.user$.subscribe((user: User) => {
+      this.user = user;
     });
   }
 
-  onLogout(): void {
-    this.auth.signOut().then(() => {
-      this.router.navigate(['login']);
-    });
+  async onLogout(): Promise<void> {
+    await this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

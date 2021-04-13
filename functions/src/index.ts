@@ -1,6 +1,10 @@
 import * as admin from 'firebase-admin';
 admin.initializeApp();
 
+// auth
+const onAuthCreate = require('./auth/on-auth-create.function');
+exports.onAuthCreate = onAuthCreate.onAuthCreate;
+
 // customer
 const onCustomerCreate = require('./customer/on-customer-create.function');
 exports.onCustomerCreate = onCustomerCreate.onCustomerCreate;

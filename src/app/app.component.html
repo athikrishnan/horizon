@@ -2,8 +2,11 @@
 
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav mode="over" class="app-sidenav">
-    <mat-nav-list>
+    <mat-nav-list dense>
       <div mat-subheader>Menu</div>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </a>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>
           Sale
@@ -38,6 +41,9 @@
         </mat-nav-list>
       </mat-expansion-panel>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <a (click)="sidenav.toggle()" mat-list-item routerLink="/profile">
+          <mat-icon>face</mat-icon> {{ user?.displayName }}
+        </a>
         <mat-expansion-panel-header>
           Account
         </mat-expansion-panel-header>

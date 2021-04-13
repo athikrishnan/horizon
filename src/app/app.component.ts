@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 import { User } from './models/user.model';
@@ -9,7 +9,7 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   showSpinner = true;
   asyncLoadCount = 0;
   title = 'horizon';
@@ -27,7 +27,9 @@ export class AppComponent {
       }
       this.showSpinner = !!this.asyncLoadCount;
     });
+  }
 
+  ngOnInit(): void {
     this.auth.onAuthStateChanged((user: User) => {
       if (user) {
         this.user = user;

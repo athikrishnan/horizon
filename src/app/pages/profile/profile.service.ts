@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ProfileService {
   constructor(
     private store: AngularFirestore,
     private authService: AuthService) {}
 
-  async getProfile(): Promise<User> {
+  getProfile(): Observable<User> {
     const uid = this.authService.authId;
-    const docRef = await this.store.collection<User>('users').doc(uid).get().toPromise();
-
-    if (docRef.exists) {
-      return docRef.data();
-    } else {
-      const user: User = await this.authService.user$.toPromise();
-      await this.store.collection<User>('users').doc(uid).set(user);
-      return user;
-    }
+    return this.store.collection<User>('users').doc(uid).valueChanges().pipe(take(1));
   }
 
   updateProfile(user: User): Promise<void> {

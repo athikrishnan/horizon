@@ -22,8 +22,8 @@ export class ProfileComponent implements OnInit {
     private profileService: ProfileService,
     private fb: FormBuilder) { }
 
-  async ngOnInit(): Promise<void> {
-    await this.profileService.getProfile().then((user: User) => {
+  ngOnInit(): void {
+    this.profileService.getProfile().subscribe((user: User) => {
       this.user = user;
       this.profileForm.patchValue(this.user);
       this.showSpinner = false;

@@ -1,0 +1,40 @@
+<form [formGroup]="expenseForm" fxLayout="column" #form="ngForm">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Pack</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Expense Type</mat-label>
+    <input matInput formControlName="type" required autocomplete="none">
+    <mat-error *ngIf="expenseForm.get('type').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Amount</mat-label>
+    <input matInput formControlName="amount" type="tel" required autocomplete="none">
+    <mat-error *ngIf="expenseForm.get('amount').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Date</mat-label>
+    <input matInput formControlName="date" type="date" required autocomplete="none">
+    <mat-error *ngIf="expenseForm.get('date').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
+    <div>
+      <a routerLink="/expense" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" [disabled]="!expenseForm.dirty || !expenseForm.valid" mat-raised-button
+      color="primary">Save</button>
+  </div>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!editId" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

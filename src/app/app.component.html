@@ -17,6 +17,16 @@
           </a>
         </mat-nav-list>
       </mat-expansion-panel>
+      <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+          Purchase
+        </mat-expansion-panel-header>
+        <mat-nav-list dense>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/expense">
+            <mat-icon>paid</mat-icon> Expense
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
       <div mat-subheader>Settings</div>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>

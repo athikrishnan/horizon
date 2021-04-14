@@ -70,6 +70,12 @@ const routes: Routes = [
     data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
+    path: 'expense',
+    loadChildren: () => import('./pages/expense/expense.module').then(m => m.ExpenseModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
     path: 'mock-data',
     loadChildren: () => import('./dev/mock-data/mock-data.module').then(m => m.MockDataModule),
     canActivate: [AngularFireAuthGuard],

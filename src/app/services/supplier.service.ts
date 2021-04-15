@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Supplier } from 'src/app/models/supplier.model';
+import { take } from 'rxjs/operators';
+import { Supplier } from '../models/supplier.model';
+import { KeywordService } from './keyword.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupplierService {
   private supplierCollection: AngularFirestoreCollection<Supplier>;
-  suppliers$: Observable<Supplier[]>;
 
-  constructor(private store: AngularFirestore) {
-    this.supplierCollection = this.store.collection('suppliers');
-    this.suppliers$ = this.supplierCollection.valueChanges();
+  constructor(
+    private store: AngularFirestore,
+    private keywordService: KeywordService) {
+    this.supplierCollection = this.store.collection<Supplier>('suppliers');
   }
 
-  saveSupplier(supplier: Supplier): Promise<void> {
+  async saveSupplier(supplier: Supplier): Promise<string> {
     const isNew: boolean = !supplier.id;
 
     if (isNew) {
@@ -23,11 +25,36 @@ export class SupplierService {
       supplier.createdAt = Date.now();
     }
     supplier.updatedAt = Date.now();
+    supplier.keywords = this.keywordService.generateKeywords(supplier.name);
 
-    return this.supplierCollection.doc(supplier.id).set(supplier);
+    return await this.supplierCollection.doc(supplier.id).set(supplier).then(() => {
+      return supplier.id;
+    });
   }
 
-  deleteSupplier(supplier: Supplier): void {
-    this.supplierCollection.doc(supplier.id).delete();
+  getSupplier(id: string): Observable<Supplier> {
+    return this.supplierCollection.doc(id).valueChanges().pipe(take(1));
+  }
+
+  getRecents(): Observable<Supplier[]> {
+    return this.store.collection<Supplier>('suppliers', ref => ref.orderBy('createdAt').limit(5))
+      .valueChanges().pipe(take(1));
+  }
+
+  deleteSupplier(supplier: Supplier): Promise<void> {
+    return this.supplierCollection.doc(supplier.id).delete();
+  }
+
+  searchSuppliersByName(search: string): Observable<Supplier[]> {
+    if (!isNaN(+search) && !isNaN(parseFloat(search))) {
+      const code: number = +(search.padStart(3, '0'));
+      return this.store.collection<Supplier>('suppliers', ref => ref.where('code', '==', code).limit(1))
+        .valueChanges().pipe(take(1));
+    } else {
+      return this.store.collection<Supplier>(
+        'suppliers',
+        ref => ref.where('keywords', 'array-contains', search.toLowerCase()).limit(5)
+      ).valueChanges().pipe(take(1));
+    }
   }
 }

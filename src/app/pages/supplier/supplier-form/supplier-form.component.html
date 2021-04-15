@@ -1,29 +1,27 @@
-<mat-card class="container">
-  <p class="mat-title"> Create new Supplier</p>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <form fxFlex="48" [formGroup]="supplierForm" fxLayout="column">
-      <input formControlName="id" type="hidden">
-      <mat-form-field appearance="outline">
-        <mat-label>Name</mat-label>
-        <input formControlName="name" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Location</mat-label>
-        <input formControlName="location" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Phone</mat-label>
-        <input formControlName="phone" matInput>
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput>
-      </mat-form-field>
-      <div fxLayout="row" fxLayoutAlign="space-between">
-        <button (click)="onCancel()" mat-button color="primary">All Suppliers</button>
-        <button (click)="onSave()" mat-raised-button color="primary">Save</button>
-      </div>
-    </form>
+<form fxFlex="100" [formGroup]="supplierForm" fxLayout="column">
+  <input formControlName="id" type="hidden">
+  <p class="mat-subheading-1">Supplier</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input formControlName="name" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Location</mat-label>
+    <input formControlName="location" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input formControlName="phone" matInput>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input formControlName="email" matInput>
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <a routerLink="/supplier" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" mat-raised-button color="primary">Save</button>
   </div>
-</mat-card>
+</form>
 <app-spinner *ngIf="showSpinner"></app-spinner>

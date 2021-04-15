@@ -1,7 +1,36 @@
-<mat-card class="container">
-  <div fxLayout="row" fxLayoutAlign="space-between">
-    <p class="mat-title">Supplier Details</p>
-    <p><a routerLink="create" mat-raised-button color="primary">Create</a></p>
-  </div>
-  <app-supplier-list></app-supplier-list>
-</mat-card>
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Supplier <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Find Supplier</div>
+  <mat-list>
+    <mat-list-item>
+      <form [formGroup]="searchForm" fxFlex="100">
+        <mat-form-field appearance="outline" fxFlex="100">
+          <input formControlName="search" matInput placeholder="Type supplier's id or name" 
+            name="supplierSearch" autocomplete="new-supplier-search">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </form>
+    </mat-list-item>
+  </mat-list>
+  <mat-nav-list>
+    <a routerLink="/supplier/{{supplier.id}}/edit" mat-list-item *ngFor="let supplier of results">
+      {{ supplier.name }}
+      <mat-divider></mat-divider>
+    </a>
+  </mat-nav-list>
+  <div mat-subheader>Recently Added</div>
+  <mat-nav-list>
+    <a routerLink="/supplier/{{supplier.id}}/edit" mat-list-item *ngFor="let supplier of recents">
+      {{ supplier.name }}
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!recents.length">
+      <p mat-line> There are no suppliers.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

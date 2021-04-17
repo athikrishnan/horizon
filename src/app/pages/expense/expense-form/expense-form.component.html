@@ -8,16 +8,12 @@
         {{ item.value }}
       </mat-option>
     </mat-select>
-    <mat-error *ngIf="expenseForm.get('type').hasError('required')">
-      Required.
-    </mat-error>
+    <mat-error>Required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline" *ngIf="expenseForm.get('type').value === ExpenseType.Other">
     <mat-label>Other Expense is</mat-label>
     <input matInput formControlName="other" autocomplete="none">
-    <mat-error *ngIf="expenseForm.get('other').hasError('required')">
-      Required.
-    </mat-error>
+    <mat-error>Required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Amount</mat-label>
@@ -31,9 +27,7 @@
     <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="expenseForm.get('date').hasError('required')">
-      Required.
-    </mat-error>
+    <mat-error>Required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Comments if Any</mat-label>

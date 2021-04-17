@@ -67,11 +67,11 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     }
 
     this.expenseForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: ExpenseType) => {
+      this.expenseForm.get('other').setValidators(null);
       if (type === ExpenseType.Other) {
         this.expenseForm.get('other').setValidators(Validators.required);
-      } else {
-        this.expenseForm.get('other').setValidators(null);
       }
+      this.expenseForm.get('other').updateValueAndValidity();
     });
   }
 

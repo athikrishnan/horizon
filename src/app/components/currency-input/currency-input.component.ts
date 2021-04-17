@@ -1,10 +1,9 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { DecimalPipe } from '@angular/common';
-import { Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self, ViewChild } from '@angular/core';
 import {
-  AbstractControl, ControlValueAccessor, FormBuilder, FormGroup,
-  NgControl, ValidationErrors, Validator
+  ControlValueAccessor, FormBuilder, FormGroup, NgControl
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
@@ -39,7 +38,7 @@ import { takeUntil } from 'rxjs/operators';
   ],
 })
 export class CurrencyInputComponent implements
-  MatFormFieldControl<number>, OnDestroy, ControlValueAccessor, Validator {
+  MatFormFieldControl<number>, OnDestroy, ControlValueAccessor, OnInit {
   static nextId = 0;
   private unsubscribe$ = new Subject<void>();
   currencyForm: FormGroup = this.fb.group({
@@ -101,7 +100,9 @@ export class CurrencyInputComponent implements
   }
   private _disabled = false;
 
-  errorState = false; // TODO
+  get errorState(): boolean {
+    return this.currencyForm.touched && !this.currencyForm.valid;
+  }
 
   controlType = 'app-currency-input';
   autofilled?: boolean;
@@ -130,6 +131,11 @@ export class CurrencyInputComponent implements
     });
   }
 
+  ngOnInit(): void {
+    const validators = this.ngControl.control.validator;
+    this.currencyForm.get('amount').setValidators(validators ? validators : null);
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -152,14 +158,6 @@ export class CurrencyInputComponent implements
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
-
-  validate(control: AbstractControl): ValidationErrors {
-    if (+control.value <= 0) {
-      return { required: true };
-    }
-  }
-
-  registerOnValidatorChange?(fn: () => void): void { }
 
   focus(): void {
     this.amountField.nativeElement.focus();

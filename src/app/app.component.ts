@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   showSpinner = true;
+  showAuthSpinner = true;
   asyncLoadCount = 0;
   title = 'horizon';
   user: User;
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.authService.user$.subscribe((user: User) => {
       this.user = user;
+      this.showAuthSpinner = false;
     });
   }
 

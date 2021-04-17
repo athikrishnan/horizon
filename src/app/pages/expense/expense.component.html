@@ -1,0 +1,21 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Expense <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Recent Expenses</div>
+  <mat-nav-list>
+    <a routerLink="/expense/{{expense.id}}/edit" mat-list-item *ngFor="let expense of expenses">
+      <div fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ expense.type }}</div>
+        <div>&#8377;{{ expense.amount }}</div>
+      </div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!expenses.length">
+      <p mat-line> There are no expenses.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

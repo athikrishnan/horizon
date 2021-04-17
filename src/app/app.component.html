@@ -17,6 +17,16 @@
           </a>
         </mat-nav-list>
       </mat-expansion-panel>
+      <mat-expansion-panel [class.mat-elevation-z0]="true">
+        <mat-expansion-panel-header>
+          Purchase
+        </mat-expansion-panel-header>
+        <mat-nav-list dense>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/expense">
+            <mat-icon>paid</mat-icon> Expense
+          </a>
+        </mat-nav-list>
+      </mat-expansion-panel>
       <div mat-subheader>Settings</div>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>
@@ -26,9 +36,9 @@
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/customer">
             <mat-icon>account_box</mat-icon> Customers
           </a>
-          <!-- <a (click)="sidenav.toggle()" mat-list-item routerLink="/supplier">
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/supplier">
             <mat-icon>local_shipping</mat-icon> Suppliers
-          </a> -->
+          </a>
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/product">
             <mat-icon>shopping_cart</mat-icon> Products
           </a>
@@ -67,3 +77,4 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <app-spinner *ngIf="showSpinner"></app-spinner>
+<app-spinner *ngIf="!showSpinner && showAuthSpinner"></app-spinner>

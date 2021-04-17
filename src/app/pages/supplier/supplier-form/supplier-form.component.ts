@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from '../../../services/supplier.service';
 
@@ -22,6 +22,7 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
     phone: [''],
     email: ['']
   });
+  supplier: Supplier;
   editId: string;
 
   constructor(
@@ -34,8 +35,8 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
     if (!!this.editId) {
-      this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
-        const supplier: Supplier = suppliers.find(item => item.id === this.editId);
+      this.supplierService.getSupplier(this.editId).subscribe((supplier: Supplier) => {
+        this.supplier = supplier;
         this.supplierForm.patchValue(supplier);
         this.showSpinner = false;
         this.ref.detectChanges();
@@ -43,6 +44,14 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
     } else {
       this.showSpinner = false;
     }
+
+    this.supplierForm.get('email').valueChanges.pipe(
+      takeUntil(this.unsubscribe$),
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.supplierForm.get('email').markAsTouched();
+    });
   }
 
   ngOnDestroy(): void {
@@ -50,16 +59,20 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onCancel(): void {
-    this.router.navigate(['supplier']);
-  }
-
   onSave(): void {
-    const supplier: Supplier = this.supplierForm.getRawValue();
+    this.showSpinner = true;
+    let supplier: Supplier = this.supplierForm.getRawValue() as Supplier;
+
+    if (this.supplier) {
+      supplier = Object.assign(this.supplier, supplier);
+    }
+
     this.supplierService.saveSupplier(supplier).then(() => {
+      this.showSpinner = false;
       if (!this.editId) {
-        this.supplierForm.reset();
+        this.router.navigate(['supplier']);
       }
+      this.ref.detectChanges();
     });
   }
 }

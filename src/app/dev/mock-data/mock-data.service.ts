@@ -66,12 +66,15 @@ export class MockDataService {
   }
 
   generateSupplier(): void {
+    const name = Faker.name.firstName();
     const supplier: Supplier = {
       id: Faker.random.uuid(),
-      name: Faker.company.companyName(),
+      name,
+      code: 0,
       location: Faker.address.city(),
       phone: Faker.phone.phoneNumber(),
       email: Faker.internet.email(),
+      keywords: this.keywordService.generateKeywords(name),
       createdAt: Date.now(),
       updatedAt: Date.now()
     };

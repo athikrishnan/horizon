@@ -5,13 +5,11 @@ import { SupplierRoutingModule } from './supplier-routing.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SupplierFormComponent } from './supplier-form/supplier-form.component';
-import { SupplierListComponent } from './supplier-list/supplier-list.component';
 
 @NgModule({
   declarations: [
     SupplierComponent,
     SupplierFormComponent,
-    SupplierListComponent
   ],
   imports: [
     CommonModule,

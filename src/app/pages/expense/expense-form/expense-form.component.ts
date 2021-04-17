@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { KeyValue } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
+import { ExpenseType } from 'src/app/enums/expense-type.enum';
 import { Expense } from 'src/app/models/expense.model';
 import { ExpenseService } from 'src/app/services/expense.service';
 
@@ -14,16 +16,26 @@ import { ExpenseService } from 'src/app/services/expense.service';
 })
 export class ExpenseFormComponent implements OnInit {
   showSpinner = true;
+  expenseTypeList: KeyValue<ExpenseType, string>[] = [
+    { key: ExpenseType.Fuel, value: 'Fuel' },
+    { key: ExpenseType.Travel, value: 'Travel' },
+    { key: ExpenseType.Other, value: 'Other' }
+  ];
   expenseForm: FormGroup = this.fb.group({
     id: null,
     createdAt: null,
-    type: [null, Validators.required],
+    type: [this.expenseTypeList[0].value, Validators.required],
+    other: null,
     amount: [null, Validators.required],
-    date: [null, Validators.required]
+    date: [new Date(), Validators.required],
+    comments: null
   });
   @ViewChild('form') form: any;
+  @ViewChild('amount') amountField: ElementRef;
   editId: string;
   expense: Expense;
+  ExpenseType = ExpenseType;
+  today = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -39,12 +51,24 @@ export class ExpenseFormComponent implements OnInit {
       this.expenseService.getExpense(this.editId).subscribe((expense: Expense) => {
         this.expense = expense;
         this.expenseForm.patchValue(expense);
+        this.expenseForm.get('date').patchValue(expense.date.toDate());
         this.showSpinner = false;
         this.ref.detectChanges();
       });
     } else {
+      setTimeout(() => {
+        this.amountField.nativeElement.focus();
+      }, 0);
       this.showSpinner = false;
     }
+
+    this.expenseForm.get('type').valueChanges.subscribe((type: ExpenseType) => {
+      if (type === ExpenseType.Other) {
+        this.expenseForm.get('other').setValidators(Validators.required);
+      } else {
+        this.expenseForm.get('other').setValidators(null);
+      }
+    });
   }
 
   onSave(): void {

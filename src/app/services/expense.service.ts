@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Expense } from 'src/app/models/expense.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ import { Expense } from 'src/app/models/expense.model';
 export class ExpenseService {
   private expenseCollection: AngularFirestoreCollection<Expense>;
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private auth: AuthService) {
     this.expenseCollection = this.store.collection<Expense>('expenses');
   }
 
@@ -24,11 +27,11 @@ export class ExpenseService {
   }
 
   saveExpense(expense: Expense): Promise<void> {
-    console.log(expense);
     const isNew: boolean = !expense.id;
 
     if (isNew) {
       expense.id = this.store.createId();
+      expense.createdBy = this.auth.authUser;
       expense.createdAt = Date.now();
     }
     expense.updatedAt = Date.now();

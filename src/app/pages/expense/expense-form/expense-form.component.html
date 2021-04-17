@@ -3,25 +3,41 @@
   <input formControlName="createdAt" type="hidden">
   <p class="mat-subheading-1">Pack</p>
   <mat-form-field appearance="outline">
-    <mat-label>Expense Type</mat-label>
-    <input matInput formControlName="type" required autocomplete="none">
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let item of expenseTypeList" [value]="item.key">
+        {{ item.value }}
+      </mat-option>
+    </mat-select>
     <mat-error *ngIf="expenseForm.get('type').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" *ngIf="expenseForm.get('type').value === ExpenseType.Other">
+    <mat-label>Other Expense is</mat-label>
+    <input matInput formControlName="other" autocomplete="none">
+    <mat-error *ngIf="expenseForm.get('other').hasError('required')">
       Required.
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Amount</mat-label>
-    <input matInput formControlName="amount" type="tel" required autocomplete="none">
+    <input matInput formControlName="amount" type="tel" required autocomplete="none" #amount>
     <mat-error *ngIf="expenseForm.get('amount').hasError('required')">
       Required.
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Date</mat-label>
-    <input matInput formControlName="date" type="date" required autocomplete="none">
+    <mat-label>Paid On</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
     <mat-error *ngIf="expenseForm.get('date').hasError('required')">
       Required.
     </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Comments if Any</mat-label>
+    <input matInput formControlName="comments" autocomplete="none">
   </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
     <div>

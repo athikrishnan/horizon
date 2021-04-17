@@ -5,6 +5,8 @@ import { ExpenseFormComponent } from './expense-form/expense-form.component';
 import { ExpenseRoutingModule } from './expense-routing.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [ExpenseComponent, ExpenseFormComponent],
@@ -13,7 +15,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ExpenseRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+  ],
+  providers: [
+    MatDatepickerModule,
+    MatNativeDateModule
   ]
 })
 export class ExpenseModule { }

@@ -181,6 +181,6 @@ export class CurrencyInputComponent implements
   }
 
   private toAmount(value: string): number {
-    return (value) ? +(value.replace(',', '')) : null;
+    return (value) ? +(value.replace(/,/g, '')) : null;
   }
 }

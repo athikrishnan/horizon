@@ -7,9 +7,12 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CurrencyInputComponent } from 'src/app/components/currency-input/currency-input.component';
 
 @NgModule({
-  declarations: [ExpenseComponent, ExpenseFormComponent],
+  declarations: [
+    ExpenseComponent, ExpenseFormComponent, CurrencyInputComponent
+  ],
   imports: [
     CommonModule,
     ExpenseRoutingModule,

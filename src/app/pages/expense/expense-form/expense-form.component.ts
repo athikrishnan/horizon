@@ -1,8 +1,11 @@
 import { KeyValue } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CurrencyInputComponent } from 'src/app/components/currency-input/currency-input.component';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { ExpenseType } from 'src/app/enums/expense-type.enum';
 import { Expense } from 'src/app/models/expense.model';
@@ -14,7 +17,8 @@ import { ExpenseService } from 'src/app/services/expense.service';
   templateUrl: './expense-form.component.html',
   styleUrls: ['./expense-form.component.scss']
 })
-export class ExpenseFormComponent implements OnInit {
+export class ExpenseFormComponent implements OnInit, OnDestroy {
+  private unsubscribe$ =  new Subject<void>();
   showSpinner = true;
   expenseTypeList: KeyValue<ExpenseType, string>[] = [
     { key: ExpenseType.Fuel, value: 'Fuel' },
@@ -31,7 +35,7 @@ export class ExpenseFormComponent implements OnInit {
     comments: null
   });
   @ViewChild('form') form: any;
-  @ViewChild('amount') amountField: ElementRef;
+  @ViewChild('amount') amountField: CurrencyInputComponent;
   editId: string;
   expense: Expense;
   ExpenseType = ExpenseType;
@@ -57,12 +61,12 @@ export class ExpenseFormComponent implements OnInit {
       });
     } else {
       setTimeout(() => {
-        this.amountField.nativeElement.focus();
+        this.amountField.focus();
       }, 0);
       this.showSpinner = false;
     }
 
-    this.expenseForm.get('type').valueChanges.subscribe((type: ExpenseType) => {
+    this.expenseForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: ExpenseType) => {
       if (type === ExpenseType.Other) {
         this.expenseForm.get('other').setValidators(Validators.required);
       } else {
@@ -71,10 +75,14 @@ export class ExpenseFormComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   onSave(): void {
     this.showSpinner = true;
     let expense: Expense = this.expenseForm.getRawValue() as Expense;
-
     if (this.editId) {
       expense = Object.assign(this.expense, expense);
     }

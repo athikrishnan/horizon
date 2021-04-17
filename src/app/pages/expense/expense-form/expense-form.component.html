@@ -1,7 +1,7 @@
 <form [formGroup]="expenseForm" fxLayout="column" #form="ngForm">
   <input formControlName="id" type="hidden">
   <input formControlName="createdAt" type="hidden">
-  <p class="mat-subheading-1">Pack</p>
+  <p class="mat-subheading-1">Expense Details</p>
   <mat-form-field appearance="outline">
     <mat-select formControlName="type">
       <mat-option *ngFor="let item of expenseTypeList" [value]="item.key">
@@ -21,7 +21,7 @@
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Amount</mat-label>
-    <input matInput formControlName="amount" type="tel" required autocomplete="none" #amount>
+    <app-currency-input matInput required formControlName="amount" #amount></app-currency-input>
     <mat-error *ngIf="expenseForm.get('amount').hasError('required')">
       Required.
     </mat-error>
@@ -43,7 +43,7 @@
     <div>
       <a routerLink="/expense" mat-stroked-button>Cancel</a>
     </div>
-    <button (click)="onSave()" [disabled]="!expenseForm.dirty || !expenseForm.valid" mat-raised-button
+    <button (click)="onSave()" mat-raised-button [disabled]="!expenseForm.dirty || !expenseForm.valid" 
       color="primary">Save</button>
   </div>
   <p>

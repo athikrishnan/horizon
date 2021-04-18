@@ -1,0 +1,26 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="new-purchase" mat-stroked-button color="primary">
+      New Purchase <mat-icon>add</mat-icon> 
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Active Purchases</div>
+  <mat-list-item *ngIf="!activePurchases.length">
+    <p mat-line> There are no active purchases.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let purchase of activePurchases">
+    <p mat-line (click)="editPurchase(purchase.id)"> {{ purchase.supplier.name }} (#{{ purchase.supplier.code }})</p>
+    <p mat-line> {{ purchase.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <div mat-subheader>Recently Completed</div>
+  <mat-list-item *ngIf="!recentPurchases.length">
+    <p mat-line> There are no recent purchases.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let purchase of recentPurchases">
+    <p mat-line (click)="editPurchase(purchase.id)"> {{ purchase.supplier.name }} (#{{ purchase.supplier.code }})</p>
+    <p mat-line> {{ purchase.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -1,0 +1,99 @@
+<div *ngIf="purchase" fxLayout="column">
+  <div fxFlex="row" fxLayoutAlign="space-between" fxFlex="100">
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ purchase.code }}
+      </mat-expansion-panel-header>
+      <p>last updated at:</p>
+      <p><b>{{ purchase.updatedAt | timeAgo }}</b></p>
+      <ng-container *ngIf="!purchase.completedAt">
+        <form>
+          <mat-checkbox [checked]="!purchase.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
+        </form>
+        <br>
+        <button *ngIf="!purchase.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
+          Delete
+        </button>
+      </ng-container>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ supplier.name }}
+      </mat-expansion-panel-header>
+      <p> # {{ supplier.code }}</p>
+      <div>
+        <p class="mat-header-cell">Address</p>
+        <p>{{ supplier.location }},</p>
+        <p>{{ supplier.phone }},</p>
+        <p>{{ supplier.email }}</p>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <span fxFlex="1 0 70%">Particulars</span>
+    <button (click)="onProductSearchOpen()" *ngIf="!purchase.completedAt" mat-stroked-button color="primary"> Add Item
+    </button>
+  </div>
+  <br>
+  <mat-divider ></mat-divider>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding:0 24px;color: #9a9a9a">
+    <div fxFlex="8">#</div>
+    <div fxFlex="60">Product</div>
+    <div fxFlex="4">Qty</div>
+    <div fxFlex="25" style="text-align: right;">Amount</div>
+  </div>
+  <br>
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel *ngFor="let item of purchase.items; let i = index" [class.mat-elevation-z1]="true"
+      [expanded]="isIncompleteItem(item)" [hideToggle]="true">
+      <mat-expansion-panel-header class="purchase-item-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div fxFlex="8">
+            <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
+          </div>
+          <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
+            {{ item.product?.name }} <br> ({{ item.variant?.size }}{{ item.product?.unit }} * {{ item.pack?.count }})
+          </div>
+          <div fxFlex="60" *ngIf="isIncompleteItem(item)">
+            <span style="color: red">{{ item.product?.name }}</span>
+          </div>
+          <div fxFlex="4">{{ item.quantity }}</div>
+          <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <app-purchase-item [purchase]="purchase" [item]="item"></app-purchase-item>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="purchase.items?.length" [class.mat-elevation-z1]="true"
+      [expanded]="false" [hideToggle]="true">
+      <mat-expansion-panel-header class="purchase-item-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div>Total</div>
+          <div style="text-align: right;">&#8377;{{ (purchase.total || 0) | number : '.2-2' }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="!purchase.hideTax">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Taxable Amount</p>
+          <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Total Tax</p>
+          <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div fxLayoutAlign="end" *ngIf="purchase.items?.length">
+    <button (click)="onComplete()" *ngIf="!purchase.completedAt" mat-raised-button color="primary">Complete</button>
+    <button (click)="onPrint()" *ngIf="purchase.completedAt" mat-raised-button color="primary">Print</button>
+  </div>
+</div>
+<app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
+  (productSelect)="onProductSelect($event)"></app-product-search>
+<app-purchase-print [purchase]="purchase" *ngIf="purchase?.completedAt" #print style="display: none;"></app-purchase-print>
+<app-spinner *ngIf="showSpinner"></app-spinner>

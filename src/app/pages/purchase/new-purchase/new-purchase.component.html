@@ -1,0 +1,34 @@
+<div fxLayout="column" *ngIf="!supplier">
+  <p>Select Supplier</p>
+  <form [formGroup]="searchForm" fxFlex="100">
+    <mat-form-field appearance="outline" fxFlex="100">
+      <input formControlName="search" matInput placeholder="Type supplier's id or name" name="supplierSearch"
+        autocomplete="new-supplier-search">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </form>
+  <mat-list>
+    <mat-list-item (click)="onSupplierSelect(supplier)" *ngFor="let supplier of results">
+      #{{ supplier.code }} {{ supplier.name }}
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div fxLayout="column" *ngIf="supplier">
+  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+    <p class="mat-title">#{{ supplier.code }} {{ supplier.name }}</p>
+    <button (click)="onChangeSupplier()" mat-icon-button>
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column">
+    <p class="mat-header-cell">Address</p>
+    <p>{{ supplier.location }},</p>
+    <p>{{ supplier.phone }},</p>
+    <p>{{ supplier.email }}</p>
+  </div>
+  <br>
+  <br>
+  <button (click)="onCreatePurchase(supplier)" mat-raised-button color="primary"> Create Purchase </button>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

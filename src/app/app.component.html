@@ -22,6 +22,9 @@
           Purchase
         </mat-expansion-panel-header>
         <mat-nav-list dense>
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/purchase">
+            <mat-icon>receipt</mat-icon> Purchase
+          </a>
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/expense">
             <mat-icon>paid</mat-icon> Expense
           </a>

@@ -77,4 +77,4 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <app-spinner *ngIf="showSpinner"></app-spinner>
-<app-spinner *ngIf="!showSpinner && showAuthSpinner"></app-spinner>
+<app-spinner *ngIf="!showSpinner && !isLoginPage && showAuthSpinner"></app-spinner>

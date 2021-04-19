@@ -19,15 +19,14 @@ export class PurchaseService {
 
   getActivePurchases(): Observable<Purchase[]> {
     return this.store.collection<Purchase>(
-      'purchases',
-      (ref) => ref.where('completedAt', '==', null).orderBy('updatedAt', 'desc')
+      'purchases', (ref) => ref.where('completedAt', '==', null)
     ).valueChanges().pipe(take(1));
   }
 
   getRecentPurchases(): Observable<Purchase[]> {
     return this.store.collection<Purchase>(
       'purchases',
-      (ref) => ref.where('completedAt', '!=', null).orderBy('completedAt', 'desc').limit(5)
+      (ref) => ref.where('completedAt', '!=', null).limit(5)
     ).valueChanges().pipe(take(1));
   }
 
@@ -37,8 +36,7 @@ export class PurchaseService {
       supplier,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      completedAt: null,
-      hideTax: false
+      completedAt: null
     } as Purchase;
 
     return await this.store.collection<Purchase>('purchases').doc(purchase.id).set(purchase).then(() => {

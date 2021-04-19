@@ -30,7 +30,6 @@ export class PurchaseItemComponent implements OnInit {
     }
 
     this.purchaseStateService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((purchase: Purchase) => {
-      this.purchase.hideTax = purchase.hideTax;
       this.purchase.completedAt = purchase.completedAt;
       this.ref.detectChanges();
     });

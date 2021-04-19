@@ -13,8 +13,6 @@ import { PurchaseItem } from 'src/app/models/purchase-item.model';
 import { Purchase } from 'src/app/models/purchase.model';
 import { Product } from 'src/app/models/product.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
-import { PurchasePrintService } from '../purchase-print.service';
-import { PurchasePrintComponent } from '../purchase-print/purchase-print.component';
 import { PurchaseStateService } from '../purchase-state.service';
 
 @Component({
@@ -32,7 +30,6 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
   get supplier(): Supplier | null {
     return (!this.purchase) ? null : this.purchase.supplier;
   }
-  @ViewChild(PurchasePrintComponent) print: PurchasePrintComponent;
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -40,8 +37,7 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
     private purchaseService: PurchaseService,
     private dialog: MatDialog,
     private router: Router,
-    private purchaseStateService: PurchaseStateService,
-    private purchasePrintService: PurchasePrintService) { }
+    private purchaseStateService: PurchaseStateService) { }
 
   ngOnInit(): void {
     const purchaseId: string = this.route.snapshot.paramMap.get('purchaseId');
@@ -92,16 +88,6 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
     } as PurchaseItem);
   }
 
-  onTaxStateChange(event: MatCheckboxChange): void {
-    this.showSpinner = true;
-    this.purchase.hideTax = !event.checked;
-    this.purchaseStateService.stateChanged(this.purchase);
-    this.purchaseService.savePurchase(this.purchase).then(() => {
-      this.showSpinner = false;
-      this.ref.detectChanges();
-    });
-  }
-
   getTaxableAmount(): number {
     return this.purchase.total - this.getTaxAmount();
   }
@@ -119,9 +105,5 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
       this.showSpinner = false;
     });
-  }
-
-  onPrint(): void {
-    this.purchasePrintService.print(this.purchase, this.print.content.nativeElement.innerHTML);
   }
 }

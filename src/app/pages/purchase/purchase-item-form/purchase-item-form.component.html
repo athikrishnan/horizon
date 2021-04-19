@@ -1,56 +1,54 @@
 <div fxLayout="column">
   <form [formGroup]="purchaseItemForm" *ngIf="product" fxFlex="100" fxLayout="column">
     <input type="hidden" formControlName="product">
-    <div fxLayout="row" fxLayoutAlign="space-between">      
-    <mat-form-field fxFlex="48">
-      <mat-select formControlName="variant" placeholder="Variant">
-        <mat-option [value]="variant" *ngIf="variant" style="display: none">
-          {{ variant.size }} {{ product.unit }}
-        </mat-option>
-        <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
-          {{ item.size }} {{ product.unit }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="purchaseItemForm.get('variant').hasError('required')">
-        Required.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field fxFlex="48">
-      <mat-select formControlName="pack" placeholder="Pack">
-        <mat-option [value]="pack" *ngIf="pack" style="display: none">
-          {{ pack.name }} of {{ pack.count }} for &#8377; {{ pack.price }}
-        </mat-option>
-        <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
-          {{ item.name }} of {{ item.count }} for &#8377; {{ item.price }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="purchaseItemForm.get('pack').hasError('required')">
-        Required.
-      </mat-error>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field fxFlex="48">
+        <mat-select formControlName="variant" placeholder="Variant">
+          <mat-option [value]="variant" *ngIf="variant" style="display: none">
+            {{ variant.size }} {{ product.unit }}
+          </mat-option>
+          <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
+            {{ item.size }} {{ product.unit }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Required.</mat-error>
+      </mat-form-field>
+      <mat-form-field fxFlex="48">
+        <mat-select formControlName="pack" placeholder="Pack">
+          <mat-option [value]="pack" *ngIf="pack" style="display: none">
+            {{ pack.name }} of {{ pack.count }}
+          </mat-option>
+          <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
+            {{ item.name }} of {{ item.count }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Required.</mat-error>
+      </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <mat-form-field fxFlex="48">
         <mat-label>Quantity</mat-label>
         <input matInput formControlName="quantity" required type="number" autocomplete="new-quantity"
           name="new-quantity">
-        <mat-error *ngIf="purchaseItemForm.get('quantity').hasError('required')">
-          Required.
-        </mat-error>
+        <mat-error>Required.</mat-error>
       </mat-form-field>
       <mat-form-field fxFlex="48">
         <mat-label>Price</mat-label>
         <input matInput formControlName="price" required type="tel" autocomplete="new-price" name="new-price">
         <span matSuffix>&#8377;</span>
-        <mat-error *ngIf="purchaseItemForm.get('price').hasError('required')">
-          Required.
-        </mat-error>
+        <mat-error>Required.</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field fxFlex="100">
+        <mat-label>Price per Unit</mat-label>
+        <input matInput formControlName="unitPrice" required type="tel">
+        <span matSuffix>&#8377;</span>
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
-      <button (click)="onCancel()" *ngIf="!purchaseItemForm.dirty" mat-raised-button
-        color="secondary">Cancel</button>
+      <button (click)="onCancel()" *ngIf="!purchaseItemForm.dirty" mat-raised-button color="secondary">Cancel</button>
       <button (click)="onSave()" *ngIf="purchaseItemForm.dirty" [disabled]="!purchaseItemForm.valid" mat-raised-button
         color="primary">Save</button>
     </div>

@@ -7,9 +7,6 @@
       <p>last updated at:</p>
       <p><b>{{ purchase.updatedAt | timeAgo }}</b></p>
       <ng-container *ngIf="!purchase.completedAt">
-        <form>
-          <mat-checkbox [checked]="!purchase.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
-        </form>
         <br>
         <button *ngIf="!purchase.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
           Delete
@@ -73,16 +70,14 @@
           <div style="text-align: right;">&#8377;{{ (purchase.total || 0) | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
-      <ng-container *ngIf="!purchase.hideTax">
-        <div fxLayout="row" fxLayoutAlign="space-between">
-          <p>Taxable Amount</p>
-          <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-between">
-          <p>Total Tax</p>
-          <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
-        </div>
-      </ng-container>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <p>Taxable Amount</p>
+        <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <p>Total Tax</p>
+        <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
   <br>
@@ -90,10 +85,8 @@
   <br>
   <div fxLayoutAlign="end" *ngIf="purchase.items?.length">
     <button (click)="onComplete()" *ngIf="!purchase.completedAt" mat-raised-button color="primary">Complete</button>
-    <button (click)="onPrint()" *ngIf="purchase.completedAt" mat-raised-button color="primary">Print</button>
   </div>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>
-<app-purchase-print [purchase]="purchase" *ngIf="purchase?.completedAt" #print style="display: none;"></app-purchase-print>
 <app-spinner *ngIf="showSpinner"></app-spinner>

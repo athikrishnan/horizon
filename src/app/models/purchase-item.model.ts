@@ -8,6 +8,7 @@ export interface PurchaseItem {
   variant: ProductVariant;
   pack: Pack;
   price: number;
+  unitPrice: number;
   quantity: number;
   cgst: number;
   sgst: number;

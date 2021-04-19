@@ -8,9 +8,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PurchaseItemComponent } from './purchase-item/purchase-item.component';
 import { PurchaseItemFormComponent } from './purchase-item-form/purchase-item-form.component';
-import { PurchasePrintComponent } from './purchase-print/purchase-print.component';
 import { PurchaseStateService } from './purchase-state.service';
-import { PurchasePrintService } from './purchase-print.service';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
 
@@ -20,8 +18,7 @@ import { ProductSerchModule } from 'src/app/components/product-search/product-se
     PurchaseViewComponent,
     NewPurchaseComponent,
     PurchaseItemComponent,
-    PurchaseItemFormComponent,
-    PurchasePrintComponent
+    PurchaseItemFormComponent
   ],
   imports: [
     CommonModule,
@@ -33,8 +30,7 @@ import { ProductSerchModule } from 'src/app/components/product-search/product-se
     ProductSerchModule
   ],
   providers: [
-    PurchaseStateService,
-    PurchasePrintService
+    PurchaseStateService
   ]
 })
 export class PurchaseModule { }

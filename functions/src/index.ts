@@ -20,3 +20,7 @@ exports.onInvoiceCreate = onInvoiceCreate.onInvoiceCreate;
 // product
 const onProductCreate = require('./product/on-product-create.function');
 exports.onProductCreate = onProductCreate.onProductCreate;
+
+// invoice
+const onPurchaseCreate = require('./purchase/on-purchase-create.function');
+exports.onPurchaseCreate = onPurchaseCreate.onPurchaseCreate;

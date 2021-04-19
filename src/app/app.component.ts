@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
+import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 
@@ -11,6 +11,7 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
   showSpinner = true;
   showAuthSpinner = true;
+  isLoginPage = false;
   asyncLoadCount = 0;
   title = 'horizon';
   user: User;
@@ -25,6 +26,9 @@ export class AppComponent implements OnInit {
         this.asyncLoadCount--;
       }
       this.showSpinner = !!this.asyncLoadCount;
+      if (event instanceof NavigationEnd) {
+        this.isLoginPage = event.url === '/login';
+      }
     });
   }
 

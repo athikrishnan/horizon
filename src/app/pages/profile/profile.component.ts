@@ -1,6 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { ProfileService } from './profile.service';
 
@@ -13,29 +11,14 @@ import { ProfileService } from './profile.service';
 export class ProfileComponent implements OnInit {
   showSpinner = true;
   user: User;
-  profileForm: FormGroup = this.fb.group({
-    displayName: [null, Validators.required]
-  });
 
   constructor(
     private ref: ChangeDetectorRef,
-    private profileService: ProfileService,
-    private fb: FormBuilder) { }
+    private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.profileService.getProfile().subscribe((user: User) => {
       this.user = user;
-      this.profileForm.patchValue(this.user);
-      this.showSpinner = false;
-      this.ref.detectChanges();
-    });
-  }
-
-  onSave(): void {
-    this.showSpinner = true;
-    let user: User = this.profileForm.getRawValue() as User;
-    user = Object.assign(this.user, user);
-    this.profileService.updateProfile(user).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
     });

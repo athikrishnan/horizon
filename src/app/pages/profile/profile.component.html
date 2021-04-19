@@ -1,15 +1,13 @@
-<form [formGroup]="profileForm" fxLayout="column" #form="ngForm">
-  <p class="mat-subheading-1">Profile Details</p>
-  <mat-form-field appearance="outline">
-    <mat-label>Display Name</mat-label>
-    <input matInput formControlName="displayName" required autocomplete="none">
-    <mat-error *ngIf="profileForm.get('displayName').hasError('required')">
-      Required.
-    </mat-error>
-  </mat-form-field>
-  <div fxLayout="row" fxLayoutAlign="end" style="margin-bottom:12px">
-    <button (click)="onSave()" [disabled]="!profileForm.dirty || !profileForm.valid" mat-raised-button
-      color="primary">Save</button>
+<div fxLayout="column" *ngIf="user">
+  <div fxLayoutAlign="center" fxFlex="100" *ngIf="user.photoURL">
+    <img [src]="user.photoURL" alt="" class="profile-pic">
   </div>
-</form>
+  <br>
+  <br>
+  <div fxLayout="column" fxLayoutAlign="start center" fxFlex="100">
+    <h3>{{ user.displayName }}</h3>
+    <p>{{ user.email }}</p>
+    <p>{{ user.phone }}</p>
+  </div>
+</div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

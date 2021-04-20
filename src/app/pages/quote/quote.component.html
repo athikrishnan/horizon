@@ -1,0 +1,26 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="new-quote" mat-stroked-button color="primary">
+      New Quote <mat-icon>add</mat-icon> 
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Active Quotes</div>
+  <mat-list-item *ngIf="!activeQuotes.length">
+    <p mat-line> There are no active quotes.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let quote of activeQuotes">
+    <p mat-line (click)="editQuote(quote.id)"> {{ quote.customer.name }} (#{{ quote.customer.code }})</p>
+    <p mat-line> {{ quote.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <div mat-subheader>Recently Completed</div>
+  <mat-list-item *ngIf="!recentQuotes.length">
+    <p mat-line> There are no recent quotes.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let quote of recentQuotes">
+    <p mat-line (click)="editQuote(quote.id)"> {{ quote.customer.name }} (#{{ quote.customer.code }})</p>
+    <p mat-line> {{ quote.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

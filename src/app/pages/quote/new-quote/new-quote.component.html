@@ -1,0 +1,35 @@
+<div fxLayout="column" *ngIf="!customer">
+  <p>Select Customer</p>
+  <form [formGroup]="searchForm" fxFlex="100">
+    <mat-form-field appearance="outline" fxFlex="100">
+      <input formControlName="search" matInput placeholder="Type customer's id or name" name="customerSearch"
+        autocomplete="new-customer-search">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </form>
+  <mat-list>
+    <mat-list-item (click)="onCustomerSelect(customer)" *ngFor="let customer of results">
+      #{{ customer.code }} {{ customer.name }}
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</div>
+<div fxLayout="column" *ngIf="customer">
+  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+    <p class="mat-title">#{{ customer.code }} {{ customer.name }}</p>
+    <button (click)="onChangeCustomer()" mat-icon-button>
+      <mat-icon>highlight_off</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="column" *ngIf="customer.address">
+    <p class="mat-header-cell">Address</p>
+    <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
+    <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
+    <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
+    <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
+  </div>
+  <br>
+  <br>
+  <button (click)="onCreateQuote(customer)" mat-raised-button color="primary"> Create Quote </button>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

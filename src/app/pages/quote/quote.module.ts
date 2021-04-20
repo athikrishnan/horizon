@@ -11,9 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuoteRoutingModule } from './quote-routing.module';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
-import { QuoteStateService } from './quote-state.service';
 import { QuotePrintService } from './quote-print.service';
 import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
+import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +35,7 @@ import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
   ],
   providers: [
     AmountInWordsService,
-    QuoteStateService,
+    StateChangedService,
     QuotePrintService
   ]
 })

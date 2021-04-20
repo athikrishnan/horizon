@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
-import { InvoiceStateService } from '../invoice-state.service';
+import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @Component({
   selector: 'app-invoice-item',
@@ -21,7 +21,7 @@ export class InvoiceItemComponent implements OnInit {
 
   constructor(
     private ref: ChangeDetectorRef,
-    private invoiceStateService: InvoiceStateService) { }
+    private stateChangedService: StateChangedService<Invoice>) { }
 
   ngOnInit(): void {
     if (this.isIncompleteItem()) {
@@ -29,7 +29,7 @@ export class InvoiceItemComponent implements OnInit {
       this.ref.detectChanges();
     }
 
-    this.invoiceStateService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((invoice: Invoice) => {
+    this.stateChangedService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((invoice: Invoice) => {
       this.invoice.hideTax = invoice.hideTax;
       this.invoice.completedAt = invoice.completedAt;
       this.ref.detectChanges();

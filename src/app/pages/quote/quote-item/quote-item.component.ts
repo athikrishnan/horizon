@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QuoteItem } from 'src/app/models/quote-item.model';
 import { Quote } from 'src/app/models/quote.model';
-import { QuoteStateService } from '../quote-state.service';
+import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @Component({
   selector: 'app-quote-item',
@@ -21,7 +21,7 @@ export class QuoteItemComponent implements OnInit {
 
   constructor(
     private ref: ChangeDetectorRef,
-    private quoteStateService: QuoteStateService) { }
+    private stateChangedService: StateChangedService<Quote>) { }
 
   ngOnInit(): void {
     if (this.isIncompleteItem()) {
@@ -29,7 +29,7 @@ export class QuoteItemComponent implements OnInit {
       this.ref.detectChanges();
     }
 
-    this.quoteStateService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((quote: Quote) => {
+    this.stateChangedService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((quote: Quote) => {
       this.quote.hideTax = quote.hideTax;
       this.quote.completedAt = quote.completedAt;
       this.ref.detectChanges();

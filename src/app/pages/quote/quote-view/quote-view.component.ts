@@ -15,7 +15,7 @@ import { Product } from 'src/app/models/product.model';
 import { QuoteService } from 'src/app/services/quote.service';
 import { QuotePrintService } from '../quote-print.service';
 import { QuotePrintComponent } from '../quote-print/quote-print.component';
-import { QuoteStateService } from '../quote-state.service';
+import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @Component({
   selector: 'app-quote-view',
@@ -40,7 +40,7 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     private quoteService: QuoteService,
     private dialog: MatDialog,
     private router: Router,
-    private quoteStateService: QuoteStateService,
+    private stateChangedService: StateChangedService<Quote>,
     private quotePrintService: QuotePrintService) { }
 
   ngOnInit(): void {
@@ -95,7 +95,7 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
   onTaxStateChange(event: MatCheckboxChange): void {
     this.showSpinner = true;
     this.quote.hideTax = !event.checked;
-    this.quoteStateService.stateChanged(this.quote);
+    this.stateChangedService.stateChanged(this.quote);
     this.quoteService.saveQuote(this.quote).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
@@ -114,7 +114,7 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.quote.completedAt = Date.now();
     this.ref.detectChanges();
-    this.quoteStateService.stateChanged(this.quote);
+    this.stateChangedService.stateChanged(this.quote);
     this.quoteService.saveQuote(this.quote).then(() => {
       this.ref.detectChanges();
       this.showSpinner = false;

@@ -13,6 +13,7 @@ import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
 import { QuoteStateService } from './quote-state.service';
 import { QuotePrintService } from './quote-print.service';
+import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { QuotePrintService } from './quote-print.service';
     ProductSerchModule
   ],
   providers: [
+    AmountInWordsService,
     QuoteStateService,
     QuotePrintService
   ]

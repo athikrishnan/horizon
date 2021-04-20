@@ -13,6 +13,7 @@ import { InvoicePrintComponent } from './invoice-print/invoice-print.component';
 import { InvoicePrintService } from './invoice-print.service';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
+import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ProductSerchModule } from 'src/app/components/product-search/product-se
   ],
   providers: [
     InvoiceStateService,
-    InvoicePrintService
+    InvoicePrintService,
+    AmountInWordsService
   ]
 })
 export class InvoiceModule { }

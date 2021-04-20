@@ -1,10 +1,7 @@
 import { DecimalPipe } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Company } from 'src/app/models/company.model';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Quote } from 'src/app/models/quote.model';
-import { CompanyService } from 'src/app/services/company.service';
+import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 
 @Component({
   selector: 'app-quote-print',
@@ -12,30 +9,17 @@ import { CompanyService } from 'src/app/services/company.service';
   templateUrl: './quote-print.component.html',
   providers: [DecimalPipe]
 })
-export class QuotePrintComponent implements OnInit, OnDestroy {
-  private unsubscribe$ = new Subject<void>();
+export class QuotePrintComponent implements OnInit {
   @Input() quote: Quote;
   @ViewChild('content') content: ElementRef;
   @ViewChild('particulars') particulars: ElementRef;
-  company: Company;
   get isTaxQuote(): boolean {
     return !this.quote.hideTax;
   }
 
-  constructor(
-    private companyService: CompanyService,
-    private ref: ChangeDetectorRef) { }
+  constructor(private amountInWordsService: AmountInWordsService) { }
 
   ngOnInit(): void {
-    this.companyService.companies$.pipe(takeUntil(this.unsubscribe$)).subscribe((companies: Company[]) => {
-      this.company = companies[0];
-      this.ref.detectChanges();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
   }
 
   getTotalQuantity(): number {
@@ -50,24 +34,7 @@ export class QuotePrintComponent implements OnInit, OnDestroy {
     return Math.floor(this.quote.total);
   }
 
-  // TODO: make this common function from service
   totalInWords(): string {
-    let num = this.getTotal().toString();
-    const a = ['', 'one ', 'two ', 'three ', 'four ', 'five ', 'six ', 'seven ', 'eight ', 'nine ', 'ten ',
-      'eleven ', 'twelve ', 'thirteen ', 'fourteen ', 'fifteen ', 'sixteen ', 'seventeen ', 'eighteen ', 'nineteen '];
-    const b = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-
-    if ((num = num.toString()).length > 9) { return ''; }
-    const n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-    if (!n) { return; }
-
-    let str = '';
-    str += (+n[1] !== 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'crore ' : '';
-    str += (+n[2] !== 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'lakh ' : '';
-    str += (+n[3] !== 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'thousand ' : '';
-    str += (+n[4] !== 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'hundred ' : '';
-    str += (+n[5] !== 0) ? ((str !== '') ? 'and ' : '')
-      + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'only ' : '';
-    return str;
+    return this.amountInWordsService.inWords(this.getTotal());
   }
 }

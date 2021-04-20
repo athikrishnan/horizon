@@ -37,6 +37,10 @@ div[size="A4"] {
 .right-50 {
   border-left: none;
 }
+.full-100 {
+  width: 100%;
+  border: 1px solid black;
+}
 .company-name {
   text-transform: uppercase;
   margin: 3mm 0;

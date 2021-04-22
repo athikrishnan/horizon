@@ -8,6 +8,7 @@ export interface Customer {
   phone: number;
   email: string;
   keywords: string[];
+  discount?: number;
   createdAt: number;
   updatedAt: number;
 }

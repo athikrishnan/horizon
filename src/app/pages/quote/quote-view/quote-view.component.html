@@ -1,0 +1,130 @@
+<div *ngIf="quote" fxLayout="column">
+  <div fxFlex="row" fxLayoutAlign="space-between" fxFlex="100">
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ quote.code }}
+      </mat-expansion-panel-header>
+      <p>last updated at:</p>
+      <p><b>{{ quote.updatedAt | timeAgo }}</b></p>
+      <ng-container *ngIf="!quote.completedAt">
+        <form>
+          <mat-checkbox [checked]="!quote.hideTax" (change)="onTaxStateChange($event)">Tax Quote</mat-checkbox>
+        </form>
+        <br>
+        <button *ngIf="!quote.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
+          Delete
+        </button>
+      </ng-container>
+    </mat-expansion-panel>
+    <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
+      <mat-expansion-panel-header>
+        {{ customer.name }}
+      </mat-expansion-panel-header>
+      <p> # {{ customer.code }}</p>
+      <div *ngIf="customer.address">
+        <p class="mat-header-cell">Address</p>
+        <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
+        <p *ngIf="customer.address.locality">{{ customer.address.locality }},</p>
+        <p *ngIf="customer.address.city">{{ customer.address.city }} - {{ customer.address.zip }},</p>
+        <p *ngIf="customer.address.state">{{ customer.address.state }}.</p>
+      </div>
+    </mat-expansion-panel>
+  </div>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <span fxFlex="1 0 70%">Particulars</span>
+    <button (click)="onProductSearchOpen()" *ngIf="!quote.completedAt" mat-stroked-button color="primary"> Add Item
+    </button>
+  </div>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100" style="padding:0 24px;color: #9a9a9a">
+    <div fxFlex="8">#</div>
+    <div fxFlex="60">Product</div>
+    <div fxFlex="4">Qty</div>
+    <div fxFlex="25" style="text-align: right;">Amount</div>
+  </div>
+  <br>
+  <mat-accordion [multi]="true">
+    <mat-expansion-panel *ngFor="let item of quote.items; let i = index" [class.mat-elevation-z1]="true"
+      [expanded]="isIncompleteItem(item)" [hideToggle]="true">
+      <mat-expansion-panel-header class="quote-item-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div fxFlex="8">
+            <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>
+          </div>
+          <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
+            {{ item.product?.name }} <br> ({{ item.variant?.size }}{{ item.product?.unit }} * {{ item.pack?.count }})
+          </div>
+          <div fxFlex="60" *ngIf="isIncompleteItem(item)">
+            <span style="color: red">{{ item.product?.name }}</span>
+          </div>
+          <div fxFlex="4">{{ item.quantity }}</div>
+          <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <app-quote-item [quote]="quote" [item]="item"></app-quote-item>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="quote.items?.length" [class.mat-elevation-z1]="true" [expanded]="false"
+      [hideToggle]="true">
+      <mat-expansion-panel-header class="quote-item-header">
+        <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+          <div>Total</div>
+          <div style="text-align: right;">&#8377;{{ (quote.total || 0) | number : '.2-2' }}</div>
+        </div>
+      </mat-expansion-panel-header>
+      <div *ngIf="quote.hasDiscount" fxLayout="row" fxLayoutAlign="space-between">
+        <div>Discount ({{ quote.discount }}%)</div>
+        <div style="text-align: right;">&#8377;{{ (quote.discountAmount || 0) | number : '.2-2' }}</div>
+      </div>
+      <ng-container *ngIf="!quote.hideTax">
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Taxable Amount</p>
+          <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <p>Total Tax</p>
+          <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!quote.completedAt">
+        <br>
+        <form>
+          <mat-checkbox [checked]="quote.hasDiscount" (change)="onDiscountStateChange($event)">Apply Discount
+          </mat-checkbox>
+        </form>
+      </ng-container>
+      <ng-container *ngIf="!quote.completedAt && quote.hasDiscount">
+        <br>
+        <form [formGroup]="discountForm" fxLayout="column">
+          <mat-form-field>
+            <mat-label>Discount</mat-label>
+            <app-currency-input matInput formControlName="discount"></app-currency-input>
+            <span matSuffix>%</span>
+            <mat-error>
+              Discount percent should be 0.01 to 100.
+            </mat-error>
+          </mat-form-field>
+          <div>
+            <button mat-stroked-button color="primary" [disabled]="discountForm.invalid || !discountForm.dirty"
+              (click)="onSaveDiscount()">
+              Save Discount
+            </button>
+          </div>
+        </form>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <br>
+  <mat-divider></mat-divider>
+  <br>
+  <div fxLayoutAlign="end" *ngIf="quote.items?.length">
+    <button (click)="onComplete()" *ngIf="!quote.completedAt" mat-raised-button color="primary">Complete</button>
+    <button (click)="onPrint()" *ngIf="quote.completedAt" mat-raised-button color="primary">Print</button>
+  </div>
+</div>
+<app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
+  (productSelect)="onProductSelect($event)"></app-product-search>
+<app-quote-print [quote]="quote" *ngIf="quote?.completedAt" #print style="display: none;"></app-quote-print>
+<app-spinner *ngIf="showSpinner"></app-spinner>

@@ -1,0 +1,18 @@
+<div mat-dialog-content>
+  <form [formGroup]="discountForm">
+    <mat-form-field>
+      <mat-label>Discount</mat-label>
+      <app-currency-input matInput formControlName="discount" #discount></app-currency-input>
+      <span matSuffix>%</span>
+      <mat-error>
+        Discount should be less than 100.
+      </mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between">
+  <button (click)="onCancel()" mat-raised-button color="primary">Cancel</button>
+  <button (click)="onSave()" [disabled]="!discountForm.dirty || discountForm.invalid" mat-stroked-button
+    color="warn">Save</button>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

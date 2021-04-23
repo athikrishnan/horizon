@@ -21,6 +21,10 @@ exports.onInvoiceCreate = onInvoiceCreate.onInvoiceCreate;
 const onProductCreate = require('./product/on-product-create.function');
 exports.onProductCreate = onProductCreate.onProductCreate;
 
-// invoice
+// purchase
 const onPurchaseCreate = require('./purchase/on-purchase-create.function');
 exports.onPurchaseCreate = onPurchaseCreate.onPurchaseCreate;
+
+// quote
+const onQuoteCreate = require('./quote/on-quote-create.function');
+exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;

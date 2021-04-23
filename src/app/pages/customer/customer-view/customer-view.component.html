@@ -6,19 +6,23 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #customerMenu="matMenu">
+        <button mat-menu-item (click)='onSetDiscount()'>
+          Set Discount
+        </button>
         <a mat-menu-item routerLink="/customer/{{ customer.id }}/edit">
           Edit
         </a>
         <mat-divider></mat-divider>
-        <button (click)="onDelete(customer)" mat-menu-item>Delete</button>
+        <button (click)="onDelete()" mat-menu-item>Delete</button>
       </mat-menu>
     </div>
   </div>
   <div fxlayout="column">
-    <h4>#{{ customer.code | number: '3.0' }}</h4>
+    <h4>C{{ customer.code | number: '3.0' }}</h4>
     <p class="mat-title">Contact Information</p>
     <p>{{ customer.phone }}</p>
     <p>{{ customer.email }}</p>
+    <p>Discount: {{ customer.discount || 0 }} %</p>
     <p>
       <mat-divider></mat-divider>
     </p>

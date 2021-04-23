@@ -2,26 +2,26 @@ import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { InvoiceItem } from 'src/app/models/invoice-item.model';
-import { Invoice } from 'src/app/models/invoice.model';
+import { QuoteItem } from 'src/app/models/quote-item.model';
+import { Quote } from 'src/app/models/quote.model';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @Component({
-  selector: 'app-invoice-item',
+  selector: 'app-quote-item',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './invoice-item.component.html',
-  styleUrls: ['./invoice-item.component.scss'],
-  providers: [DecimalPipe]
+  templateUrl: './quote-item.component.html',
+  styleUrls: ['./quote-item.component.scss'],
+  providers: [DecimalPipe] // TODO: try currency input
 })
-export class InvoiceItemComponent implements OnInit {
+export class QuoteItemComponent implements OnInit {
   private unsubscribe$ = new Subject<void>();
-  @Input() item: InvoiceItem;
-  @Input() invoice: Invoice;
+  @Input() item: QuoteItem;
+  @Input() quote: Quote;
   isEditMode = false;
 
   constructor(
     private ref: ChangeDetectorRef,
-    private stateChangedService: StateChangedService<Invoice>) { }
+    private stateChangedService: StateChangedService<Quote>) { }
 
   ngOnInit(): void {
     if (this.isIncompleteItem()) {
@@ -29,9 +29,9 @@ export class InvoiceItemComponent implements OnInit {
       this.ref.detectChanges();
     }
 
-    this.stateChangedService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((invoice: Invoice) => {
-      this.invoice.hideTax = invoice.hideTax;
-      this.invoice.completedAt = invoice.completedAt;
+    this.stateChangedService.changed$.pipe(takeUntil(this.unsubscribe$)).subscribe((quote: Quote) => {
+      this.quote.hideTax = quote.hideTax;
+      this.quote.completedAt = quote.completedAt;
       this.ref.detectChanges();
     });
   }

@@ -2,7 +2,6 @@ import { DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -13,7 +12,7 @@ import { PurchaseItem } from 'src/app/models/purchase-item.model';
 import { Purchase } from 'src/app/models/purchase.model';
 import { Product } from 'src/app/models/product.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
-import { PurchaseStateService } from '../purchase-state.service';
+import { StateChangedService } from 'src/app/services/state-changed.service';
 
 @Component({
   selector: 'app-purchase-view',
@@ -37,7 +36,7 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
     private purchaseService: PurchaseService,
     private dialog: MatDialog,
     private router: Router,
-    private purchaseStateService: PurchaseStateService) { }
+    private stateChangedService: StateChangedService<Purchase>) { }
 
   ngOnInit(): void {
     const purchaseId: string = this.route.snapshot.paramMap.get('purchaseId');
@@ -100,7 +99,7 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.purchase.completedAt = Date.now();
     this.ref.detectChanges();
-    this.purchaseStateService.stateChanged(this.purchase);
+    this.stateChangedService.stateChanged(this.purchase);
     this.purchaseService.savePurchase(this.purchase).then(() => {
       this.ref.detectChanges();
       this.showSpinner = false;

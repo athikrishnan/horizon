@@ -68,7 +68,7 @@
             </th>
             <th *ngIf="isTaxQuote" style="width: 20mm">&#8377;{{ quote.totalCgst | number: '.2-2' }}</th>
             <th *ngIf="isTaxQuote" style="width: 20mm">&#8377;{{ quote.totalSgst | number: '.2-2' }}</th>
-            <th style="width: 20mm">&#8377;{{ quote.total | number: '.2-2' }}</th>
+            <th style="width: 20mm">&#8377;{{ quote.subTotal | number: '.2-2' }}</th>
           </tr>
         </tbody>
       </table>
@@ -82,6 +82,10 @@
       </div>
       <div class="right-50">
         <div class="dark-header">Amounts</div>
+        <div class="amount-item" *ngIf="quote.hasDiscount">
+          <span>Discount ({{ quote.discount }}%)</span>
+          <span>&#8377;{{ quote.discountAmount | number: '.2-2' }}</span>
+        </div>
         <div class="amount-item">
           <span>Sub Total</span>
           <span>&#8377;{{ quote.total | number: '.2-2' }}</span>

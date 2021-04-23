@@ -16,6 +16,7 @@ import { QuoteService } from 'src/app/services/quote.service';
 import { QuotePrintService } from '../quote-print.service';
 import { QuotePrintComponent } from '../quote-print/quote-print.component';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-quote-view',
@@ -33,6 +34,9 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     return (!this.quote) ? null : this.quote.customer;
   }
   @ViewChild(QuotePrintComponent) print: QuotePrintComponent;
+  discountForm: FormGroup = this.fb.group({
+    discount: [null, [Validators.required, Validators.min(0.01), Validators.max(100)]]
+  });
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -41,7 +45,8 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private stateChangedService: StateChangedService<Quote>,
-    private quotePrintService: QuotePrintService) { }
+    private quotePrintService: QuotePrintService,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     const quoteId: string = this.route.snapshot.paramMap.get('quoteId');
@@ -51,6 +56,7 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     ).subscribe((quote: Quote) => {
       this.quote = quote;
       this.showSpinner = false;
+      this.discountForm.patchValue({ discount: (this.quote.discount || 0.01) });
       this.ref.detectChanges();
     });
   }
@@ -96,10 +102,31 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.quote.hideTax = !event.checked;
     this.stateChangedService.stateChanged(this.quote);
+    this.saveQuote();
+  }
+
+  private saveQuote(): void {
     this.quoteService.saveQuote(this.quote).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  onDiscountStateChange(event: MatCheckboxChange): void {
+    this.showSpinner = true;
+    this.quote.hasDiscount = event.checked;
+    this.quote.discount = (event.checked) ? (this.customer.discount || 0.01) : null;
+    this.ref.detectChanges();
+    if (this.quote.hasDiscount) {
+      this.discountForm.patchValue({ discount: (this.customer.discount || 0.01) });
+    }
+    this.saveQuote();
+  }
+
+  onSaveDiscount(): void {
+    this.showSpinner = true;
+    this.quote.discount = +this.discountForm.get('discount').value;
+    this.saveQuote();
   }
 
   getTaxableAmount(): number {

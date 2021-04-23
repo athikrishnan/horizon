@@ -14,6 +14,7 @@ import { ProductSerchModule } from 'src/app/components/product-search/product-se
 import { QuotePrintService } from './quote-print.service';
 import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { StateChangedService } from 'src/app/services/state-changed.service';
     FormsModule,
     ReactiveFormsModule,
     AppPipeModule,
-    ProductSerchModule
+    ProductSerchModule,
+    CurrencyInputModule
   ],
   providers: [
     AmountInWordsService,

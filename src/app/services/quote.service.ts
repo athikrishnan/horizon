@@ -56,13 +56,21 @@ export class QuoteService {
     }
 
     quote.updatedAt = Date.now();
-    quote.total = quote.items.reduce((a, b) => a + (b.price || 0), 0);
-    quote.totalCgst = quote.items.reduce((a, b) => a + (b.cgst || 0), 0);
-    quote.totalSgst = quote.items.reduce((a, b) => a + (b.sgst || 0), 0);
+    quote = this.calculateTotals(quote);
 
     return await this.quoteCollection.doc(quote.id).set(quote).then(() => {
       return quote.id;
     });
+  }
+
+  private calculateTotals(quote: Quote): Quote {
+    quote.subTotal = quote.items.reduce((a, b) => a + (b.price || 0), 0);
+    quote.discountAmount = (quote.discount) ? (quote.subTotal / 100 * quote.discount) : 0;
+    quote.total = quote.subTotal - quote.discountAmount;
+    quote.totalCgst = quote.items.reduce((a, b) => a + (b.cgst || 0), 0);
+    quote.totalSgst = quote.items.reduce((a, b) => a + (b.sgst || 0), 0);
+
+    return quote;
   }
 
   loadCurrentQuote(quoteId: string): Observable<Quote> {

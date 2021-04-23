@@ -8,6 +8,10 @@ export interface Quote {
   customer: Customer;
   createdAt: number;
   items: QuoteItem[];
+  hasDiscount: boolean;
+  discount?: number;
+  discountAmount?: number;
+  subTotal: number;
   total: number;
   totalCgst: number;
   totalSgst: number;

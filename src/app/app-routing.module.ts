@@ -40,6 +40,12 @@ const routes: Routes = [
     data: { authGuardPipe: redirectUnauthorizedToLogin }
   },
   {
+    path: 'proforma',
+    loadChildren: () => import('./pages/proforma/proforma.module').then(m => m.ProformaModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
     path: 'purchase',
     loadChildren: () => import('./pages/purchase/purchase.module').then(m => m.PurchaseModule),
     canActivate: [AngularFireAuthGuard],

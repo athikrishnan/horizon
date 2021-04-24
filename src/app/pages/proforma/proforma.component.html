@@ -1,0 +1,26 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="new-proforma" mat-stroked-button color="primary">
+      New Proforma <mat-icon>add</mat-icon> 
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Active Proformas</div>
+  <mat-list-item *ngIf="!activeProformas.length">
+    <p mat-line> There are no active proformas.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let proforma of activeProformas">
+    <p mat-line (click)="editProforma(proforma.id)"> {{ proforma.customer.name }} (#{{ proforma.customer.code }})</p>
+    <p mat-line> {{ proforma.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <div mat-subheader>Recently Completed</div>
+  <mat-list-item *ngIf="!recentProformas.length">
+    <p mat-line> There are no recent proformas.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let proforma of recentProformas">
+    <p mat-line (click)="editProforma(proforma.id)"> {{ proforma.customer.name }} (#{{ proforma.customer.code }})</p>
+    <p mat-line> {{ proforma.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

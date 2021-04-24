@@ -58,13 +58,21 @@ export class InvoiceService {
     }
 
     invoice.updatedAt = Date.now();
-    invoice.total = invoice.items.reduce((a, b) => a + (b.price || 0), 0);
-    invoice.totalCgst = invoice.items.reduce((a, b) => a + (b.cgst || 0), 0);
-    invoice.totalSgst = invoice.items.reduce((a, b) => a + (b.sgst || 0), 0);
+    invoice = this.calculateTotals(invoice);
 
     return await this.invoiceCollection.doc(invoice.id).set(invoice).then(() => {
       return invoice.id;
     });
+  }
+
+  private calculateTotals(invoice: Invoice): Invoice {
+    invoice.subTotal = invoice.items.reduce((a, b) => a + (b.price || 0), 0);
+    invoice.discountAmount = (invoice.discount) ? (invoice.subTotal / 100 * invoice.discount) : 0;
+    invoice.total = invoice.subTotal - invoice.discountAmount;
+    invoice.totalCgst = invoice.items.reduce((a, b) => a + (b.cgst || 0), 0);
+    invoice.totalSgst = invoice.items.reduce((a, b) => a + (b.sgst || 0), 0);
+
+    return invoice;
   }
 
   loadCurrentInvoice(invoiceId: string): Observable<Invoice> {

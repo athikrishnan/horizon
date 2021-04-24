@@ -1,0 +1,22 @@
+<div *ngIf="isEditMode">
+  <app-proforma-item-form [proforma]="proforma" [item]="item" (save)="isEditMode = false"></app-proforma-item-form>
+</div>
+<div *ngIf="!isEditMode && item.product" fxLayout="column">
+  <ng-container *ngIf="!proforma.hideTax">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <p>Price Per Unit ({{ item.pack.name }})</p>
+      <p>&#8377;{{ item.pack.price | number : '.2-2' }}</p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <p>Taxable Amount</p>
+      <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <p>Tax ({{ item.product?.slab?.cgst }} / {{ item.product?.slab?.sgst }} %)</p>
+      <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
+    </div>
+  </ng-container>
+  <div fxLayoutAlign="end" *ngIf="!proforma.completedAt">
+    <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
+  </div>
+</div>

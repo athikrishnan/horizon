@@ -1,17 +1,17 @@
-<div *ngIf="invoice" fxLayout="column">
+<div *ngIf="proforma" fxLayout="column">
   <div fxFlex="row" fxLayoutAlign="space-between" fxFlex="100">
     <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
       <mat-expansion-panel-header>
-        {{ invoice.code }}
+        {{ proforma.code }}
       </mat-expansion-panel-header>
       <p>last updated at:</p>
-      <p><b>{{ invoice.updatedAt | timeAgo }}</b></p>
-      <ng-container *ngIf="!invoice.completedAt">
+      <p><b>{{ proforma.updatedAt | timeAgo }}</b></p>
+      <ng-container *ngIf="!proforma.completedAt">
         <form>
-          <mat-checkbox [checked]="!invoice.hideTax" (change)="onTaxStateChange($event)">Tax Invoice</mat-checkbox>
+          <mat-checkbox [checked]="!proforma.hideTax" (change)="onTaxStateChange($event)">Tax Proforma</mat-checkbox>
         </form>
         <br>
-        <button *ngIf="!invoice.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
+        <button *ngIf="!proforma.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
           Delete
         </button>
       </ng-container>
@@ -33,7 +33,7 @@
   <br>
   <div fxLayout="row" fxLayoutAlign="space-between center">
     <span fxFlex="1 0 70%">Particulars</span>
-    <button (click)="onProductSearchOpen()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
+    <button (click)="onProductSearchOpen()" *ngIf="!proforma.completedAt" mat-stroked-button color="primary"> Add Item
     </button>
   </div>
   <br>
@@ -47,9 +47,9 @@
   </div>
   <br>
   <mat-accordion [multi]="true">
-    <mat-expansion-panel *ngFor="let item of invoice.items; let i = index" [class.mat-elevation-z1]="true"
+    <mat-expansion-panel *ngFor="let item of proforma.items; let i = index" [class.mat-elevation-z1]="true"
       [expanded]="isIncompleteItem(item)" [hideToggle]="true">
-      <mat-expansion-panel-header class="invoice-item-header">
+      <mat-expansion-panel-header class="proforma-item-header">
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
           <div fxFlex="8">
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>
@@ -64,17 +64,17 @@
           <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
-      <app-invoice-item [invoice]="invoice" [item]="item"></app-invoice-item>
+      <app-proforma-item [proforma]="proforma" [item]="item"></app-proforma-item>
     </mat-expansion-panel>
-    <mat-expansion-panel *ngIf="invoice.items?.length" [class.mat-elevation-z1]="true" [expanded]="false"
+    <mat-expansion-panel *ngIf="proforma.items?.length" [class.mat-elevation-z1]="true" [expanded]="false"
       [hideToggle]="true">
-      <mat-expansion-panel-header class="invoice-item-header">
+      <mat-expansion-panel-header class="proforma-item-header">
         <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
           <div>Total</div>
-          <div style="text-align: right;">&#8377;{{ (invoice.total || 0) | number : '.2-2' }}</div>
+          <div style="text-align: right;">&#8377;{{ (proforma.total || 0) | number : '.2-2' }}</div>
         </div>
       </mat-expansion-panel-header>
-      <ng-container *ngIf="!invoice.hideTax">
+      <ng-container *ngIf="!proforma.hideTax">
         <div fxLayout="row" fxLayoutAlign="space-between">
           <p>Taxable Amount</p>
           <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
@@ -84,22 +84,22 @@
           <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
         </div>
       </ng-container>
-      <div *ngIf="invoice.hasDiscount" fxLayout="row" fxLayoutAlign="space-between">
+      <div *ngIf="proforma.hasDiscount" fxLayout="row" fxLayoutAlign="space-between">
         <p>subTotal</p>
-        <p style="text-align: right;">&#8377;{{ (invoice.subTotal || 0) | number : '.2-2' }}</p>
+        <p style="text-align: right;">&#8377;{{ (proforma.subTotal || 0) | number : '.2-2' }}</p>
       </div>
-      <div *ngIf="invoice.hasDiscount" fxLayout="row" fxLayoutAlign="space-between">
-        <p>Discount ({{ invoice.discount }}%)</p>
-        <p style="text-align: right;">&#8377;{{ (invoice.discountAmount || 0) | number : '.2-2' }}</p>
+      <div *ngIf="proforma.hasDiscount" fxLayout="row" fxLayoutAlign="space-between">
+        <p>Discount ({{ proforma.discount }}%)</p>
+        <p style="text-align: right;">&#8377;{{ (proforma.discountAmount || 0) | number : '.2-2' }}</p>
       </div>
-      <ng-container *ngIf="!invoice.completedAt">
+      <ng-container *ngIf="!proforma.completedAt">
         <br>
         <form>
-          <mat-checkbox [checked]="invoice.hasDiscount" (change)="onDiscountStateChange($event)">Apply Discount
+          <mat-checkbox [checked]="proforma.hasDiscount" (change)="onDiscountStateChange($event)">Apply Discount
           </mat-checkbox>
         </form>
       </ng-container>
-      <ng-container *ngIf="!invoice.completedAt && invoice.hasDiscount">
+      <ng-container *ngIf="!proforma.completedAt && proforma.hasDiscount">
         <br>
         <form [formGroup]="discountForm" fxLayout="column">
           <mat-form-field>
@@ -123,12 +123,12 @@
   <br>
   <mat-divider></mat-divider>
   <br>
-  <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
-    <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
-    <button (click)="onPrint()" *ngIf="invoice.completedAt" mat-raised-button color="primary">Print</button>
+  <div fxLayoutAlign="end" *ngIf="proforma.items?.length">
+    <button (click)="onComplete()" *ngIf="!proforma.completedAt" mat-raised-button color="primary">Complete</button>
+    <button (click)="onPrint()" *ngIf="proforma.completedAt" mat-raised-button color="primary">Print</button>
   </div>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>
-<app-invoice-print [invoice]="invoice" *ngIf="invoice?.completedAt" #print style="display: none;"></app-invoice-print>
+<app-proforma-print [proforma]="proforma" *ngIf="proforma?.completedAt" #print style="display: none;"></app-proforma-print>
 <app-spinner *ngIf="showSpinner"></app-spinner>

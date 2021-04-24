@@ -8,6 +8,10 @@ export interface Invoice {
   customer: Customer;
   createdAt: number;
   items: InvoiceItem[];
+  hasDiscount: boolean;
+  discount?: number;
+  discountAmount?: number;
+  subTotal: number;
   total: number;
   totalCgst: number;
   totalSgst: number;

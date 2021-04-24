@@ -2,6 +2,7 @@ import { DecimalPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -33,6 +34,9 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     return (!this.invoice) ? null : this.invoice.customer;
   }
   @ViewChild(InvoicePrintComponent) print: InvoicePrintComponent;
+  discountForm: FormGroup = this.fb.group({
+    discount: [null, [Validators.required, Validators.min(0.01), Validators.max(100)]]
+  });
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -41,7 +45,8 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private stateChangedService: StateChangedService<Invoice>,
-    private invoicePrintService: InvoicePrintService) { }
+    private invoicePrintService: InvoicePrintService,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     const invoiceId: string = this.route.snapshot.paramMap.get('invoiceId');
@@ -50,6 +55,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       distinctUntilChanged((a, b) => a && b && a.updatedAt === b.updatedAt)
     ).subscribe((invoice: Invoice) => {
       this.invoice = invoice;
+      this.discountForm.patchValue({ discount: (this.invoice.discount || 0.01) });
       this.showSpinner = false;
       this.ref.detectChanges();
     });
@@ -96,10 +102,31 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.invoice.hideTax = !event.checked;
     this.stateChangedService.stateChanged(this.invoice);
+    this.saveInvoice();
+  }
+
+  private saveInvoice(): void {
     this.invoiceService.saveInvoice(this.invoice).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  onDiscountStateChange(event: MatCheckboxChange): void {
+    this.showSpinner = true;
+    this.invoice.hasDiscount = event.checked;
+    this.invoice.discount = (event.checked) ? (this.customer.discount || 0.01) : null;
+    this.ref.detectChanges();
+    if (this.invoice.hasDiscount) {
+      this.discountForm.patchValue({ discount: (this.customer.discount || 0.01) });
+    }
+    this.saveInvoice();
+  }
+
+  onSaveDiscount(): void {
+    this.showSpinner = true;
+    this.invoice.discount = +this.discountForm.get('discount').value;
+    this.saveInvoice();
   }
 
   getTaxableAmount(): number {

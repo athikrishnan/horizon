@@ -79,7 +79,7 @@
             </th>
             <th *ngIf="isTaxInvoice" style="width: 20mm">&#8377;{{ invoice.totalCgst | number: '.2-2' }}</th>
             <th *ngIf="isTaxInvoice" style="width: 20mm">&#8377;{{ invoice.totalSgst | number: '.2-2' }}</th>
-            <th style="width: 20mm">&#8377;{{ invoice.total | number: '.2-2' }}</th>
+            <th style="width: 20mm">&#8377;{{ invoice.subTotal | number: '.2-2' }}</th>
           </tr>
         </tbody>
       </table>
@@ -101,6 +101,10 @@
       </div>
       <div class="right-50">
         <div class="dark-header">Amounts</div>
+        <div class="amount-item" *ngIf="invoice.hasDiscount">
+          <span>Discount ({{ invoice.discount }}%)</span>
+          <span>&#8377;{{ invoice.discountAmount | number: '.2-2' }}</span>
+        </div>
         <div class="amount-item">
           <span>Sub Total</span>
           <span>&#8377;{{ invoice.total | number: '.2-2' }}</span>

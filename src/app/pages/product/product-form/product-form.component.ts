@@ -43,7 +43,7 @@ export class ProductFormComponent implements OnInit {
     private slabService: SlabService) { }
 
   ngOnInit(): void {
-    this.editId = this.route.snapshot.paramMap.get('id');
+    this.editId = this.route.snapshot.paramMap.get('productId');
     if (!!this.editId) {
       this.productService.getProduct(this.editId).subscribe((product: Product) => {
         this.productForm.patchValue(product);

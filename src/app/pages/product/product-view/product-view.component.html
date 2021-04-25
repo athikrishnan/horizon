@@ -12,6 +12,9 @@
         <a mat-menu-item routerLink="/product/{{ product.id }}/variant/create">
           Add Variant
         </a>
+        <a mat-menu-item routerLink="/product/{{ product.id }}/stock">
+          Adjust Stock
+        </a>
         <mat-divider></mat-divider>
         <button (click)="onDelete(product)" mat-menu-item>Delete</button>
       </mat-menu>

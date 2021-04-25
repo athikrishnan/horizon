@@ -7,9 +7,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductVariantFormComponent } from './product-variant-form/product-variant-form.component';
+import { ProductStockComponent } from './product-stock/product-stock.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductFormComponent, ProductViewComponent, ProductVariantFormComponent],
+  declarations: [ProductComponent, ProductFormComponent, ProductViewComponent, ProductVariantFormComponent, ProductStockComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,

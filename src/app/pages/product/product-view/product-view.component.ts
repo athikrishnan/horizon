@@ -24,7 +24,7 @@ export class ProductViewComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.productId = this.route.snapshot.paramMap.get('id');
+    this.productId = this.route.snapshot.paramMap.get('productId');
     this.productService.getProduct(this.productId).subscribe((product: Product) => {
       this.product = product;
       this.showSpinner = false;

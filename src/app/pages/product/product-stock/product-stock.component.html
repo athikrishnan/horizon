@@ -1,0 +1,32 @@
+<div *ngIf="product" fxFlex="100">
+  <p class="mat-display-1"> {{ product.name }}</p>
+  <form [formGroup]="stockForm" fxLayout="column" #form="ngForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Variant</mat-label>
+      <mat-select formControlName="variant" placeholder="Variant">
+        <mat-option *ngFor="let variant of product.variants" [value]="variant">
+          {{ variant.size }} {{ product.unit }}
+        </mat-option>
+      </mat-select>
+      <mat-error> Required. </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Current Quantity</mat-label>
+      <input matInput type="number" formControlName="current" readonly>
+      <mat-error> Required. </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>New Quantity</mat-label>
+      <input matInput type="number" formControlName="quantity" autocomplete="new-quantity">
+      <mat-error> Required. </mat-error>
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <div>
+        <a routerLink="/product/{{productId}}/view" mat-stroked-button>Goto Product</a>
+      </div>
+      <button (click)="onSave()" [disabled]="!stockForm.dirty || !stockForm.valid" mat-raised-button
+        color="primary">Save</button>
+    </div>
+  </form>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

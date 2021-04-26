@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductFormComponent } from './product-form/product-form.component';
+import { ProductStockComponent } from './product-stock/product-stock.component';
 import { ProductVariantFormComponent } from './product-variant-form/product-variant-form.component';
 import { ProductViewComponent } from './product-view/product-view.component';
 import { ProductComponent } from './product.component';
@@ -15,12 +16,16 @@ const routes: Routes = [
     component: ProductFormComponent
   },
   {
-    path: ':id/view',
+    path: ':productId/view',
     component: ProductViewComponent
   },
   {
-    path: ':id/edit',
+    path: ':productId/edit',
     component: ProductFormComponent
+  },
+  {
+    path: ':productId/stock',
+    component: ProductStockComponent
   },
   {
     path: ':productId/variant/create',

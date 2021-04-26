@@ -1,0 +1,22 @@
+name: Firestore Rules Deployment
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/deploy-rules.yml'
+      - 'firestore.rules'
+    
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only firestore:rules
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

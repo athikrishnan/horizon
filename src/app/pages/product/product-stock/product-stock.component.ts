@@ -59,11 +59,8 @@ export class ProductStockComponent implements OnInit, OnDestroy {
     const stockChange = this.stockForm.getRawValue() as StockChange;
     stockChange.product = this.product;
     stockChange.isDebit = stockChange.variant.quantity > stockChange.quantity;
-    this.stockChangeService.saveStockChange(stockChange).then(() => {
-      const variant = stockChange.variant;
-      variant.quantity = stockChange.quantity;
-      const index: number = this.product.variants.findIndex(i => i.id === variant.id);
-      this.product.variants.splice(index, 1, variant);
+    this.stockChangeService.createStockChange(stockChange).then((response: StockChange) => {
+      this.product = response.product;
       this.form.resetForm();
       this.showSpinner = false;
       this.ref.detectChanges();

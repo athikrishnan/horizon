@@ -30,10 +30,6 @@ export class AuthService implements OnDestroy {
     this.auth.onAuthStateChanged(async (authUser: User) => {
       if (authUser) {
         this.authId = authUser.uid;
-        const doc = await this.store.collection('users').doc(authUser.uid).get().toPromise();
-        if (!doc.exists) {
-          await this.store.collection('users').doc(authUser.uid).set(this.getAppUser(authUser));
-        }
         this.store.collection<User>('users').doc(authUser.uid).valueChanges().pipe(takeUntil(this.unsubscribe$))
           .subscribe((user: User) => this.publishAuth(user));
       }
@@ -46,7 +42,8 @@ export class AuthService implements OnDestroy {
       email: authUser.email,
       phoneNumber: authUser.phoneNumber,
       displayName: authUser.displayName,
-      photoURL: authUser.photoURL
+      photoURL: authUser.photoURL,
+      isActive: false
     } as User;
   }
 
@@ -56,8 +53,13 @@ export class AuthService implements OnDestroy {
   }
 
   async login(): Promise<firebase.auth.UserCredential> {
-    return this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-      return this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    return this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(async () => {
+      const credentials = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      const doc = await this.store.collection('users').doc(credentials.user.uid).get().toPromise();
+      if (!doc.exists) {
+        await this.store.collection('users').doc(credentials.user.uid).set(this.getAppUser(credentials.user));
+      }
+      return credentials;
     });
   }
 

@@ -18,6 +18,7 @@ export interface InvoiceDoc {
     createdAt: number;
     updatedAt: number;
   };
+  items: any[];
   createdAt: number;
   updatedAt: number;
   completedAt: number;

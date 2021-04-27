@@ -17,18 +17,11 @@ export class StockChangeService {
     this.stockChangeCollection = this.store.collection<StockChange>('stockChanges');
   }
 
-  async createStockChange(stockChange: StockChange): Promise<StockChange> {
+  createStockChange(stockChange: StockChange): Promise<void> {
     stockChange.id = this.store.createId();
     stockChange.changedBy = this.auth.authUser;
     stockChange.createdAt = Date.now();
     stockChange.updatedAt = Date.now();
-    const variant = stockChange.variant;
-    variant.quantity = stockChange.quantity;
-    const index: number = stockChange.product.variants.findIndex(i => i.id === variant.id);
-    stockChange.product.variants.splice(index, 1, variant);
-
-    await this.productService.saveProduct(stockChange.product);
-    await this.stockChangeCollection.doc(stockChange.id).set(stockChange);
-    return stockChange;
+    return this.stockChangeCollection.doc(stockChange.id).set(stockChange);
   }
 }

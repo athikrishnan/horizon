@@ -25,6 +25,10 @@ exports.onProformaCreate = onProformaCreate.onProformaCreate;
 const onProductCreate = require('./product/on-product-create.function');
 exports.onProductCreate = onProductCreate.onProductCreate;
 
+// stock change
+const onStockChangeCreate = require('./stockChange/on-stack-change-create.function');
+exports.onStockChangeCreate = onStockChangeCreate.onStockChangeCreate;
+
 // purchase
 const onPurchaseCreate = require('./purchase/on-purchase-create.function');
 exports.onPurchaseCreate = onPurchaseCreate.onPurchaseCreate;

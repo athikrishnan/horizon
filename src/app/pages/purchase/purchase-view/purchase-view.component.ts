@@ -100,7 +100,7 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
     this.purchase.completedAt = Date.now();
     this.ref.detectChanges();
     this.stateChangedService.stateChanged(this.purchase);
-    this.purchaseService.savePurchase(this.purchase).then(() => {
+    this.purchaseService.completePurchase(this.purchase).then(() => {
       this.ref.detectChanges();
       this.showSpinner = false;
     });

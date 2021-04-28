@@ -37,6 +37,10 @@ exports.onStockChangeCreate = onStockChangeCreate.onStockChangeCreate;
 const onPurchaseCreate = require('./purchase/on-purchase-create.function');
 exports.onPurchaseCreate = onPurchaseCreate.onPurchaseCreate;
 
+// completed purchase
+const onCompletedPurchaseCreate = require('./purchase/on-completed-purchase-create.function');
+exports.onCompletedPurchaseCreate = onCompletedPurchaseCreate.onCompletedPurchaseCreate;
+
 // quote
 const onQuoteCreate = require('./quote/on-quote-create.function');
 exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;

@@ -5,6 +5,8 @@ import { take } from 'rxjs/operators';
 import { Supplier } from '../models/supplier.model';
 import { PurchaseItem } from '../models/purchase-item.model';
 import { Purchase } from '../models/purchase.model';
+import { CompletedPurchase } from '../models/completed-purchase.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,13 @@ import { Purchase } from '../models/purchase.model';
 export class PurchaseService {
   private current$: Observable<Purchase>;
   private purchaseCollection: AngularFirestoreCollection<Purchase>;
+  private completedPurchaseCollection: AngularFirestoreCollection<CompletedPurchase>;
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private auth: AuthService) {
     this.purchaseCollection = this.store.collection<Purchase>('purchases');
+    this.completedPurchaseCollection = this.store.collection<CompletedPurchase>('completedPurchases');
   }
 
   getActivePurchases(): Observable<Purchase[]> {
@@ -105,5 +111,17 @@ export class PurchaseService {
     purchase.items.splice(index, 1);
 
     return await this.savePurchase(purchase);
+  }
+
+  completePurchase(purchase: Purchase): Promise<string> {
+    const id = this.store.createId();
+    this.completedPurchaseCollection.doc(id).set({
+      id,
+      purchase,
+      completedBy: this.auth.authUser,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    } as CompletedPurchase);
+    return this.savePurchase(purchase);
   }
 }

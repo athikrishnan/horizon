@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { CompletedInvoice } from '../models/completed-invoice.model';
 import { Customer } from '../models/customer.model';
 import { InvoiceItem } from '../models/invoice-item.model';
 import { Invoice } from '../models/invoice.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +14,13 @@ import { Invoice } from '../models/invoice.model';
 export class InvoiceService {
   private current$: Observable<Invoice>;
   private invoiceCollection: AngularFirestoreCollection<Invoice>;
+  private completedInvoiceCollection: AngularFirestoreCollection<CompletedInvoice>;
 
-  constructor(private store: AngularFirestore) {
+  constructor(
+    private store: AngularFirestore,
+    private auth: AuthService) {
     this.invoiceCollection = this.store.collection<Invoice>('invoices');
+    this.completedInvoiceCollection = this.store.collection<CompletedInvoice>('completedInvoices');
   }
 
   getActiveInvoices(): Observable<Invoice[]> {
@@ -115,5 +121,17 @@ export class InvoiceService {
     invoice.items.splice(index, 1);
 
     return await this.saveInvoice(invoice);
+  }
+
+  completeInvoice(invoice: Invoice): Promise<string> {
+    const id = this.store.createId();
+    this.completedInvoiceCollection.doc(id).set({
+      id,
+      invoice,
+      completedBy: this.auth.authUser,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    } as CompletedInvoice);
+    return this.saveInvoice(invoice);
   }
 }

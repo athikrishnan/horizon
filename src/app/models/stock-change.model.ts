@@ -7,6 +7,7 @@ export interface StockChange {
   product: Product;
   variant: ProductVariant;
   quantity: number;
+  change: number;
   isDebit: boolean;
   changedBy: User;
   updatedAt: number;

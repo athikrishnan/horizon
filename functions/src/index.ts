@@ -17,6 +17,10 @@ exports.onCustomerCreate = onCustomerCreate.onCustomerCreate;
 const onInvoiceCreate = require('./invoice/on-invoice-create.function');
 exports.onInvoiceCreate = onInvoiceCreate.onInvoiceCreate;
 
+// completed invoice
+const onCompletedInvoiceCreate = require('./invoice/on-completed-invoice-create.function');
+exports.onCompletedInvoiceCreate = onCompletedInvoiceCreate.onCompletedInvoiceCreate;
+
 // proforma
 const onProformaCreate = require('./proforma/on-proforma-create.function');
 exports.onProformaCreate = onProformaCreate.onProformaCreate;
@@ -24,6 +28,10 @@ exports.onProformaCreate = onProformaCreate.onProformaCreate;
 // product
 const onProductCreate = require('./product/on-product-create.function');
 exports.onProductCreate = onProductCreate.onProductCreate;
+
+// stock change
+const onStockChangeCreate = require('./stockChange/on-stack-change-create.function');
+exports.onStockChangeCreate = onStockChangeCreate.onStockChangeCreate;
 
 // purchase
 const onPurchaseCreate = require('./purchase/on-purchase-create.function');

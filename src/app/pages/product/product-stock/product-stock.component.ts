@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
@@ -23,9 +23,14 @@ export class ProductStockComponent implements OnInit, OnDestroy {
   stockForm: FormGroup = this.fb.group({
     variant: [null, Validators.required],
     current: null,
+    isDebit: null,
+    change: [null, Validators.required],
     quantity: [null, Validators.required]
   });
   @ViewChild('form') form: any;
+  get variant(): ProductVariant {
+    return this.stockForm.get('variant').value as ProductVariant;
+  }
 
   constructor(
     private ref: ChangeDetectorRef,
@@ -45,8 +50,22 @@ export class ProductStockComponent implements OnInit, OnDestroy {
 
     this.stockForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$))
       .subscribe((variant: ProductVariant) => {
-        this.stockForm.get('current').patchValue((variant) ? variant.quantity : null);
+        this.stockForm.patchValue({
+          current: (variant) ? variant.quantity : null,
+          isDebit: false
+        });
       });
+
+    combineLatest([
+      this.stockForm.get('change').valueChanges.pipe(takeUntil(this.unsubscribe$)),
+      this.stockForm.get('isDebit').valueChanges.pipe(takeUntil(this.unsubscribe$))
+    ]).subscribe(([change, isDebit]: [number, boolean]) => {
+      if (this.variant) {
+        let quantity = (isDebit) ? this.variant.quantity - change : this.variant.quantity + change;
+        if (quantity < 0) { quantity = 0; }
+        this.stockForm.get('quantity').setValue(quantity, { emitEvent: false });
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -59,8 +78,11 @@ export class ProductStockComponent implements OnInit, OnDestroy {
     const stockChange = this.stockForm.getRawValue() as StockChange;
     stockChange.product = this.product;
     stockChange.isDebit = stockChange.variant.quantity > stockChange.quantity;
-    this.stockChangeService.createStockChange(stockChange).then((response: StockChange) => {
-      this.product = response.product;
+    this.stockChangeService.createStockChange(stockChange).then(() => {
+      const variant = stockChange.variant;
+      variant.quantity = stockChange.quantity;
+      const index: number = this.product.variants.findIndex(i => i.id === variant.id);
+      this.product.variants.splice(index, 1, variant);
       this.form.resetForm();
       this.showSpinner = false;
       this.ref.detectChanges();

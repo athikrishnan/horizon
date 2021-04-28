@@ -44,3 +44,8 @@ mat-radio-group {
   // hide the warning banner as AngularFire doesn't support the 'disableWarnings' option
   display: none;
 }
+
+// snackbar
+.snackbar-alert {
+  color: hotpink; 
+}

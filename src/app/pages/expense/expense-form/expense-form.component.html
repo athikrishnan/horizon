@@ -18,9 +18,8 @@
   <mat-form-field appearance="outline">
     <mat-label>Amount</mat-label>
     <app-currency-input matInput required formControlName="amount" #amount></app-currency-input>
-    <mat-error *ngIf="expenseForm.get('amount').hasError('required')">
-      Required.
-    </mat-error>
+    <span matSuffix>&#8377;</span>
+    <mat-error>Required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Paid On</mat-label>
@@ -37,7 +36,7 @@
     <div>
       <a routerLink="/expense" mat-stroked-button>Cancel</a>
     </div>
-    <button (click)="onSave()" mat-raised-button [disabled]="!expenseForm.dirty || !expenseForm.valid" 
+    <button (click)="onSave()" mat-raised-button [disabled]="!expenseForm.dirty || !expenseForm.valid"
       color="primary">Save</button>
   </div>
   <p>

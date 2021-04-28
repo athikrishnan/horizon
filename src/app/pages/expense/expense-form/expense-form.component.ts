@@ -9,6 +9,7 @@ import { CurrencyInputComponent } from 'src/app/components/currency-input/curren
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { ExpenseType } from 'src/app/enums/expense-type.enum';
 import { Expense } from 'src/app/models/expense.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { ExpenseService } from 'src/app/services/expense.service';
 
 @Component({
@@ -18,7 +19,7 @@ import { ExpenseService } from 'src/app/services/expense.service';
   styleUrls: ['./expense-form.component.scss']
 })
 export class ExpenseFormComponent implements OnInit, OnDestroy {
-  private unsubscribe$ =  new Subject<void>();
+  private unsubscribe$ = new Subject<void>();
   showSpinner = true;
   expenseTypeList: KeyValue<ExpenseType, string>[] = [
     { key: ExpenseType.Fuel, value: 'Fuel' },
@@ -47,7 +48,8 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -90,8 +92,13 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     this.expenseService.saveExpense(expense).then(() => {
       if (!this.editId) {
         this.form.resetForm();
+        this.expenseForm.patchValue({ type: this.expenseTypeList[0].value });
+        setTimeout(() => {
+          this.amountField.focus();
+        }, 0);
       }
       this.showSpinner = false;
+      this.alertService.alert('Expense Created!');
       this.ref.detectChanges();
     });
   }
@@ -102,6 +109,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.expenseService.deleteExpense(this.expense).then(() => {
+          this.alertService.alert('Expense Deleted!');
           this.router.navigate(['expense']);
         });
       }

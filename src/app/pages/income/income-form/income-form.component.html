@@ -1,0 +1,49 @@
+<form [formGroup]="incomeForm" fxLayout="column" #form="ngForm">
+  <input formControlName="id" type="hidden">
+  <input formControlName="createdAt" type="hidden">
+  <p class="mat-subheading-1">Income Details</p>
+  <mat-form-field appearance="outline">
+    <mat-select formControlName="type">
+      <mat-option *ngFor="let item of incomeTypeList" [value]="item.key">
+        {{ item.value }}
+      </mat-option>
+    </mat-select>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline" *ngIf="incomeForm.get('type').value === IncomeType.Other">
+    <mat-label>Other Income is</mat-label>
+    <input matInput formControlName="other" autocomplete="none">
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Amount</mat-label>
+    <app-currency-input matInput required formControlName="amount" #amount></app-currency-input>
+    <span matSuffix>&#8377;</span>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Paid On</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Comments if Any</mat-label>
+    <input matInput formControlName="comments" autocomplete="none">
+  </mat-form-field>
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
+    <div>
+      <a routerLink="/income" mat-stroked-button>Cancel</a>
+    </div>
+    <button (click)="onSave()" mat-raised-button [disabled]="!incomeForm.dirty || !incomeForm.valid"
+      color="primary">Save</button>
+  </div>
+  <p>
+    <mat-divider></mat-divider>
+  </p>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="!!editId" (click)="onDelete()" mat-stroked-button color="warn">Delete</a>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

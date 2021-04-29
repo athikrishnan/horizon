@@ -1,0 +1,21 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="create" mat-stroked-button color="primary">
+      New Income <mat-icon>add</mat-icon>
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Recent Incomes</div>
+  <mat-nav-list>
+    <a routerLink="/income/{{income.id}}/edit" mat-list-item *ngFor="let income of incomes">
+      <div fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ income.type }}</div>
+        <div>&#8377;{{ income.amount }}</div>
+      </div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!incomes.length">
+      <p mat-line> There are no incomes.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

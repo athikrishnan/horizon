@@ -13,7 +13,7 @@ const routes: Routes = [
     component: ExpenseFormComponent
   },
   {
-    path: ':id/edit',
+    path: ':expenseId/edit',
     component: ExpenseFormComponent
   }
 ];

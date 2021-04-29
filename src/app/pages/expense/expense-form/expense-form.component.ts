@@ -52,7 +52,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
     private alertService: AlertService) { }
 
   ngOnInit(): void {
-    this.editId = this.route.snapshot.paramMap.get('id');
+    this.editId = this.route.snapshot.paramMap.get('expenseId');
     if (!!this.editId) {
       this.expenseService.getExpense(this.editId).subscribe((expense: Expense) => {
         this.expense = expense;

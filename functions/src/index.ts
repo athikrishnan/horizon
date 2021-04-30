@@ -41,6 +41,14 @@ exports.onPurchaseCreate = onPurchaseCreate.onPurchaseCreate;
 const onCompletedPurchaseCreate = require('./purchase/on-completed-purchase-create.function');
 exports.onCompletedPurchaseCreate = onCompletedPurchaseCreate.onCompletedPurchaseCreate;
 
+// sale return
+const onSaleReturnCreate = require('./sale-return/on-sale-return-create.function');
+exports.onSaleReturnCreate = onSaleReturnCreate.onSaleReturnCreate;
+
+// completed sale return
+const onCompletedSaleReturnCreate = require('./sale-return/on-completed-sale-return-create.function');
+exports.onCompletedSaleReturnCreate = onCompletedSaleReturnCreate.onCompletedSaleReturnCreate;
+
 // quote
 const onQuoteCreate = require('./quote/on-quote-create.function');
 exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;

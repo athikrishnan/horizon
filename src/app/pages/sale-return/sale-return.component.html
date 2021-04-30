@@ -1,0 +1,26 @@
+<mat-list>
+  <mat-list-item>
+    <a routerLink="new-sale-return" mat-stroked-button color="primary">
+      New Sale Return <mat-icon>add</mat-icon> 
+    </a>
+  </mat-list-item>
+  <div mat-subheader>Active Sale Returns</div>
+  <mat-list-item *ngIf="!activeSaleReturns.length">
+    <p mat-line> There are no active sale returns.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let saleReturn of activeSaleReturns">
+    <p mat-line (click)="editSaleReturn(saleReturn.id)"> {{ saleReturn.supplier.name }} (#{{ saleReturn.supplier.code }})</p>
+    <p mat-line> {{ saleReturn.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+  <div mat-subheader>Recently Completed</div>
+  <mat-list-item *ngIf="!recentSaleReturns.length">
+    <p mat-line> There are no recent sale returns.</p>
+  </mat-list-item>
+  <mat-list-item *ngFor="let saleReturn of recentSaleReturns">
+    <p mat-line (click)="editSaleReturn(saleReturn.id)"> {{ saleReturn.supplier.name }} (#{{ saleReturn.supplier.code }})</p>
+    <p mat-line> {{ saleReturn.updatedAt | timeAgo }} </p> 
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

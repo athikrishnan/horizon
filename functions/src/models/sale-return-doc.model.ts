@@ -1,7 +1,7 @@
-export interface PurchaseDoc {
+export interface SaleReturnDoc {
   id: string;
   code: string;
-  supplier: any;
+  customer: any;
   items: any[];
   createdAt: number;
   updatedAt: number;

@@ -1,0 +1,20 @@
+<div *ngIf="isEditMode">
+  <app-sale-return-item-form [saleReturn]="saleReturn" [item]="item" (save)="isEditMode = false"></app-sale-return-item-form>
+</div>
+<div *ngIf="!isEditMode && item.product" fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p>Price Per Unit ({{ item.pack.name }})</p>
+    <p>&#8377;{{ item.unitPrice | number : '.2-2' }}</p>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p>Taxable Amount</p>
+    <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <p>Tax ({{ item.product?.slab?.cgst }} / {{ item.product?.slab?.sgst }} %)</p>
+    <p>&#8377;{{ getTaxAmount() | number : '.2-2' }}</p>
+  </div>
+  <div fxLayoutAlign="end" *ngIf="!saleReturn.completedAt">
+    <button (click)="isEditMode = true" mat-stroked-button color="primary">Modify</button>
+  </div>
+</div>

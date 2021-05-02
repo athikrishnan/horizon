@@ -21,6 +21,10 @@ exports.onInvoiceCreate = onInvoiceCreate.onInvoiceCreate;
 const onCompletedInvoiceCreate = require('./invoice/on-completed-invoice-create.function');
 exports.onCompletedInvoiceCreate = onCompletedInvoiceCreate.onCompletedInvoiceCreate;
 
+// invoice payment
+const onInvoicePaymentCreate = require('./invoice/on-invoice-payment-create.function');
+exports.onInvoicePaymentCreate = onInvoicePaymentCreate.onInvoicePaymentCreate;
+
 // proforma
 const onProformaCreate = require('./proforma/on-proforma-create.function');
 exports.onProformaCreate = onProformaCreate.onProformaCreate;

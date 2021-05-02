@@ -119,11 +119,11 @@
         </div>
         <div class="amount-item bb-1">
           <span>Received</span>
-          <span>&#8377;0.00</span>
+          <span>&#8377;{{ invoice.received | number: '.2-2' }}</span>
         </div>
         <div class="amount-item">
           <span>Balance</span>
-          <span>&#8377;{{ getTotal() | number: '.2-2' }}</span>
+          <span>&#8377;{{ invoice.balance | number: '.2-2' }}</span>
         </div>
       </div>
     </div>

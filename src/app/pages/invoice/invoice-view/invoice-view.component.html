@@ -92,6 +92,14 @@
         <p>Discount ({{ invoice.discount }}%)</p>
         <p style="text-align: right;">&#8377;{{ (invoice.discountAmount || 0) | number : '.2-2' }}</p>
       </div>
+      <div *ngIf="invoice.completedAt" fxLayout="row" fxLayoutAlign="space-between">
+        <p>Received</p>
+        <p style="text-align: right;">&#8377;{{ (invoice.received || 0) | number : '.2-2' }}</p>
+      </div>
+      <div *ngIf="invoice.completedAt" fxLayout="row" fxLayoutAlign="space-between">
+        <p>Balance</p>
+        <p style="text-align: right;">&#8377;{{ (invoice.balance || 0) | number : '.2-2' }}</p>
+      </div>
       <ng-container *ngIf="!invoice.completedAt">
         <br>
         <form>
@@ -123,10 +131,17 @@
   <br>
   <mat-divider></mat-divider>
   <br>
-  <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
-    <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
-    <button (click)="onPrint()" *ngIf="invoice.completedAt" mat-raised-button color="primary">Print</button>
-  </div>
+  <ng-contianer *ngIf="!invoice.completedAt">
+    <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
+      <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
+    </div>
+  </ng-contianer>
+  <ng-contianer *ngIf="invoice.completedAt">
+    <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+      <button (click)="onPrint()" mat-stroked-button color="primary">Print</button>
+      <button (click)="onAddPayment()" mat-raised-button color="primary">Add Payment</button>
+    </div>
+  </ng-contianer>
 </div>
 <app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
   (productSelect)="onProductSelect($event)"></app-product-search>

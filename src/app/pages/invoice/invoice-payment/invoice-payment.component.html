@@ -1,0 +1,28 @@
+<ng-container *ngIf="invoice">
+  <p mat-dialog-title>{{ invoice.code }}</p>
+  <div mat-dialog-content fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+      <div>Total</div>
+      <div style="text-align: right;">&#8377;{{ (invoice.total || 0) | number : '.2-2' }}</div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+      <div>Balance</div>
+      <div style="text-align: right;">&#8377;{{ (invoice.balance || 0) | number : '.2-2' }}</div>
+    </div>
+    <br>
+    <form [formGroup]="paymentForm">
+      <mat-form-field fxFlex="100">
+        <mat-label>Amount</mat-label>
+        <app-currency-input matInput formControlName="amount" #amount></app-currency-input>
+        <span matSuffix>&#8377;</span>
+        <mat-error>Required</mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between">
+    <button (click)="onClose()" mat-stroked-button>Cancel</button>
+    <button (click)="onSave()" mat-raised-button color="primary"
+      [disabled]="paymentForm.invalid || !paymentForm.dirty">Save</button>
+  </div>
+</ng-container>
+<app-spinner *ngIf="showSpinner"></app-spinner>

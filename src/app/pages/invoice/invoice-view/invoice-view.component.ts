@@ -15,6 +15,7 @@ import { Invoice } from 'src/app/models/invoice.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { InvoicePaymentComponent } from '../invoice-payment/invoice-payment.component';
 import { InvoicePrintService } from '../invoice-print.service';
 import { InvoicePrintComponent } from '../invoice-print/invoice-print.component';
 
@@ -150,5 +151,13 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
 
   onPrint(): void {
     this.invoicePrintService.print(this.invoice, this.print.content.nativeElement.innerHTML);
+  }
+
+  onAddPayment(): void {
+    this.dialog.open(InvoicePaymentComponent, {
+      data: this.invoice
+    }).afterClosed().subscribe(() => {
+      this.ref.detectChanges();
+    });
   }
 }

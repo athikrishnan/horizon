@@ -125,6 +125,10 @@ export class InvoiceService {
 
   completeInvoice(invoice: Invoice): Promise<string> {
     const id = this.store.createId();
+
+    invoice.received = 0;
+    invoice.balance = 0;
+
     this.completedInvoiceCollection.doc(id).set({
       id,
       invoice,

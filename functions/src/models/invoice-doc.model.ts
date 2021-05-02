@@ -1,24 +1,18 @@
 export interface InvoiceDoc {
   id: string;
   code: string;
-  customer: {
-    id: string;
-    name: string;
-    code: number;
-    address: {
-      street: string;
-      locality: string;
-      city: string;
-      state: string;
-      zip: string;
-    };
-    phone: number;
-    email: string;
-    keywords: string[];
-    createdAt: number;
-    updatedAt: number;
-  };
+  customer: any;
   items: any[];
+  hasDiscount: boolean;
+  discount?: number;
+  discountAmount?: number;
+  subTotal: number;
+  total: number;
+  payments: any[];
+  received: number;
+  balance: number;
+  totalCgst: number;
+  totalSgst: number;
   createdAt: number;
   updatedAt: number;
   completedAt: number;

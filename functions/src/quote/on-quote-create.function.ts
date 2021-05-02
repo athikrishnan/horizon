@@ -17,10 +17,11 @@ exports.onQuoteCreate = functions.firestore
     }
 
     statDoc.count++;
-    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
+    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, '') + '-';
     const customerCode = quoteDoc.customer.code.toString() + '-';
     const code: string = statDoc.count.toString();
     quoteDoc.code = 'Q' + date + customerCode + code;
+    quoteDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('quotes').set(statDoc);
     await admin.firestore().collection('quotes').doc(quoteDoc.id).set(quoteDoc);

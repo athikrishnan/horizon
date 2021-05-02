@@ -17,10 +17,11 @@ exports.onSaleReturnCreate = functions.firestore
     }
 
     statDoc.count++;
-    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
+    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, '') + '-';
     const customerCode = saleReturnDoc.customer.code.toString() + '-';
     const code: string = statDoc.count.toString();
     saleReturnDoc.code = 'SR' + date + customerCode + code;
+    saleReturnDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('saleReturns').set(statDoc);
     await admin.firestore().collection('saleReturns').doc(saleReturnDoc.id).set(saleReturnDoc);

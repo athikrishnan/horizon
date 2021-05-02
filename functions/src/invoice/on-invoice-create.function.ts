@@ -17,10 +17,11 @@ exports.onInvoiceCreate = functions.firestore
     }
 
     statDoc.count++;
-    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
+    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, '') + '-';
     const customerCode = invoiceDoc.customer.code.toString() + '-';
     const code: string = statDoc.count.toString();
     invoiceDoc.code = 'I' + date + customerCode + code;
+    invoiceDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('invoices').set(statDoc);
     await admin.firestore().collection('invoices').doc(invoiceDoc.id).set(invoiceDoc);

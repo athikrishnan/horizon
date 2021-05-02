@@ -17,10 +17,11 @@ exports.onPurchaseCreate = functions.firestore
     }
 
     statDoc.count++;
-    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
+    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, '') + '-';
     const supplierCode = purchaseDoc.supplier.code.toString() + '-';
     const code: string = statDoc.count.toString();
     purchaseDoc.code = 'P' + date + supplierCode + code;
+    purchaseDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('purchases').set(statDoc);
     await admin.firestore().collection('purchases').doc(purchaseDoc.id).set(purchaseDoc);

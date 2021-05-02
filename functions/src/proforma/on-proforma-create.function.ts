@@ -17,10 +17,11 @@ exports.onProformaCreate = functions.firestore
     }
 
     statDoc.count++;
-    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, "") + '-';
+    const date: string = (new Date()).toISOString().slice(0, 10).replace(/-/g, '') + '-';
     const customerCode = proformaDoc.customer.code.toString() + '-';
     const code: string = statDoc.count.toString();
     proformaDoc.code = 'PI' + date + customerCode + code;
+    proformaDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('proformas').set(statDoc);
     await admin.firestore().collection('proformas').doc(proformaDoc.id).set(proformaDoc);

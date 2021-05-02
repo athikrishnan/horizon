@@ -1,23 +1,5 @@
-import { Injectable } from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class KeywordService {
-
-  constructor() { }
-
-  generateKeywords(word: string): string[] {
-    const words: string[] = [];
-    let current = '';
-    word.toLowerCase().split('').forEach((char: string) => {
-      current += char;
-      words.push(current);
-    });
-    return words;
-  }
-
-  generateDateKeywords(date: Date): string[] {
+export class DateKeywordsGenerator {
+  generate(date: Date): string[] {
     const keywords: string[] = [];
 
     const day = date.getDate().toString().padStart(2, '0');

@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 import { InvoicePaymentDoc } from '../models/invoice-payment-doc.model';
 import { InvoiceDoc } from '../models/invoice-doc.model';
 import { CompletedInvoiceDoc } from '../models/completed-invoice-doc.model';
+import { IncomeDoc } from '../models/income-doc.model';
+import { DateKeywordsGenerator } from '../utils/date-keywords-generator';
 
 exports.onInvoicePaymentCreate = functions.firestore
   .document('invoicePayments/{docId}')
@@ -38,6 +40,18 @@ exports.onInvoicePaymentCreate = functions.firestore
         }
         return query;
       });
+
+    // add a income entry
+    await admin.firestore().collection('incomes').doc(invoicePaymentDoc.id).set({
+      id: invoicePaymentDoc.id,
+      type: 'InvoicePayment',
+      amount: invoicePaymentDoc.amount,
+      date: new Date(),
+      dateKeywords: (new DateKeywordsGenerator()).generate(new Date()),
+      createdBy: invoicePaymentDoc.recievedBy,
+      updatedAt: Date.now(),
+      createdAt: Date.now()
+    } as IncomeDoc)
 
     return;
   });

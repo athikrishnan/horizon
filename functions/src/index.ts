@@ -56,3 +56,11 @@ exports.onCompletedSaleReturnCreate = onCompletedSaleReturnCreate.onCompletedSal
 // quote
 const onQuoteCreate = require('./quote/on-quote-create.function');
 exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;
+
+// income
+const onIncomeCreate = require('./income/on-income-create.function');
+exports.onIncomeCreate = onIncomeCreate.onIncomeCreate;
+
+// expense
+const onExpenseCreate = require('./expense/on-expense-create.function');
+exports.onExpenseCreate = onExpenseCreate.onExpenseCreate;

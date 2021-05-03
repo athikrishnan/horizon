@@ -7,6 +7,7 @@ export interface Expense {
   other?: string;
   amount: number;
   date: any;
+  dateKeywords: string[];
   comments?: string;
   createdBy: User;
   createdAt: number;

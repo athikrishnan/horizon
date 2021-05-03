@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Expense } from 'src/app/models/expense.model';
 import { AuthService } from './auth.service';
+import { KeywordService } from './keyword.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class ExpenseService {
 
   constructor(
     private store: AngularFirestore,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private keywordService: KeywordService) {
     this.expenseCollection = this.store.collection<Expense>('expenses');
   }
 
@@ -35,6 +37,7 @@ export class ExpenseService {
       expense.createdAt = Date.now();
     }
     expense.updatedAt = Date.now();
+    expense.dateKeywords = this.keywordService.generateDateKeywords(expense.date);
 
     return this.expenseCollection.doc(expense.id).set(expense);
   }

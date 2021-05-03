@@ -7,6 +7,7 @@ export interface Income {
   other?: string;
   amount: number;
   date: any;
+  dateKeywords: string[];
   comments?: string;
   createdBy: User;
   createdAt: number;

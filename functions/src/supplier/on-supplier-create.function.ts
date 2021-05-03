@@ -18,6 +18,7 @@ exports.onSupplierCreate = functions.firestore
 
     statDoc.count++;
     supplierDoc.code = statDoc.count;
+    supplierDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('suppliers').set(statDoc);
     await admin.firestore().collection('suppliers').doc(supplierDoc.id).set(supplierDoc);

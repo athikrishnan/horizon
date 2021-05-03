@@ -18,6 +18,7 @@ exports.onCustomerCreate = functions.firestore
 
     statDoc.count++;
     customerDoc.code = statDoc.count;
+    customerDoc.updatedAt = Date.now();
 
     await admin.firestore().collection('stats').doc('customers').set(statDoc);
     await admin.firestore().collection('customers').doc(customerDoc.id).set(customerDoc);

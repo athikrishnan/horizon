@@ -1,0 +1,27 @@
+<form [formGroup]="dateForm">
+  <mat-form-field appearance="outline" fxFlex="100">
+    <mat-label>Paid On</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+</form>
+<ng-container *ngIf="report">
+  <mat-list>
+    <mat-list-item>
+      <div fxLayoutAlign="space-between" fxFlex="100">
+        <span>Total</span>
+        <span>{{ report.balance | number : '.2-2' }} &#8377;</span>
+      </div>
+    </mat-list-item>
+    <mat-list-item *ngFor="let item of getReportItems()">
+      <div fxLayoutAlign="space-between" fxFlex="100">
+        <span>{{ item.type }}</span>
+        <span [class.expense]="item.isExpense === true" [class.income]="item.isExpense === false">
+          {{ item.amount | number : '.2-2' }} &#8377;</span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</ng-container>
+<app-spinner *ngIf="showSpinner"></app-spinner>

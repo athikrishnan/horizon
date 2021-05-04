@@ -8,9 +8,10 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductVariantFormComponent } from './product-variant-form/product-variant-form.component';
 import { ProductStockComponent } from './product-stock/product-stock.component';
+import { ProductImagesComponent } from './product-images/product-images.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductFormComponent, ProductViewComponent, ProductVariantFormComponent, ProductStockComponent],
+  declarations: [ProductComponent, ProductFormComponent, ProductViewComponent, ProductVariantFormComponent, ProductStockComponent, ProductImagesComponent],
   imports: [
     CommonModule,
     ProductRoutingModule,

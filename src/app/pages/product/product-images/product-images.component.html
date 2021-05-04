@@ -1,0 +1,14 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
+    <a routerLink="/product/{{productId}}/view" mat-stroked-button>Back to product</a>
+    <button type="button" mat-raised-button (click)="fileInput.click()" color="primary">Upload File</button>
+    <input hidden (change)="onChange($event.target.files)" #fileInput type="file">
+  </div>
+  <br>
+  <div fxLayout="column" *ngIf="product?.images">
+    <div *ngFor="let image of product.images" style="margin-bottom: 20px;">
+      <img [src]="image.downloadURL" alt="" height="100px">
+    </div>
+  </div>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

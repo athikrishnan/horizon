@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { finalize, take, tap } from 'rxjs/operators';
+import { ProductImage } from '../models/product-image.model';
 import { ProductVariant } from '../models/product-variant.model';
 import { Product } from '../models/product.model';
 import { KeywordService } from './keyword.service';
@@ -14,6 +16,7 @@ export class ProductService {
 
   constructor(
     private store: AngularFirestore,
+    private storage: AngularFireStorage,
     private keywordService: KeywordService) {
     this.productCollection = this.store.collection<Product>('products');
   }
@@ -35,6 +38,10 @@ export class ProductService {
 
   getProduct(id: string): Observable<Product> {
     return this.productCollection.doc(id).valueChanges().pipe(take(1));
+  }
+
+  subscribeProduct(id: string): Observable<Product> {
+    return this.productCollection.doc(id).valueChanges();
   }
 
   getRecents(): Observable<Product[]> {
@@ -78,5 +85,22 @@ export class ProductService {
     product.variants.splice(index, 1);
 
     return await this.saveProduct(product);
+  }
+
+  async uploadFilesForProject(product: Product, files: FileList): Promise<void> {
+    for (let index = 0; index < files.length; index++) {
+      const file = files.item(index);
+      const path = `product/${product.id}/images/${Date.now()}_${file.name}`;
+      const ref = this.storage.ref(path);
+      await this.storage.upload(path, file).then(async () => {
+        const downloadURL = await ref.getDownloadURL().toPromise();
+        if (!product.images) { product.images = []; }
+        product.images.push({
+          downloadURL,
+          path
+        } as ProductImage);
+        await this.saveProduct(product);
+      });
+    }
   }
 }

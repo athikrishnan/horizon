@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
+import { ProductImage } from 'src/app/models/product-image.model';
 import { Product } from 'src/app/models/product.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -20,7 +24,9 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.showSpinner = true;
@@ -40,7 +46,31 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
 
   onChange(files: FileList): void {
     this.showSpinner = true;
-    this.productService.uploadFilesForProject(this.product, files).then(() => {
+    this.productService.uploadImageForProduct(this.product, files).then(() => {
+      this.showSpinner = false;
+      this.alertService.alert('Image uploaded!');
+      this.ref.detectChanges();
+    });
+  }
+
+  onDelete(image: ProductImage): void {
+    this.dialog.open(DeleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.showSpinner = true;
+        this.ref.detectChanges();
+        this.productService.removeImageForProduct(this.product, image).then(() => {
+          this.showSpinner = false;
+          this.alertService.alert('Image deleted!');
+          this.ref.detectChanges();
+        });
+      }
+    });
+  }
+
+  toggleShowcase(image: ProductImage): void {
+    image.isShowcased = !image.isShowcased;
+    this.showSpinner = true;
+    this.productService.toggleImageShowcaseForProduct(this.product, image).then(() => {
       this.showSpinner = false;
       this.ref.detectChanges();
     });

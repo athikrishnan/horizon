@@ -6,9 +6,22 @@
   </div>
   <br>
   <div fxLayout="column" *ngIf="product?.images">
-    <div *ngFor="let image of product.images" style="margin-bottom: 20px;">
-      <img [src]="image.downloadURL" alt="" height="100px">
-    </div>
+    <mat-card class="product-image-card" *ngFor="let image of product.images">
+      <img mat-card-image [src]="image.downloadURL">
+      <mat-card-actions>
+        <div fxLayoutAlign="space-between">
+          <button mat-stroked-button color="warn" (click)="onDelete(image)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-stroked-button color="primary" *ngIf="!image.isShowcased" (click)="toggleShowcase(image)">
+            <mat-icon>star_outline</mat-icon>
+          </button>
+          <button mat-stroked-button color="accent" *ngIf="image.isShowcased" (click)="toggleShowcase(image)">
+            <mat-icon>star</mat-icon>
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

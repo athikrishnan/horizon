@@ -7,6 +7,7 @@ import { ProductImage } from '../models/product-image.model';
 import { ProductVariant } from '../models/product-variant.model';
 import { Product } from '../models/product.model';
 import { KeywordService } from './keyword.service';
+import { ShowcasedImageService } from './showcased-image.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class ProductService {
   constructor(
     private store: AngularFirestore,
     private storage: AngularFireStorage,
-    private keywordService: KeywordService) {
+    private keywordService: KeywordService,
+    private showcasedImageService: ShowcasedImageService) {
     this.productCollection = this.store.collection<Product>('products');
   }
 
@@ -87,7 +89,7 @@ export class ProductService {
     return await this.saveProduct(product);
   }
 
-  async uploadFilesForProject(product: Product, files: FileList): Promise<void> {
+  async uploadImageForProduct(product: Product, files: FileList): Promise<void> {
     for (let index = 0; index < files.length; index++) {
       const file = files.item(index);
       const path = `product/${product.id}/images/${Date.now()}_${file.name}`;
@@ -96,11 +98,35 @@ export class ProductService {
         const downloadURL = await ref.getDownloadURL().toPromise();
         if (!product.images) { product.images = []; }
         product.images.push({
+          id: this.store.createId(),
           downloadURL,
-          path
+          path,
+          isShowcased: false
         } as ProductImage);
         await this.saveProduct(product);
       });
     }
+  }
+
+  async removeImageForProduct(product: Product, image: ProductImage): Promise<string> {
+    const ref = this.storage.ref(image.path);
+    await ref.delete().toPromise();
+    const index: number = product.images.findIndex(i => i.path === image.path);
+    product.images.splice(index, 1);
+    if (image.isShowcased) {
+      await this.showcasedImageService.removeProductImage(image);
+    }
+    return await this.saveProduct(product);
+  }
+
+  async toggleImageShowcaseForProduct(product: Product, image: ProductImage): Promise<string> {
+    const index: number = product.images.findIndex(i => i.path === image.path);
+    product.images.splice(index, 1, image);
+    if (image.isShowcased) {
+      await this.showcasedImageService.addFromProductImage(product.name, image);
+    } else {
+      await this.showcasedImageService.removeProductImage(image);
+    }
+    return await this.saveProduct(product);
   }
 }

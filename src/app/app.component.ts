@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
@@ -18,7 +19,9 @@ export class AppComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private analytics: AngularFireAnalytics) {
+    this.analytics.logEvent('app_start', { time: new Date() });
     this.router.events.subscribe((event: RouterEvent): void => {
       if (event instanceof RouteConfigLoadStart) {
         this.asyncLoadCount++;

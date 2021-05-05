@@ -8,6 +8,7 @@ import { MaterialModule } from './material/material.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService } from '@angular/fire/analytics';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
 import { USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
@@ -30,6 +31,7 @@ import { LoginComponent } from './components/login/login.component';
     MaterialModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAnalyticsModule
   ],
   bootstrap: [AppComponent],
   exports: [
@@ -53,7 +55,9 @@ import { LoginComponent } from './components/login/login.component';
     {
       provide: FUNCTIONS_EMULATOR,
       useValue: environment.useEmulators ? ['localhost', 5001] : undefined,
-    }
+    },
+    ScreenTrackingService,
+    UserTrackingService
   ]
 })
 export class AppModule { }

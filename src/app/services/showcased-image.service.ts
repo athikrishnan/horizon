@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { ProductImage } from '../models/product-image.model';
 import { ShowcasedImage } from '../models/showcased-image.model';
 import { AuthService } from './auth.service';
@@ -32,5 +34,10 @@ export class ShowcasedImageService {
 
   async removeProductImage(image: ProductImage): Promise<void> {
     return this.showcasedImageCollection.doc(image.id).delete();
+  }
+
+  getShowcase(): Observable<ShowcasedImage[]> {
+    return this.store.collection<ShowcasedImage>('showcasedImages', ref => ref.limit(25))
+      .valueChanges().pipe(take(1));
   }
 }

@@ -1,6 +1,7 @@
 <app-toolbar (menuClick)="sidenav.toggle()"></app-toolbar>
 
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" 
+  (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
   <mat-sidenav #sidenav mode="over" class="app-sidenav">
     <mat-nav-list dense>
       <div mat-subheader>Menu</div>

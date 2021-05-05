@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
 import { User } from './models/user.model';
@@ -16,6 +16,9 @@ export class AppComponent implements OnInit {
   asyncLoadCount = 0;
   title = 'horizon';
   user: User;
+  private swipeCoord?: [number, number];
+  private swipeTime?: number;
+  @ViewChild('sidenav') sidenav: any;
 
   constructor(
     private router: Router,
@@ -45,5 +48,29 @@ export class AppComponent implements OnInit {
   async onLogout(): Promise<void> {
     await this.authService.logout();
     this.router.navigate(['login']);
+  }
+
+  swipe(e: TouchEvent, when: string): void {
+    const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    const time = new Date().getTime();
+
+    if (when === 'start') {
+      this.swipeCoord = coord;
+      this.swipeTime = time;
+    } else if (when === 'end') {
+      const direction = [coord[0] - this.swipeCoord[0], coord[1] - this.swipeCoord[1]];
+      const duration = time - this.swipeTime;
+
+      if (duration < 1000 //
+        && Math.abs(direction[0]) > 30 // Long enough
+        && Math.abs(direction[0]) > Math.abs(direction[1] * 5)) { // Horizontal enough
+        const swipe = direction[0] < 0 ? 'next' : 'previous';
+        if (swipe === 'previous') {
+          this.sidenav.open();
+        } else {
+          this.sidenav.close();
+        }
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ProductFormComponent } from './product-form/product-form.component';
+import { ProductImagesComponent } from './product-images/product-images.component';
 import { ProductStockComponent } from './product-stock/product-stock.component';
 import { ProductVariantFormComponent } from './product-variant-form/product-variant-form.component';
 import { ProductViewComponent } from './product-view/product-view.component';
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: ':productId/variant/:variantId/edit',
     component: ProductVariantFormComponent
+  },
+  {
+    path: ':productId/images',
+    component: ProductImagesComponent
   }
 ];
 

@@ -1,0 +1,12 @@
+<div fxLayout="column">
+  <mat-card class="product-image-card" *ngFor="let image of showcasedImages">
+    <img mat-card-image [src]="image.downloadURL">
+    <mat-card-header>
+      <mat-card-title>{{ image.name }}</mat-card-title>
+    </mat-card-header>
+  </mat-card>
+</div>
+<div *ngIf="showcasedImages.length == 0">
+  <p>There is no showcased images.</p>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

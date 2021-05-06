@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { trace } from '@angular/fire/performance';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ProductImage } from '../models/product-image.model';
@@ -38,6 +39,6 @@ export class ShowcasedImageService {
 
   getShowcase(): Observable<ShowcasedImage[]> {
     return this.store.collection<ShowcasedImage>('showcasedImages', ref => ref.limit(25))
-      .valueChanges().pipe(take(1));
+      .valueChanges().pipe(trace('getShowcasedImages'), take(1));
   }
 }

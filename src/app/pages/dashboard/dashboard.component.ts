@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DailyBalanceReport } from 'src/app/models/daily-balance-report.model';
+import { Invoice } from 'src/app/models/invoice.model';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,11 +12,39 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  private unsubscribe$ = new Subject<void>();
+  showSpinner = true;
+  report: DailyBalanceReport;
+  activeInvoices: Invoice[] = [];
+  constructor(
+    private ref: ChangeDetectorRef,
+    private dashboardService: DashboardService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    combineLatest([
+      this.dashboardService.todaysReport().pipe(takeUntil(this.unsubscribe$)),
+      this.dashboardService.activeInvoices()
+    ]).subscribe(([report, invoices]: [DailyBalanceReport, Invoice[]]) => {
+      this.report = report;
+      this.activeInvoices = invoices;
+      this.showSpinner = false;
+      this.ref.detectChanges();
+    });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  gotoReport(): void {
+    this.router.navigate(['report']);
+  }
+
+  editInvoice(id: string): void {
+    this.router.navigate(['invoice/' + id + '/view']);
+  }
 }

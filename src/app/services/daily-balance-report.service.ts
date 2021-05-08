@@ -16,11 +16,15 @@ export class DailyBalanceReportService {
   }
 
   getReportForDate(date: Date): Observable<DailyBalanceReport> {
+    return this.subscribeReportForDate(date).pipe(take(1));
+  }
+
+  subscribeReportForDate(date: Date): Observable<DailyBalanceReport> {
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear().toString();
     const id = day + month + year;
 
-    return this.reportCollection.doc(id).valueChanges().pipe(take(1));
+    return this.reportCollection.doc(id).valueChanges();
   }
 }

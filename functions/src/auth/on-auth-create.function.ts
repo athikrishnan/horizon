@@ -9,7 +9,8 @@ exports.onAuthCreate = functions.auth.user().onCreate(async (record: UserRecord)
     email: record.email,
     phoneNumber: record.phoneNumber,
     displayName: record.displayName,
-    photoURL: record.photoURL
+    photoURL: record.photoURL,
+    isActive: false
   } as UserDoc;
   await admin.firestore().collection('users').doc(userDoc.uid).set(userDoc);
 });

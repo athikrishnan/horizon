@@ -76,6 +76,9 @@
         <a (click)="sidenav.toggle()" mat-list-item routerLink="/profile">
           <mat-icon>face</mat-icon> {{ user?.displayName }}
         </a>
+        <a (click)="sidenav.toggle()" mat-list-item routerLink="/superuser" *ngIf="user?.isSuperuser">
+          <mat-icon>manage_accounts</mat-icon> Superuser
+        </a>
         <mat-expansion-panel-header>
           Account
         </mat-expansion-panel-header>

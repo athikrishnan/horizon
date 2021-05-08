@@ -125,6 +125,12 @@ const routes: Routes = [
     canLoad: [DevEnvGuard]
   },
   {
+    path: 'superuser',
+    loadChildren: () => import('./superuser/superuser.module').then(m => m.SuperuserModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
+  {
     path: '**', component: PageNotFoundComponent,
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin }

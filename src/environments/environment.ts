@@ -2,8 +2,6 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-import { MockDataModule } from "src/app/dev/mock-data/mock-data.module";
-
 export const environment = {
   production: false,
   useEmulators: true,
@@ -14,7 +12,8 @@ export const environment = {
     projectId: 'topics-c0e78',
     storageBucket: 'topics-c0e78.appspot.com',
     messagingSenderId: '875974332626',
-    appId: '1:875974332626:web:8f77493a441c0fe0549d0b'
+    appId: '1:875974332626:web:8f77493a441c0fe0549d0b',
+    measurementId: 'G-HSPLJNTM1E'
   }
 };
 

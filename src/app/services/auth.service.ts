@@ -36,17 +36,6 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  private getAppUser(authUser: User): User {
-    return {
-      uid: authUser.uid,
-      email: authUser.email,
-      phoneNumber: authUser.phoneNumber,
-      displayName: authUser.displayName,
-      photoURL: authUser.photoURL,
-      isActive: false
-    } as User;
-  }
-
   private publishAuth(user: User): void {
     this.authUser = user;
     this.user.next(user);
@@ -54,12 +43,7 @@ export class AuthService implements OnDestroy {
 
   async login(): Promise<firebase.auth.UserCredential> {
     return this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(async () => {
-      const credentials = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      const doc = await this.store.collection('users').doc(credentials.user.uid).get().toPromise();
-      if (!doc.exists) {
-        await this.store.collection('users').doc(credentials.user.uid).set(this.getAppUser(credentials.user));
-      }
-      return credentials;
+      return await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     });
   }
 

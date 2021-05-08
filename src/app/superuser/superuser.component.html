@@ -1,0 +1,11 @@
+<mat-list *ngIf="users">
+  <mat-list-item *ngFor="let user of users">
+    <p mat-line>{{ user.displayName }}</p>
+    <p mat-line>{{ user.email }}</p>
+    <br>
+    <button mat-line mat-stroked-button *ngIf="user.isActive" (click)="deactivate(user)">Deactivate</button>
+    <button mat-line mat-stroked-button *ngIf="!user.isActive" (click)="activate(user)">Activate</button>
+    <br>
+  </mat-list-item>
+</mat-list>
+<app-spinner *ngIf="showSpinner"></app-spinner>

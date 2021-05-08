@@ -4,4 +4,6 @@ export interface User {
   phoneNumber?: string;
   displayName?: string;
   photoURL?: string;
+  isActive?: boolean;
+  isSuperuser?: boolean;
 }

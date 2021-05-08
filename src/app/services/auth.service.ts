@@ -54,12 +54,7 @@ export class AuthService implements OnDestroy {
 
   async login(): Promise<firebase.auth.UserCredential> {
     return this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(async () => {
-      const credentials = await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      const doc = await this.store.collection('users').doc(credentials.user.uid).get().toPromise();
-      if (!doc.exists) {
-        await this.store.collection('users').doc(credentials.user.uid).set(this.getAppUser(credentials.user));
-      }
-      return credentials;
+      return await this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     });
   }
 

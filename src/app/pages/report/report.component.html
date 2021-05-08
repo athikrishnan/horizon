@@ -1,6 +1,6 @@
 <form [formGroup]="dateForm">
   <mat-form-field appearance="outline" fxFlex="100">
-    <mat-label>Paid On</mat-label>
+    <mat-label>Report For</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>

@@ -36,17 +36,6 @@ export class AuthService implements OnDestroy {
     });
   }
 
-  private getAppUser(authUser: User): User {
-    return {
-      uid: authUser.uid,
-      email: authUser.email,
-      phoneNumber: authUser.phoneNumber,
-      displayName: authUser.displayName,
-      photoURL: authUser.photoURL,
-      isActive: false
-    } as User;
-  }
-
   private publishAuth(user: User): void {
     this.authUser = user;
     this.user.next(user);

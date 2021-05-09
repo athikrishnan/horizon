@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
     <div>
       <p class="mat-header-cell">Today's Total</p>
-      <h3 *ngIf="!report">&#8377; 0.00</h3>
+      <h3 *ngIf="!report" class="mat-display-3">&#8377; 0.00</h3>
       <h3 *ngIf="report" class="mat-display-3" (click)="gotoReport()">
         <span [class.income]="report.balance > 0" [class.expense]="report.balance <=0">
           &#8377; {{ report.balance | number: '.2-2' }}

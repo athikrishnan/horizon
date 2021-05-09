@@ -1,9 +1,14 @@
 <div fxLayout="column">
-  <mat-card class="product-image-card" *ngFor="let image of showcasedImages">
+  <mat-card class="product-image-card" *ngFor="let image of showcasedImages" fxLayout="column">
     <img mat-card-image [src]="image.downloadURL">
-    <mat-card-header>
-      <mat-card-title>{{ image.name }}</mat-card-title>
-    </mat-card-header>
+    <div fxFlex="100" fxLayoutAlign="space-between center">
+      <mat-card-header>
+        <mat-card-title>{{ image.name }}</mat-card-title>
+      </mat-card-header>
+      <button mat-icon-button (click)="onDelete(image)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
   </mat-card>
 </div>
 <div *ngIf="showcasedImages.length == 0">

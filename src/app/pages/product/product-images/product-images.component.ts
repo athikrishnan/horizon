@@ -71,6 +71,11 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
     image.isShowcased = !image.isShowcased;
     this.showSpinner = true;
     this.productService.toggleImageShowcaseForProduct(this.product, image).then(() => {
+      if (image.isShowcased) {
+        this.alertService.alert('Image added to showcase!');
+      } else {
+        this.alertService.alert('Image removed from showcase!');
+      }
       this.showSpinner = false;
       this.ref.detectChanges();
     });

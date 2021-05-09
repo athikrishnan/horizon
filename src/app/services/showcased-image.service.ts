@@ -41,4 +41,8 @@ export class ShowcasedImageService {
     return this.store.collection<ShowcasedImage>('showcasedImages', ref => ref.limit(25))
       .valueChanges().pipe(trace('getShowcasedImages'), take(1));
   }
+
+  deleteImage(image: ShowcasedImage): Promise<void> {
+    return this.showcasedImageCollection.doc(image.id).delete();
+  }
 }

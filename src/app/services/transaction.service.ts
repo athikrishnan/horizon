@@ -19,8 +19,13 @@ export class TransactionService {
     this.transactionCollection = this.store.collection<Transaction>('transactions');
   }
 
-  getRecentTransactions(): Observable<Transaction[]> {
-    return this.store.collection<Transaction>('transactions', ref => ref.orderBy('createdAt').limit(5))
+  getRecentCreditTransactions(): Observable<Transaction[]> {
+    return this.store.collection<Transaction>('transactions', ref => ref.where('isDebit', '==', false).limit(5))
+      .valueChanges().pipe(take(1));
+  }
+
+  getRecentDebitTransactions(): Observable<Transaction[]> {
+    return this.store.collection<Transaction>('transactions', ref => ref.where('isDebit', '==', true).limit(5))
       .valueChanges().pipe(take(1));
   }
 

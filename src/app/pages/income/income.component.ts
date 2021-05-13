@@ -22,7 +22,7 @@ export class IncomeComponent implements OnInit {
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.transactionService.getRecentTransactions().subscribe((incomes: Transaction[]) => {
+    this.transactionService.getRecentCreditTransactions().subscribe((incomes: Transaction[]) => {
       this.incomes = incomes;
       this.showSpinner = false;
       this.ref.detectChanges();

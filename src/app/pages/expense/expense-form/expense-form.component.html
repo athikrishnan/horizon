@@ -10,7 +10,7 @@
     </mat-select>
     <mat-error>Required.</mat-error>
   </mat-form-field>
-  <mat-form-field appearance="outline" *ngIf="expenseForm.get('type').value === ExpenseType.Other">
+  <mat-form-field appearance="outline" *ngIf="expenseForm.get('type').value === TransactionType.Other">
     <mat-label>Other Expense is</mat-label>
     <input matInput formControlName="other" autocomplete="none">
     <mat-error>Required.</mat-error>

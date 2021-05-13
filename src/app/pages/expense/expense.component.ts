@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Expense } from 'src/app/models/expense.model';
-import { ExpenseService } from 'src/app/services/expense.service';
+import { Transaction } from 'src/app/models/transaction.model';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-expense',
@@ -14,15 +14,15 @@ export class ExpenseComponent implements OnInit {
   searchForm: FormGroup = this.fb.group({
     search: null
   });
-  expenses: Expense[] = [];
+  expenses: Transaction[] = [];
 
   constructor(
-    private expenseService: ExpenseService,
+    private transactionService: TransactionService,
     private ref: ChangeDetectorRef,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.expenseService.getRecentExpenses().subscribe((expenses: Expense[]) => {
+    this.transactionService.getRecentDebitTransactions().subscribe((expenses: Transaction[]) => {
       this.expenses = expenses;
       this.showSpinner = false;
       this.ref.detectChanges();

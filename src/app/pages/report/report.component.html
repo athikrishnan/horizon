@@ -15,10 +15,10 @@
         <span>{{ report.balance | number : '.2-2' }} &#8377;</span>
       </div>
     </mat-list-item>
-    <mat-list-item *ngFor="let item of getReportItems()">
+    <mat-list-item *ngFor="let item of report.items">
       <div fxLayoutAlign="space-between" fxFlex="100">
         <span>{{ item.type }}</span>
-        <span [class.expense]="item.isExpense === true" [class.income]="item.isExpense === false">
+        <span [class.expense]="item.isDebit === true" [class.income]="item.isDebit === false">
           {{ item.amount | number : '.2-2' }} &#8377;</span>
       </div>
     </mat-list-item>

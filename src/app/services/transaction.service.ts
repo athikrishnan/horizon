@@ -33,6 +33,13 @@ export class TransactionService {
     return this.transactionCollection.doc(id).valueChanges().pipe(take(1));
   }
 
+  getTransactionsByDate(date: Date): Observable<Transaction[]> {
+    const dmy: string = this.keywordService.getDMY(date);
+    return this.store.collection<Transaction>('transactions',
+      ref => ref.where('dateKeywords', 'array-contains', dmy).limit(5)
+    ).valueChanges().pipe(take(1));
+  }
+
   saveTransaction(transaction: Transaction, isDebit: boolean = false): Promise<void> {
     const isNew: boolean = !transaction.id;
 

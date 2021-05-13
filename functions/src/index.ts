@@ -57,10 +57,6 @@ exports.onCompletedSaleReturnCreate = onCompletedSaleReturnCreate.onCompletedSal
 const onQuoteCreate = require('./quote/on-quote-create.function');
 exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;
 
-// income
-const onIncomeCreate = require('./income/on-income-create.function');
-exports.onIncomeCreate = onIncomeCreate.onIncomeCreate;
-
-// expense
-const onExpenseCreate = require('./expense/on-expense-create.function');
-exports.onExpenseCreate = onExpenseCreate.onExpenseCreate;
+// transaction
+const onTransactionCreate = require('./transaction/on-transaction-create.function');
+exports.onTransactionCreate = onTransactionCreate.onTransactionCreate;

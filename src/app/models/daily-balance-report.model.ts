@@ -1,9 +1,9 @@
 import { Expense } from './expense.model';
-import { Income } from './income.model';
+import { Transaction } from './transaction.model';
 
 export interface DailyBalanceReport {
   id: string;
-  incomes: Income[];
+  incomes: Transaction[];
   expenses: Expense[];
   totalExpense: number;
   totalIncome: number;

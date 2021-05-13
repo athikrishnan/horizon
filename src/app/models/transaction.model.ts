@@ -1,9 +1,10 @@
-import { IncomeType } from '../enums/income-type.enum';
+import { TransactionType } from '../enums/transaction-type.enum';
 import { User } from './user.model';
 
-export interface Income {
+export interface Transaction {
   id: string;
-  type: IncomeType;
+  type: TransactionType;
+  isDebit: boolean;
   other?: string;
   amount: number;
   date: any;

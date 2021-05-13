@@ -7,10 +7,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CurrencyInputComponent } from 'src/app/components/currency-input/currency-input.component';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
-import { IncomeType } from 'src/app/enums/income-type.enum';
-import { Income } from 'src/app/models/income.model';
+import { TransactionType } from 'src/app/enums/transaction-type.enum';
+import { Transaction } from 'src/app/models/transaction.model';
 import { AlertService } from 'src/app/services/alert.service';
-import { IncomeService } from 'src/app/services/income.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-income-form',
@@ -21,10 +21,10 @@ import { IncomeService } from 'src/app/services/income.service';
 export class IncomeFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  incomeTypeList: KeyValue<IncomeType, string>[] = [
-    { key: IncomeType.Payment, value: 'Payment' },
-    { key: IncomeType.AssetSale, value: 'AssetSale' },
-    { key: IncomeType.Other, value: 'Other' }
+  incomeTypeList: KeyValue<TransactionType, string>[] = [
+    { key: TransactionType.Payment, value: 'Payment' },
+    { key: TransactionType.AssetSale, value: 'AssetSale' },
+    { key: TransactionType.Other, value: 'Other' }
   ];
   incomeForm: FormGroup = this.fb.group({
     id: null,
@@ -38,13 +38,13 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
   @ViewChild('form') form: any;
   @ViewChild('amount') amountField: CurrencyInputComponent;
   editId: string;
-  income: Income;
-  IncomeType = IncomeType;
+  income: Transaction;
+  IncomeType = TransactionType;
   today = new Date();
 
   constructor(
     private fb: FormBuilder,
-    private incomeService: IncomeService,
+    private transactionService: TransactionService,
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
@@ -54,7 +54,7 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('incomeId');
     if (!!this.editId) {
-      this.incomeService.getIncome(this.editId).subscribe((income: Income) => {
+      this.transactionService.getTransaction(this.editId).subscribe((income: Transaction) => {
         this.income = income;
         this.incomeForm.patchValue(income);
         this.incomeForm.get('date').patchValue(income.date.toDate());
@@ -68,9 +68,9 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     }
 
-    this.incomeForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: IncomeType) => {
+    this.incomeForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: TransactionType) => {
       this.incomeForm.get('other').setValidators(null);
-      if (type === IncomeType.Other) {
+      if (type === TransactionType.Other) {
         this.incomeForm.get('other').setValidators(Validators.required);
       }
       this.incomeForm.get('other').updateValueAndValidity();
@@ -84,12 +84,12 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     this.showSpinner = true;
-    let income: Income = this.incomeForm.getRawValue() as Income;
+    let income: Transaction = this.incomeForm.getRawValue() as Transaction;
     if (this.editId) {
       income = Object.assign(this.income, income);
     }
 
-    this.incomeService.saveIncome(income).then(() => {
+    this.transactionService.saveTransaction(income).then(() => {
       if (!this.editId) {
         this.form.resetForm();
         this.incomeForm.patchValue({ type: this.incomeTypeList[0].value });
@@ -108,7 +108,7 @@ export class IncomeFormComponent implements OnInit, OnDestroy {
       if (confirmed) {
         this.showSpinner = true;
         this.ref.detectChanges();
-        this.incomeService.deleteIncome(this.income).then(() => {
+        this.transactionService.deleteTransaction(this.income).then(() => {
           this.alertService.alert('Income Deleted!');
           this.router.navigate(['income']);
         });

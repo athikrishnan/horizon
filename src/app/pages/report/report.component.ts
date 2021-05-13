@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DailyBalanceReport } from 'src/app/models/daily-balance-report.model';
 import { Expense } from 'src/app/models/expense.model';
-import { Income } from 'src/app/models/income.model';
+import { Transaction } from 'src/app/models/transaction.model';
 import { DailyBalanceReportService } from 'src/app/services/daily-balance-report.service';
 import { ReportItem } from './models/report-item.model';
 
@@ -57,7 +57,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 
     let items: ReportItem[] = [];
 
-    this.report.incomes.forEach((income: Income) => {
+    this.report.incomes.forEach((income: Transaction) => {
       items.push({
         type: income.type.toString(),
         amount: income.amount,

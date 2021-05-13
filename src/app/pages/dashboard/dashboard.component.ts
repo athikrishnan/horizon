@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DailyBalanceReport } from 'src/app/models/daily-balance-report.model';
 import { Invoice } from 'src/app/models/invoice.model';
+import { Transaction } from 'src/app/models/transaction.model';
 import { DashboardService } from './dashboard.service';
+import { DashboardReport } from './models/dashboard-report.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  report: DailyBalanceReport;
+  report: DashboardReport;
   activeInvoices: Invoice[] = [];
   constructor(
     private ref: ChangeDetectorRef,
@@ -27,8 +28,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     combineLatest([
       this.dashboardService.todaysReport().pipe(takeUntil(this.unsubscribe$)),
       this.dashboardService.activeInvoices()
-    ]).subscribe(([report, invoices]: [DailyBalanceReport, Invoice[]]) => {
-      this.report = report;
+    ]).subscribe(([transactions, invoices]: [Transaction[], Invoice[]]) => {
+      this.generateReport(transactions);
       this.activeInvoices = invoices;
       this.showSpinner = false;
       this.ref.detectChanges();
@@ -38,6 +39,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  private generateReport(transactions: Transaction[]): void {
+    const totalIncome = transactions.filter(t => !t.isDebit).reduce((a, b) => a + ((+b.amount) || 0), 0);
+    const totalExpense = transactions.filter(t => t.isDebit).reduce((a, b) => a + ((+b.amount) || 0), 0);
+    const balance = (+totalIncome) - (+totalExpense);
+
+    this.report = {
+      balance
+    };
   }
 
   gotoReport(): void {

@@ -1,6 +1,6 @@
 export interface ReportItem {
   type: string;
   amount: number;
-  isExpense: boolean;
+  isDebit: boolean;
   createdAt: number;
 }

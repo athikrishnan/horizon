@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Income } from 'src/app/models/income.model';
-import { IncomeService } from 'src/app/services/income.service';
+import { Transaction } from 'src/app/models/transaction.model';
+import { TransactionService } from 'src/app/services/transaction.service';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-income',
@@ -14,18 +15,23 @@ export class IncomeComponent implements OnInit {
   searchForm: FormGroup = this.fb.group({
     search: null
   });
-  incomes: Income[] = [];
+  incomes: Transaction[] = [];
 
   constructor(
-    private incomeService: IncomeService,
+    private transactionService: TransactionService,
     private ref: ChangeDetectorRef,
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.incomeService.getRecentIncomes().subscribe((incomes: Income[]) => {
+    this.transactionService.getRecentCreditTransactions().subscribe((incomes: Transaction[]) => {
       this.incomes = incomes;
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  displayDate(date: any): string {
+    const day = dayjs(date.toDate());
+    return day.format('ddd, MMM D, YYYY h:mm A');
   }
 }

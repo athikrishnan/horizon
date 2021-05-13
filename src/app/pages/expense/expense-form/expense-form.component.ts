@@ -7,10 +7,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CurrencyInputComponent } from 'src/app/components/currency-input/currency-input.component';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
-import { ExpenseType } from 'src/app/enums/expense-type.enum';
-import { Expense } from 'src/app/models/expense.model';
+import { TransactionType } from 'src/app/enums/transaction-type.enum';
+import { Transaction } from 'src/app/models/transaction.model';
 import { AlertService } from 'src/app/services/alert.service';
-import { ExpenseService } from 'src/app/services/expense.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-expense-form',
@@ -21,10 +21,10 @@ import { ExpenseService } from 'src/app/services/expense.service';
 export class ExpenseFormComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  expenseTypeList: KeyValue<ExpenseType, string>[] = [
-    { key: ExpenseType.Fuel, value: 'Fuel' },
-    { key: ExpenseType.Travel, value: 'Travel' },
-    { key: ExpenseType.Other, value: 'Other' }
+  expenseTypeList: KeyValue<TransactionType, string>[] = [
+    { key: TransactionType.Fuel, value: 'Fuel' },
+    { key: TransactionType.Travel, value: 'Travel' },
+    { key: TransactionType.Other, value: 'Other' }
   ];
   expenseForm: FormGroup = this.fb.group({
     id: null,
@@ -38,13 +38,13 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
   @ViewChild('form') form: any;
   @ViewChild('amount') amountField: CurrencyInputComponent;
   editId: string;
-  expense: Expense;
-  ExpenseType = ExpenseType;
+  expense: Transaction;
+  TransactionType = TransactionType;
   today = new Date();
 
   constructor(
     private fb: FormBuilder,
-    private expenseService: ExpenseService,
+    private transactionService: TransactionService,
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
@@ -54,7 +54,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('expenseId');
     if (!!this.editId) {
-      this.expenseService.getExpense(this.editId).subscribe((expense: Expense) => {
+      this.transactionService.getTransaction(this.editId).subscribe((expense: Transaction) => {
         this.expense = expense;
         this.expenseForm.patchValue(expense);
         this.expenseForm.get('date').patchValue(expense.date.toDate());
@@ -68,9 +68,9 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     }
 
-    this.expenseForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: ExpenseType) => {
+    this.expenseForm.get('type').valueChanges.pipe(takeUntil(this.unsubscribe$)).subscribe((type: TransactionType) => {
       this.expenseForm.get('other').setValidators(null);
-      if (type === ExpenseType.Other) {
+      if (type === TransactionType.Other) {
         this.expenseForm.get('other').setValidators(Validators.required);
       }
       this.expenseForm.get('other').updateValueAndValidity();
@@ -84,12 +84,12 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
 
   onSave(): void {
     this.showSpinner = true;
-    let expense: Expense = this.expenseForm.getRawValue() as Expense;
+    let expense: Transaction = this.expenseForm.getRawValue() as Transaction;
     if (this.editId) {
       expense = Object.assign(this.expense, expense);
     }
 
-    this.expenseService.saveExpense(expense).then(() => {
+    this.transactionService.saveTransaction(expense, true).then(() => {
       if (!this.editId) {
         this.form.resetForm();
         this.expenseForm.patchValue({ type: this.expenseTypeList[0].value });
@@ -108,7 +108,7 @@ export class ExpenseFormComponent implements OnInit, OnDestroy {
       if (confirmed) {
         this.showSpinner = true;
         this.ref.detectChanges();
-        this.expenseService.deleteExpense(this.expense).then(() => {
+        this.transactionService.deleteTransaction(this.expense).then(() => {
           this.alertService.alert('Expense Deleted!');
           this.router.navigate(['expense']);
         });

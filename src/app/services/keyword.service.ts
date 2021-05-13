@@ -33,4 +33,13 @@ export class KeywordService {
     keywords.push('DMY' + full);
     return keywords;
   }
+
+  getDMY(date: Date): string {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    const full = day + month + year;
+
+    return 'DMY' + full;
+  }
 }

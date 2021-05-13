@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DailyBalanceReport } from 'src/app/models/daily-balance-report.model';
-import { Expense } from 'src/app/models/expense.model';
-import { Income } from 'src/app/models/income.model';
-import { DailyBalanceReportService } from 'src/app/services/daily-balance-report.service';
+import { Transaction } from 'src/app/models/transaction.model';
+import { TransactionService } from 'src/app/services/transaction.service';
 import { ReportItem } from './models/report-item.model';
+import { Report } from './models/report.model';
 
 @Component({
   selector: 'app-report',
@@ -22,11 +21,11 @@ export class ReportComponent implements OnInit, OnDestroy {
     date: null
   });
   today = new Date();
-  report: DailyBalanceReport;
+  report: Report;
 
   constructor(
     private fb: FormBuilder,
-    private dailyBalanceReportService: DailyBalanceReportService,
+    private transactionService: TransactionService,
     private ref: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -45,36 +44,36 @@ export class ReportComponent implements OnInit, OnDestroy {
 
   private fetchReport(date: Date): void {
     this.showSpinner = true;
-    this.dailyBalanceReportService.getReportForDate(date).subscribe((report: DailyBalanceReport) => {
-      this.report = report;
+    this.transactionService.getTransactionsByDate(date).subscribe((transactions: Transaction[]) => {
+      this.generateReport(transactions);
       this.showSpinner = false;
       this.ref.detectChanges();
     });
   }
 
-  getReportItems(): ReportItem[] {
-    if (!this.report) { return []; }
+  private generateReport(transactions: Transaction[]): void {
+    const report = {
+      items: [],
+      totalExpense: 0,
+      totalIncome: 0,
+      balance: 0
+    } as Report;
 
-    let items: ReportItem[] = [];
-
-    this.report.incomes.forEach((income: Income) => {
-      items.push({
-        type: income.type.toString(),
-        amount: income.amount,
-        isExpense: false,
-        createdAt: income.createdAt
+    transactions.forEach((transaction: Transaction) => {
+      report.items.push({
+        type: transaction.type.toString(),
+        amount: transaction.amount,
+        isDebit: transaction.isDebit,
+        createdAt: transaction.createdAt
       } as ReportItem);
     });
 
-    this.report.expenses.forEach((expense: Expense) => {
-      items.push({
-        type: expense.type.toString(),
-        amount: expense.amount,
-        isExpense: true,
-        createdAt: expense.createdAt
-      } as ReportItem);
-    });
+    report.items = report.items.sort((a, b) => b.createdAt - a.createdAt);
 
-    return items.sort((a, b) => b.createdAt - a.createdAt);
+    report.totalIncome = report.items.filter(t => !t.isDebit).reduce((a, b) => a + ((+b.amount) || 0), 0);
+    report.totalExpense = report.items.filter(t => t.isDebit).reduce((a, b) => a + ((+b.amount) || 0), 0);
+    report.balance = (+report.totalIncome) - (+report.totalExpense);
+
+    this.report = report;
   }
 }

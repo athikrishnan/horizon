@@ -1,6 +1,7 @@
-export interface ExpenseDoc {
+export interface TransactionDoc {
   id: string;
-  type: any;
+  type: string;
+  isDebit: boolean;
   other?: string;
   amount: number;
   date: any;

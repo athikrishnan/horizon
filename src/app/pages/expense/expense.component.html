@@ -7,10 +7,11 @@
   <div mat-subheader>Recent Expenses</div>
   <mat-nav-list>
     <a routerLink="/expense/{{expense.id}}/edit" mat-list-item *ngFor="let expense of expenses">
-      <div fxFlex="row" fxLayoutAlign="space-between">
+      <div mat-line fxFlex="row" fxLayoutAlign="space-between">
         <div>{{ expense.type }}</div>
         <div>&#8377;{{ expense.amount }}</div>
       </div>
+      <div mat-line>{{ displayDate(expense.date) }}</div>
       <mat-divider></mat-divider>
     </a>
     <mat-list-item *ngIf="!expenses.length">

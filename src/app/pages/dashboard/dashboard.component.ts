@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Router } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { DailyBalanceReport } from 'src/app/models/daily-balance-report.model';
+import { DailyTransactions } from 'src/app/models/daily-transactions.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { DashboardService } from './dashboard.service';
 
@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  report: DailyBalanceReport;
+  report: DailyTransactions;
   activeInvoices: Invoice[] = [];
   constructor(
     private ref: ChangeDetectorRef,
@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     combineLatest([
       this.dashboardService.todaysReport().pipe(takeUntil(this.unsubscribe$)),
       this.dashboardService.activeInvoices()
-    ]).subscribe(([report, invoices]: [DailyBalanceReport, Invoice[]]) => {
+    ]).subscribe(([report, invoices]: [DailyTransactions, Invoice[]]) => {
       this.report = report;
       this.activeInvoices = invoices;
       this.showSpinner = false;

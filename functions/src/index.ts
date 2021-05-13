@@ -56,7 +56,3 @@ exports.onCompletedSaleReturnCreate = onCompletedSaleReturnCreate.onCompletedSal
 // quote
 const onQuoteCreate = require('./quote/on-quote-create.function');
 exports.onQuoteCreate = onQuoteCreate.onQuoteCreate;
-
-// transaction
-const onTransactionCreate = require('./transaction/on-transaction-create.function');
-exports.onTransactionCreate = onTransactionCreate.onTransactionCreate;

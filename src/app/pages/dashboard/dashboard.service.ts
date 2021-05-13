@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DailyTransactions } from 'src/app/models/daily-transactions.model';
 import { Invoice } from 'src/app/models/invoice.model';
-import { DailyTransactionsService } from 'src/app/services/daily-transactions.service';
+import { Transaction } from 'src/app/models/transaction.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Injectable()
 export class DashboardService {
   constructor(
-    private dailyBalanceReportService: DailyTransactionsService,
+    private transactionService: TransactionService,
     private invoiceService: InvoiceService) { }
 
-  todaysReport(): Observable<DailyTransactions> {
-    return this.dailyBalanceReportService.subscribeReportForDate(new Date());
+  todaysReport(): Observable<Transaction[]> {
+    return this.transactionService.getTransactionsByDate(new Date());
   }
 
   activeInvoices(): Observable<Invoice[]> {

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Transaction } from 'src/app/models/transaction.model';
 import { TransactionService } from 'src/app/services/transaction.service';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-expense',
@@ -27,5 +28,10 @@ export class ExpenseComponent implements OnInit {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  displayDate(date: any): string {
+    const day = dayjs(date.toDate());
+    return day.format('ddd, MMM D, YYYY h:mm A');
   }
 }

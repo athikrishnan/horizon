@@ -20,7 +20,7 @@ const routes: Routes = [
   {
     path: 'finder',
     component: IncomeFinderComponent
-  },
+  }
 ];
 
 @NgModule({

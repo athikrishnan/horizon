@@ -4,6 +4,11 @@
       New Expense <mat-icon>add</mat-icon>
     </a>
   </mat-list-item>
+  <mat-list-item>
+    <a routerLink="finder" mat-stroked-button color="primary">
+      Find old Expenses <mat-icon>search</mat-icon>
+    </a>
+  </mat-list-item>
   <div mat-subheader>Recent Expenses</div>
   <mat-nav-list>
     <a routerLink="/expense/{{expense.id}}/edit" mat-list-item *ngFor="let expense of expenses">

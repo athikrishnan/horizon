@@ -40,6 +40,20 @@ export class TransactionService {
     ).valueChanges().pipe(take(1));
   }
 
+  getCreditTransactionsByDate(date: Date): Observable<Transaction[]> {
+    const dmy: string = this.keywordService.getDMY(date);
+    return this.store.collection<Transaction>('transactions',
+      ref => ref.where('dateKeywords', 'array-contains', dmy).where('isDebit', '==', false)
+    ).valueChanges().pipe(take(1));
+  }
+
+  getDebitTransactionsByDate(date: Date): Observable<Transaction[]> {
+    const dmy: string = this.keywordService.getDMY(date);
+    return this.store.collection<Transaction>('transactions',
+      ref => ref.where('dateKeywords', 'array-contains', dmy).where('isDebit', '==', true)
+    ).valueChanges().pipe(take(1));
+  }
+
   saveTransaction(transaction: Transaction, isDebit: boolean = false): Promise<void> {
     const isNew: boolean = !transaction.id;
 

@@ -12,7 +12,7 @@ import { AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService 
 import { AngularFirePerformanceModule, PerformanceMonitoringService } from '@angular/fire/performance';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { DeleteConfirmationComponent } from './components/delete-confirmation/delete-confirmation.component';
-import { USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
+import { SETTINGS, USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/firestore';
 import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
 import { AngularFireAuth, USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { LoginComponent } from './components/login/login.component';
@@ -49,6 +49,16 @@ import { LoginComponent } from './components/login/login.component';
     {
       provide: AUTH_EMULATOR,
       useValue: environment.useEmulators ? ['localhost', 5003] : undefined,
+    },
+    // if Cypress is defined use the following for firestore settings, otherwise just use defaults:
+    {
+      provide: SETTINGS,
+      useValue: window['Cypress'] 
+      ? {
+        experimentalForceLongPolling: true,
+        merge: true,
+      } 
+      : SETTINGS
     },
     {
       provide: FIRESTORE_EMULATOR,

@@ -8,10 +8,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
+import { ExpenseFinderComponent } from './expense-finder/expense-finder.component';
 
 @NgModule({
   declarations: [
-    ExpenseComponent, ExpenseFormComponent
+    ExpenseComponent, ExpenseFormComponent, ExpenseFinderComponent
   ],
   imports: [
     CommonModule,

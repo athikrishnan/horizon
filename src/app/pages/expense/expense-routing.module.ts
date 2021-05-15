@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ExpenseFinderComponent } from './expense-finder/expense-finder.component';
 import { ExpenseFormComponent } from './expense-form/expense-form.component';
 import { ExpenseComponent } from './expense.component';
 
@@ -15,6 +16,10 @@ const routes: Routes = [
   {
     path: ':expenseId/edit',
     component: ExpenseFormComponent
+  },
+  {
+    path: 'finder',
+    component: ExpenseFinderComponent
   }
 ];
 

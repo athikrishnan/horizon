@@ -1,0 +1,28 @@
+<a routerLink="/income" mat-stroked-button color="primary" style="margin-bottom: 16px;">
+  Back to recent incomes <mat-icon>undo</mat-icon>
+</a>
+<form [formGroup]="dateForm">
+  <mat-form-field appearance="outline" fxFlex="100">
+    <mat-label>Find incomes for date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+</form>
+<ng-container *ngIf="incomes">
+  <mat-nav-list>
+    <a routerLink="/income/{{income.id}}/edit" mat-list-item *ngFor="let income of incomes">
+      <div mat-line fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ income.type }}</div>
+        <div>&#8377;{{ income.amount }}</div>
+      </div>
+      <div mat-line>{{ displayDate(income.date) }}</div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!incomes.length">
+      <p mat-line> There are no incomes.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</ng-container>
+<app-spinner *ngIf="showSpinner"></app-spinner>

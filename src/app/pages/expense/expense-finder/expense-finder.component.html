@@ -1,0 +1,28 @@
+<a routerLink="/expense" mat-stroked-button color="primary" style="margin-bottom: 16px;">
+  Back to recent expenses <mat-icon>undo</mat-icon>
+</a>
+<form [formGroup]="dateForm">
+  <mat-form-field appearance="outline" fxFlex="100">
+    <mat-label>Find expenses for date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>
+</form>
+<ng-container *ngIf="expenses">
+  <mat-nav-list>
+    <a routerLink="/expense/{{expense.id}}/edit" mat-list-item *ngFor="let expense of expenses">
+      <div mat-line fxFlex="row" fxLayoutAlign="space-between">
+        <div>{{ expense.type }}</div>
+        <div>&#8377;{{ expense.amount }}</div>
+      </div>
+      <div mat-line>{{ displayDate(expense.date) }}</div>
+      <mat-divider></mat-divider>
+    </a>
+    <mat-list-item *ngIf="!expenses.length">
+      <p mat-line> There are no expenses.</p>
+    </mat-list-item>
+  </mat-nav-list>
+</ng-container>
+<app-spinner *ngIf="showSpinner"></app-spinner> 

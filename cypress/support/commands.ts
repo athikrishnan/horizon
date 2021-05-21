@@ -18,5 +18,5 @@ firebase.initializeApp(environment.firebase);
 Cypress.Commands.add('login', async () => {
   indexedDB.deleteDatabase('firebaseLocalStorageDb');
   firebase.auth().useEmulator('http://localhost:5003');
-  await firebase.auth().signInWithEmailAndPassword('cypress@test.dev', 'cypress');
+  await firebase.auth().signInWithEmailAndPassword('admin@cypress.dev', 'cypress');
 });

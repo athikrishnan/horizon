@@ -1,31 +1,32 @@
 /// <reference types="cypress" />
 
 import { Pack } from 'src/app/models/pack.model';
+import { PackFormPage } from '../page-objects/pack-form.po';
+import { PackPage } from '../page-objects/pack.po';
 
 describe('Pack page tests', () => {
   const pack = {
     name: 'Test Pack',
     count: 12
   } as Pack;
+  const packPage = new PackPage();
+  const packFormPage = new PackFormPage();
 
   beforeEach(() => {
     cy.login();
   });
 
   it('should be able to add new pack', () => {
-    cy.visit('/pack');
-    cy.get('a[href="/pack/create"]').click();
-    cy.location('pathname').should('include', 'pack/create');
+    packPage.navigate();
+    packPage.gotoPackForm();
+    cy.location('pathname').should('include', packFormPage.getCreateRoute());
 
-    cy.get('input[formcontrolname="name"]').type(pack.name);
-    cy.get('input[formcontrolname="count"]').type(pack.count.toString());
-    cy.contains('Save').click();
+    packFormPage.addPack(pack);
 
-    cy.visit('/pack');
-    cy.contains('Test Pack').click();
-    cy.location('pathname').should('include', 'pack');
-    cy.location('pathname').should('include', 'edit');
-    cy.contains('Delete').click();
-    cy.contains('Continue Delete').click();
+    packPage.navigate();
+    packPage.editPack(pack);
+    cy.location('pathname').should('match', new RegExp(packFormPage.getEditRoute()));
+
+    packFormPage.deletePack();
   });
 });

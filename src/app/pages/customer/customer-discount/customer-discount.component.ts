@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CurrencyInputComponent } from 'src/app/components/currency-input/currency-input.component';
 import { Customer } from 'src/app/models/customer.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class CustomerDiscountComponent implements OnInit {
     private dialogRef: MatDialogRef<CustomerDiscountComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Customer,
     private fb: FormBuilder,
-    private customerService: CustomerService) {}
+    private customerService: CustomerService,
+    private alertService: AlertService) {}
 
   ngOnInit(): void {
     this.customer = this.data;
@@ -37,6 +39,7 @@ export class CustomerDiscountComponent implements OnInit {
     this.customer.discount = +this.discountForm.get('discount').value;
     this.customerService.saveCustomer(this.customer).then(() => {
       this.showSpinner = false;
+      this.alertService.alert('Discount Saved');
       this.dialogRef.close(this.customer);
     });
   }

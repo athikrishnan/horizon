@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Pack } from 'src/app/models/pack.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { PackService } from 'src/app/services/pack.service';
 
 @Component({
@@ -30,7 +31,8 @@ export class PackFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -53,6 +55,7 @@ export class PackFormComponent implements OnInit {
       if (!this.editId) {
         this.form.resetForm();
       }
+      this.alertService.alert('Pack saved');
       this.showSpinner = false;
       this.ref.detectChanges();
     });
@@ -64,6 +67,7 @@ export class PackFormComponent implements OnInit {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.packService.deletePack(this.pack).then(() => {
+          this.alertService.alert('Pack deleted');
           this.router.navigate(['pack']);
         });
       }

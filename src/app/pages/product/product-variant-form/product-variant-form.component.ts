@@ -8,6 +8,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 import { Pack } from 'src/app/models/pack.model';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { PackService } from 'src/app/services/pack.service';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -42,7 +43,8 @@ export class ProductVariantFormComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private router: Router,
     private dialog: MatDialog,
-    private packService: PackService) { }
+    private packService: PackService,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     const productId: string = this.route.snapshot.paramMap.get('productId');
@@ -86,6 +88,7 @@ export class ProductVariantFormComponent implements OnInit {
     this.showSpinner = true;
     const variant: ProductVariant = this.productVariantForm.getRawValue();
     this.productService.saveVariant(this.product, variant).then(() => {
+      this.alertService.alert('Product variant saved');
       this.router.navigate(['/product/' + this.product.id + '/view']);
     });
   }
@@ -96,6 +99,7 @@ export class ProductVariantFormComponent implements OnInit {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.productService.deleteVariant(this.product, this.variant).then(() => {
+          this.alertService.alert('Product variant deleted');
           this.router.navigate(['/product/' + this.product.id + '/view']);
         });
       }

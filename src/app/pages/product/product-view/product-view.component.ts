@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Product } from 'src/app/models/product.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class ProductViewComponent implements OnInit {
     private productService: ProductService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('productId');
@@ -38,6 +40,7 @@ export class ProductViewComponent implements OnInit {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.productService.deleteProduct(product).then(() => {
+          this.alertService.alert('Product deleted');
           this.router.navigate(['product']);
         });
       }

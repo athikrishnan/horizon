@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Slab } from 'src/app/models/slab.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { SlabService } from 'src/app/services/slab.service';
 
 @Component({
@@ -32,7 +33,8 @@ export class SlabFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -55,6 +57,7 @@ export class SlabFormComponent implements OnInit {
       if (!this.editId) {
         this.form.resetForm();
       }
+      this.alertService.alert('Tax slab saved');
       this.showSpinner = false;
       this.ref.detectChanges();
     });
@@ -66,6 +69,7 @@ export class SlabFormComponent implements OnInit {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.slabService.deleteSlab(this.slab).then(() => {
+          this.alertService.alert('Tax slab deleted');
           this.router.navigate(['slab']);
         });
       }

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SlabService } from 'src/app/services/slab.service';
 
@@ -40,7 +41,8 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private slabService: SlabService) { }
+    private slabService: SlabService,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('productId');
@@ -65,6 +67,7 @@ export class ProductFormComponent implements OnInit {
     const product: Product = this.productForm.getRawValue() as Product;
     this.productService.saveProduct(product).then(() => {
       this.showSpinner = false;
+      this.alertService.alert('Product Saved');
       this.router.navigate(['product/' + product.id + '/view']);
     });
   }

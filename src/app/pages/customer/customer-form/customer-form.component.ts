@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Customer } from 'src/app/models/customer.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -36,7 +37,8 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     private customerService: CustomerService,
     private router: Router,
     private route: ActivatedRoute,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -75,6 +77,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
     this.customerService.saveCustomer(customer).then(() => {
       this.showSpinner = false;
+      this.alertService.alert('Customer Saved')
       this.router.navigate(['customer/' + customer.id + '/view']);
     });
   }

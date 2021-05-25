@@ -48,7 +48,7 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.productService.uploadImageForProduct(this.product, files).then(() => {
       this.showSpinner = false;
-      this.alertService.alert('Image uploaded!');
+      this.alertService.alert('Image uploaded');
       this.ref.detectChanges();
     });
   }
@@ -60,7 +60,7 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
         this.productService.removeImageForProduct(this.product, image).then(() => {
           this.showSpinner = false;
-          this.alertService.alert('Image deleted!');
+          this.alertService.alert('Image deleted');
           this.ref.detectChanges();
         });
       }
@@ -72,9 +72,9 @@ export class ProductImagesComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     this.productService.toggleImageShowcaseForProduct(this.product, image).then(() => {
       if (image.isShowcased) {
-        this.alertService.alert('Image added to showcase!');
+        this.alertService.alert('Image added to showcase');
       } else {
-        this.alertService.alert('Image removed from showcase!');
+        this.alertService.alert('Image removed from showcase');
       }
       this.showSpinner = false;
       this.ref.detectChanges();

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Supplier } from 'src/app/models/supplier.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { SupplierService } from '../../../services/supplier.service';
 
 @Component({
@@ -30,7 +31,8 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
     private supplierService: SupplierService,
     private router: Router,
     private route: ActivatedRoute,
-    private ref: ChangeDetectorRef) { }
+    private ref: ChangeDetectorRef,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
@@ -72,6 +74,7 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
       if (!this.editId) {
         this.router.navigate(['supplier']);
       }
+      this.alertService.alert('Supplier saved');
       this.ref.detectChanges();
     });
   }

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomerDiscountComponent } from '../customer-discount/customer-discount.component';
 
@@ -22,7 +23,8 @@ export class CustomerViewComponent implements OnInit {
     private customerService: CustomerService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
-    private router: Router) { }
+    private router: Router,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.customerId = this.route.snapshot.paramMap.get('id');
@@ -39,6 +41,7 @@ export class CustomerViewComponent implements OnInit {
         this.showSpinner = true;
         this.ref.detectChanges();
         this.customerService.deleteCustomer(this.customer).then(() => {
+          this.alertService.alert('Customer deleted');
           this.router.navigate(['customer']);
         });
       }

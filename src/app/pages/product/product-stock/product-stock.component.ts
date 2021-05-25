@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
 import { StockChange } from 'src/app/models/stock-change.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
 import { StockChangeService } from 'src/app/services/stock-change.service';
 
@@ -37,7 +38,8 @@ export class ProductStockComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private productService: ProductService,
     private fb: FormBuilder,
-    private stockChangeService: StockChangeService) { }
+    private stockChangeService: StockChangeService,
+    private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.showSpinner = true;
@@ -84,6 +86,7 @@ export class ProductStockComponent implements OnInit, OnDestroy {
       const index: number = this.product.variants.findIndex(i => i.id === variant.id);
       this.product.variants.splice(index, 1, variant);
       this.form.resetForm();
+      this.alertService.alert('Stock changes saved');
       this.showSpinner = false;
       this.ref.detectChanges();
     });

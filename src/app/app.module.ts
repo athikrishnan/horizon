@@ -53,11 +53,12 @@ import { LoginComponent } from './components/login/login.component';
     // if Cypress is defined use the following for firestore settings, otherwise just use defaults:
     {
       provide: SETTINGS,
-      useValue: window['Cypress'] 
+      // tslint:disable-next-line: no-string-literal
+      useValue: window['Cypress']
       ? {
         experimentalForceLongPolling: true,
         merge: true,
-      } 
+      }
       : SETTINGS
     },
     {

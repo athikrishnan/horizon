@@ -3,25 +3,30 @@
   <p class="mat-subheading-1">Supplier</p>
   <mat-form-field appearance="outline">
     <mat-label>Name</mat-label>
-    <input formControlName="name" matInput>
+    <input formControlName="name" matInput required>
+    <mat-error>Required</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Location</mat-label>
-    <input formControlName="location" matInput>
+    <input formControlName="location" matInput required>
+    <mat-error>Required</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Phone</mat-label>
-    <input formControlName="phone" matInput>
+    <input formControlName="phone" matInput required>
+    <mat-error>Required</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Email</mat-label>
     <input formControlName="email" matInput>
+    <mat-error>Invalid</mat-error>
   </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom:12px">
     <div>
       <a routerLink="/supplier" mat-stroked-button>Cancel</a>
     </div>
-    <button (click)="onSave()" mat-raised-button color="primary">Save</button>
+    <button (click)="onSave()" [disabled]="!supplierForm.dirty || !supplierForm.valid" mat-raised-button 
+      color="primary">Save</button>
   </div>
   <p>
     <mat-divider></mat-divider>

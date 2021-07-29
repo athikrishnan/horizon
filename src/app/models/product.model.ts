@@ -9,6 +9,7 @@ export interface Product {
   brand: BrandType;
   code: number;
   name: string;
+  category: string;
   slab: Slab;
   unit: ProductUnit;
   images: ProductImage[];

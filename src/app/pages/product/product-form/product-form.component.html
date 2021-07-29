@@ -21,6 +21,14 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
+    <mat-label>Short Name</mat-label>
+    <input matInput formControlName="category" required autocomplete="none"
+      oninput="this.value = this.value.toUpperCase()">
+    <mat-error *ngIf="productForm.get('category').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>Tax Slab</mat-label>
     <mat-select formControlName="slab">
       <mat-option [value]="slab" *ngIf="slab" style="display: none">

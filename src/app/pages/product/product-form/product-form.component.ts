@@ -25,7 +25,8 @@ export class ProductFormComponent implements OnInit {
     slab: [this.iceCreamTaxSlab, Validators.required],
     unit: ProductUnit.Litre,
     createdAt: null,
-    name: [null, Validators.required]
+    name: [null, Validators.required],
+    category: [null, Validators.required]
   });
   editId: string;
   unitList: KeyValue<ProductUnit, string>[] = [

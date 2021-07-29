@@ -18,11 +18,12 @@ import { SlabService } from 'src/app/services/slab.service';
 })
 export class ProductFormComponent implements OnInit {
   showSpinner = true;
+  iceCreamTaxSlab: Slab = { name: 'Ice Cream', hsn: '21050000', sgst: 9, cgst: 9 } as Slab;
   productForm: FormGroup = this.fb.group({
     id: null,
     brand: BrandType.Pappai,
-    slab: [null, Validators.required],
-    unit: null,
+    slab: [this.iceCreamTaxSlab, Validators.required],
+    unit: ProductUnit.Litre,
     createdAt: null,
     name: [null, Validators.required]
   });
@@ -35,7 +36,8 @@ export class ProductFormComponent implements OnInit {
   get slab(): Slab {
     return this.productForm.get('slab').value as Slab;
   }
-  slabList: Slab[] = [];
+
+  slabList: Slab[] = [this.iceCreamTaxSlab];
   brandList: KeyValue<BrandType, string>[] = [
     { key: BrandType.Pappai, value: 'Pappai' },
     { key: BrandType.Holiday, value: 'Holiday' }

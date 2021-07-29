@@ -21,6 +21,7 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
+    <mat-label>Tax Slab</mat-label>
     <mat-select formControlName="slab">
       <mat-option [value]="slab" *ngIf="slab" style="display: none">
         {{ slab.name }} ({{ slab.hsn }})

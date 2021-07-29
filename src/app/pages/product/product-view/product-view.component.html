@@ -43,9 +43,9 @@
       <a *ngFor="let variant of product.variants" routerLink="/product/{{product.id}}/variant/{{variant.id}}/edit"
         mat-list-item>
         <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
-          <p fxFlex="58">{{ variant.size }} {{ product.unit }}</p>
+          <p fxFlex="58">{{ variant.name }}</p>
           <p style="text-align: center;" fxFlex="13">{{ variant.quantity }}</p>
-          <p style="text-align: right;" fxFlex="15">&#8377;{{ variant.price }}</p>
+          <p style="text-align: right;" fxFlex="15">&#8377;{{ variant.buyingPrice }}</p>
         </div>
       </a>
     </mat-nav-list>

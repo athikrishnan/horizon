@@ -22,9 +22,12 @@ export class ProductVariantFormComponent implements OnInit {
   showSpinner = true;
   productVariantForm = this.fb.group({
     id: null,
+    name: [null, Validators.required],
     createdAt: null,
     size: [null, Validators.required],
     price: [null, Validators.required],
+    buyingPrice: [null, Validators.required],
+    dealerPrice: [null, Validators.required],
     quantity: 0,
     packs: this.fb.array([], Validators.required),
   });
@@ -59,6 +62,8 @@ export class ProductVariantFormComponent implements OnInit {
         this.variant = product.variants.find(i => i.id === variantId);
         this.productVariantForm.patchValue(this.variant);
         this.packs = this.variant.packs;
+      } else {
+        this.productVariantForm.patchValue({ size: product.size });
       }
       this.showSpinner = false;
       this.buildPackForm();

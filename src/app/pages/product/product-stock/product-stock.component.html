@@ -5,7 +5,7 @@
       <mat-label>Variant</mat-label>
       <mat-select formControlName="variant" placeholder="Variant">
         <mat-option *ngFor="let variant of product.variants" [value]="variant">
-          {{ variant.size }} {{ product.unit }}
+          {{ variant.name }}
         </mat-option>
       </mat-select>
       <mat-error> Required. </mat-error>

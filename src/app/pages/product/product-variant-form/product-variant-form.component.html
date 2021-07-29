@@ -4,22 +4,38 @@
   <input formControlName="quantity" type="hidden">
   <p class="mat-subheading-1">Product Variant</p>
   <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" required name="productVariantName"
+      autocomplete="new-product-variant-name">
+    <mat-error> Required. </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>Size</mat-label>
     <input matInput formControlName="size" required type="number" name="productVariantSize"
       autocomplete="new-product-variant-size">
     <span matSuffix>{{product.unit}}</span>
-    <mat-error *ngIf="productVariantForm.get('size').hasError('required')">
-      Required.
-    </mat-error>
+    <mat-error> Required. </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Price per unit</mat-label>
+    <mat-label>Buying Price</mat-label>
+    <input matInput formControlName="buyingPrice" required type="number" name="productVariantBuyingPrice"
+      autocomplete="new-product-variant-buying-price">
+    <span matSuffix>&#8377;</span>
+    <mat-error> Required. </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Dealer Price</mat-label>
+    <input matInput formControlName="dealerPrice" required type="number" name="productVariantDealerPrice"
+      autocomplete="new-product-variant-dealer-price">
+    <span matSuffix>&#8377;</span>
+    <mat-error> Required. </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Price per piece</mat-label>
     <input matInput formControlName="price" required type="number" name="productVariantPrice"
       autocomplete="new-product-variant-price">
     <span matSuffix>&#8377;</span>
-    <mat-error *ngIf="productVariantForm.get('price').hasError('required')">
-      Required.
-    </mat-error>
+    <mat-error> Required. </mat-error>
   </mat-form-field>
   <p class="mat-subheding-1">Sold In (required at least 1)</p>
   <ng-container *ngFor="let pack of packList">
@@ -41,9 +57,7 @@
           <input matInput formControlName="price" required type="number" name="productPackPrice"
             autocomplete="new-product-variant-price">
           <span matSuffix>&#8377;</span>
-          <mat-error *ngIf="packControl.get('price').hasError('required')">
-            Required.
-          </mat-error>
+          <mat-error> Required. </mat-error>
         </mat-form-field>
       </ng-container>      
     </div>

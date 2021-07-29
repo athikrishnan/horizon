@@ -2,12 +2,12 @@ import { KeyValue } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BrandType } from 'src/app/enums/brand-type.enum';
 import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
-import { SlabService } from 'src/app/services/slab.service';
 
 @Component({
   selector: 'app-product-form',
@@ -17,12 +17,17 @@ import { SlabService } from 'src/app/services/slab.service';
 })
 export class ProductFormComponent implements OnInit {
   showSpinner = true;
+  iceCreamTaxSlab: Slab = { name: 'Ice Cream', hsn: '21050000', sgst: 9, cgst: 9 } as Slab;
   productForm: FormGroup = this.fb.group({
     id: null,
-    slab: [null, Validators.required],
-    unit: null,
+    code: null,
+    brand: BrandType.Pappai,
+    slab: [this.iceCreamTaxSlab, Validators.required],
+    unit: ProductUnit.Litre,
     createdAt: null,
-    name: [null, Validators.required]
+    name: [null, Validators.required],
+    category: [null, Validators.required],
+    size: null
   });
   editId: string;
   unitList: KeyValue<ProductUnit, string>[] = [
@@ -33,7 +38,12 @@ export class ProductFormComponent implements OnInit {
   get slab(): Slab {
     return this.productForm.get('slab').value as Slab;
   }
-  slabList: Slab[] = [];
+
+  slabList: Slab[] = [this.iceCreamTaxSlab];
+  brandList: KeyValue<BrandType, string>[] = [
+    { key: BrandType.Pappai, value: 'Pappai' },
+    { key: BrandType.Holiday, value: 'Holiday' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +51,6 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private slabService: SlabService,
     private alertService: AlertService) { }
 
   ngOnInit(): void {
@@ -55,11 +64,6 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.showSpinner = false;
     }
-
-    this.slabService.getSlabs().subscribe((slabs: Slab[]) => {
-      this.slabList = slabs;
-      this.ref.detectChanges();
-    });
   }
 
   onSave(): void {

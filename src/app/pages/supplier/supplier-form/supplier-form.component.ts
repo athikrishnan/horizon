@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -20,10 +20,10 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
   showSpinner = true;
   supplierForm: FormGroup = this.fb.group({
     id: [''],
-    name: [''],
-    location: [''],
-    phone: [''],
-    email: ['']
+    name: [null, Validators.required],
+    location: [null, Validators.required],
+    phone: [null, Validators.required],
+    email: [null, Validators.email]
   });
   supplier: Supplier;
   editId: string;

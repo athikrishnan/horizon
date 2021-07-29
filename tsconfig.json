@@ -19,5 +19,13 @@
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
-  }
+  },
+  "include": [
+    "./node_modules/@types/jasmine",
+    "./node_modules/cypress",
+    "./src/app"
+  ],
+  "exclude": [    
+    "node_modules/cypress"
+  ]
 }

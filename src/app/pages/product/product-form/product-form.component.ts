@@ -8,7 +8,6 @@ import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { ProductService } from 'src/app/services/product.service';
-import { SlabService } from 'src/app/services/slab.service';
 
 @Component({
   selector: 'app-product-form',
@@ -21,12 +20,14 @@ export class ProductFormComponent implements OnInit {
   iceCreamTaxSlab: Slab = { name: 'Ice Cream', hsn: '21050000', sgst: 9, cgst: 9 } as Slab;
   productForm: FormGroup = this.fb.group({
     id: null,
+    code: null,
     brand: BrandType.Pappai,
     slab: [this.iceCreamTaxSlab, Validators.required],
     unit: ProductUnit.Litre,
     createdAt: null,
     name: [null, Validators.required],
-    category: [null, Validators.required]
+    category: [null, Validators.required],
+    size: null
   });
   editId: string;
   unitList: KeyValue<ProductUnit, string>[] = [
@@ -50,7 +51,6 @@ export class ProductFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private ref: ChangeDetectorRef,
-    private slabService: SlabService,
     private alertService: AlertService) { }
 
   ngOnInit(): void {
@@ -64,11 +64,6 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.showSpinner = false;
     }
-
-    this.slabService.getSlabs().subscribe((slabs: Slab[]) => {
-      this.slabList = slabs;
-      this.ref.detectChanges();
-    });
   }
 
   onSave(): void {

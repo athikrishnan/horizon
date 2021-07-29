@@ -11,6 +11,7 @@ export interface Product {
   name: string;
   category: string;
   slab: Slab;
+  size: number;
   unit: ProductUnit;
   images: ProductImage[];
   keywords: string[];

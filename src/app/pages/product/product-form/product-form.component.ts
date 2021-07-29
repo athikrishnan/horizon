@@ -2,6 +2,7 @@ import { KeyValue } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BrandType } from 'src/app/enums/brand-type.enum';
 import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
@@ -19,6 +20,7 @@ export class ProductFormComponent implements OnInit {
   showSpinner = true;
   productForm: FormGroup = this.fb.group({
     id: null,
+    brand: BrandType.Pappai,
     slab: [null, Validators.required],
     unit: null,
     createdAt: null,
@@ -34,6 +36,10 @@ export class ProductFormComponent implements OnInit {
     return this.productForm.get('slab').value as Slab;
   }
   slabList: Slab[] = [];
+  brandList: KeyValue<BrandType, string>[] = [
+    { key: BrandType.Pappai, value: 'Pappai' },
+    { key: BrandType.Holiday, value: 'Holiday' }
+  ];
 
   constructor(
     private fb: FormBuilder,

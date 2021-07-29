@@ -3,6 +3,17 @@
   <input formControlName="createdAt" type="hidden">
   <p class="mat-subheading-1">Product</p>
   <mat-form-field appearance="outline">
+    <mat-label>Brand</mat-label>
+    <mat-select formControlName="brand">
+      <mat-option *ngFor="let item of brandList" [value]="item.key">
+        {{ item.value }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="productForm.get('slab').hasError('required')">
+      Required.
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>Name</mat-label>
     <input matInput formControlName="name" required autocomplete="none">
     <mat-error *ngIf="productForm.get('name').hasError('required')">

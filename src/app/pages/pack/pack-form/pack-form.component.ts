@@ -18,7 +18,7 @@ export class PackFormComponent implements OnInit {
   packForm: FormGroup = this.fb.group({
     id: null,
     createdAt: null,
-    name: [null, Validators.required],
+    name: ['Pack', Validators.required],
     count: [null, Validators.required]
   });
   @ViewChild('form') form: any;
@@ -56,8 +56,7 @@ export class PackFormComponent implements OnInit {
         this.form.resetForm();
       }
       this.alertService.alert('Pack saved');
-      this.showSpinner = false;
-      this.ref.detectChanges();
+      this.router.navigate(['pack']);
     });
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { User } from '../models/user.model';
 import { SuperuserService } from './superuser.service';
 
@@ -12,6 +12,8 @@ export class SuperuserComponent implements OnInit {
 
   showSpinner = true;
   users: User[];
+  @ViewChild('fileInput') fileInput: ElementRef;
+  private srcResult: string;
   constructor(
     private ref: ChangeDetectorRef,
     private superuserService: SuperuserService) { }
@@ -42,5 +44,16 @@ export class SuperuserComponent implements OnInit {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
+  }
+
+  async onFileSelected(): Promise<void> {
+    if (typeof (FileReader) !== 'undefined') {
+      const reader = new FileReader();
+      reader.onload = async (e: any) => {
+        this.srcResult = e.target.result;
+        await this.superuserService.uploadProducts(this.srcResult);
+      };
+      reader.readAsBinaryString(this.fileInput.nativeElement.files[0]);
+    }
   }
 }

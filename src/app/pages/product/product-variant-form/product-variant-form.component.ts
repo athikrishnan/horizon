@@ -57,7 +57,7 @@ export class ProductVariantFormComponent implements OnInit {
       this.packService.getPacks()
     ]).subscribe(([product, packs]: [Product, Pack[]]) => {
       this.product = product;
-      this.packList = packs;
+      this.packList = packs.sort((a, b) => a.count - b.count);
       if (!!variantId) {
         this.variant = product.variants.find(i => i.id === variantId);
         this.productVariantForm.patchValue(this.variant);

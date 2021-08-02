@@ -34,10 +34,11 @@ export class SuperuserService {
 
   async uploadProducts(productString: string): Promise<void> {
     const uploadedProducts: UploadedProduct[] = this.parseUploadedProducts(productString);
-    const mappedProducts = this.mapToProducts(uploadedProducts);
+    const mappedProducts: Product[] = this.mapToProducts(uploadedProducts);
     mappedProducts.forEach(product => {
       this.store.collection<Product>('products').doc(product.id).set(product);
     });
+    this.uploadPacks(mappedProducts);
   }
 
   private parseUploadedProducts(productString: string): UploadedProduct[] {
@@ -108,7 +109,7 @@ export class SuperuserService {
   private mapToPacks(uploadedProduct: UploadedProduct): Pack[] {
     const packs: Pack[] = [
       {
-        id: null,
+        id: '1',
         name: 'Pack',
         count: 1,
         price: +uploadedProduct.pricePerPiece,
@@ -119,7 +120,7 @@ export class SuperuserService {
 
     if (+uploadedProduct.pieces !== 1) {
       packs.push({
-        id: null,
+        id: uploadedProduct.pieces,
         name: 'Pack',
         count: +uploadedProduct.pieces,
         price: +uploadedProduct.pieces * +uploadedProduct.pricePerPiece,
@@ -129,5 +130,21 @@ export class SuperuserService {
     }
 
     return packs;
+  }
+
+  private uploadPacks(products: Product[]): void {
+    const packs: Pack[] = products.flatMap(product => product.variants.flatMap(variant => variant.packs));
+    const uniquePacks: Pack[] = [];
+
+    packs.forEach(pack => {
+      if (uniquePacks.findIndex(item => item.id === pack.id) <= -1) {
+        uniquePacks.push(pack);
+      }
+    });
+
+    uniquePacks.forEach(pack => {
+      pack.price = null;
+      this.store.collection<Pack>('packs').doc(pack.id).set(pack);
+    });
   }
 }

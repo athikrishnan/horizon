@@ -55,7 +55,7 @@
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} <br> ({{ item.variant?.size }}{{ item.product?.unit }} * {{ item.pack?.count }})
+            {{ item.product?.name }} <br> ({{ item.variant?.name }} * {{ item.pack?.count }})
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
             <span style="color: red">{{ item.product?.name }}</span>
@@ -143,7 +143,7 @@
     </div>
   </ng-contianer>
 </div>
-<app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
-  (productSelect)="onProductSelect($event)"></app-product-search>
+<app-product-picker *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
+  (productPick)="onProductPick($event)"></app-product-picker>
 <app-invoice-print [invoice]="invoice" *ngIf="invoice?.completedAt" #print style="display: none;"></app-invoice-print>
 <app-spinner *ngIf="showSpinner"></app-spinner>

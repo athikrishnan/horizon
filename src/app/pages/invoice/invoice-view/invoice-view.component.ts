@@ -12,6 +12,7 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 import { Customer } from 'src/app/models/customer.model';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
+import { PickedProduct } from 'src/app/models/picked-product.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
@@ -92,10 +93,12 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
       && !!item.quantity && !!item.price);
   }
 
-  onProductSelect(product: Product): void {
+  onProductPick(pickedProduct: PickedProduct): void {
     this.showProductSearch = false;
     this.invoiceService.saveInvoiceItem(this.invoice, {
-      product,
+      product: pickedProduct.product,
+      variant: pickedProduct.variant,
+      pack: pickedProduct.variant.packs.sort((a, b) => b.count - a.count)[0],
     } as InvoiceItem);
   }
 

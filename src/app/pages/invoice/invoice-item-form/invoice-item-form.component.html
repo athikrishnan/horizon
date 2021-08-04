@@ -5,10 +5,10 @@
     <mat-form-field fxFlex="48">
       <mat-select formControlName="variant" placeholder="Variant">
         <mat-option [value]="variant" *ngIf="variant" style="display: none">
-          {{ variant.size }} {{ product.unit }}
+          {{ variant.name }}
         </mat-option>
         <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
-          {{ item.size }} {{ product.unit }}
+          {{ item.name }} {{ product.unit }}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="invoiceItemForm.get('variant').hasError('required')">

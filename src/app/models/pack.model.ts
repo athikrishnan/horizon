@@ -3,6 +3,7 @@ export interface Pack {
   name: string;
   count: number;
   price?: number;
+  retailPrice?: number;
   createdAt: number;
   updatedAt: number;
 }

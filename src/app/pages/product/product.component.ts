@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { PickedProduct } from 'src/app/models/picked-product.model';
 import { Product } from 'src/app/models/product.model';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -14,16 +15,13 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  searchForm: FormGroup = this.fb.group({
-    search: null
-  });
+  showProductPicker = false;
   recents: Product[] = [];
-  results: Product[] = [];
 
   constructor(
     private productService: ProductService,
     private ref: ChangeDetectorRef,
-    private fb: FormBuilder) { }
+    private router: Router) { }
 
   ngOnInit(): void {
     this.productService.getRecents().subscribe((recents: Product[]) => {
@@ -31,20 +29,14 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
       this.ref.detectChanges();
     });
-
-    this.searchForm.get('search').valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(1000)
-    ).subscribe((value: string) => {
-      this.productService.searchProductsByName(value).subscribe((results: Product[]) => {
-        this.results = results;
-        this.ref.detectChanges();
-      });
-    });
   }
 
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  onProductPick(pickedProduct: PickedProduct): void {
+    this.router.navigate(['product/' + pickedProduct.product.id + '/view']);
   }
 }

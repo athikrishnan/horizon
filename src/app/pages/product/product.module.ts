@@ -9,15 +9,24 @@ import { ProductRoutingModule } from './product-routing.module';
 import { ProductVariantFormComponent } from './product-variant-form/product-variant-form.component';
 import { ProductStockComponent } from './product-stock/product-stock.component';
 import { ProductImagesComponent } from './product-images/product-images.component';
+import { ProductPickerModule } from 'src/app/components/product-picker/product-picker.module';
 
 @NgModule({
-  declarations: [ProductComponent, ProductFormComponent, ProductViewComponent, ProductVariantFormComponent, ProductStockComponent, ProductImagesComponent],
+  declarations: [
+    ProductComponent,
+    ProductFormComponent,
+    ProductViewComponent,
+    ProductVariantFormComponent,
+    ProductStockComponent,
+    ProductImagesComponent
+  ],
   imports: [
     CommonModule,
     ProductRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProductPickerModule
   ]
 })
 export class ProductModule { }

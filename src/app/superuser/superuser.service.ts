@@ -96,7 +96,7 @@ export class SuperuserService {
       id: uploadedProduct.itemId,
       name: uploadedProduct.itemName,
       size: +uploadedProduct.itemSize,
-      price: +uploadedProduct.pricePerPiece,
+      price: Math.round((+uploadedProduct.dealerPrice / +uploadedProduct.pieces) * 100) / 100,
       buyingPrice: +uploadedProduct.buyingPrice,
       dealerPrice: +uploadedProduct.dealerPrice,
       quantity: 0,
@@ -112,7 +112,8 @@ export class SuperuserService {
         id: '1',
         name: 'Pack',
         count: 1,
-        price: +uploadedProduct.pricePerPiece,
+        price: Math.round(+uploadedProduct.dealerPrice / +uploadedProduct.pieces * 100) / 100,
+        retailPrice: +uploadedProduct.pricePerPiece,
         updatedAt: Date.now(),
         createdAt: Date.now()
       } as Pack
@@ -123,7 +124,8 @@ export class SuperuserService {
         id: uploadedProduct.pieces,
         name: 'Pack',
         count: +uploadedProduct.pieces,
-        price: +uploadedProduct.pieces * +uploadedProduct.pricePerPiece,
+        price: Math.round(+uploadedProduct.pieces * +uploadedProduct.pricePerPiece * 100) / 100,
+        retailPrice: +uploadedProduct.unitPrice,
         updatedAt: Date.now(),
         createdAt: Date.now()
       } as Pack);

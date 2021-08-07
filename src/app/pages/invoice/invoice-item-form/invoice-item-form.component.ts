@@ -7,7 +7,6 @@ import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
-import { Pack } from 'src/app/models/pack.model';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
@@ -28,7 +27,6 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   invoiceItemForm: FormGroup = this.fb.group({
     product: [null, Validators.required],
     variant: [null, Validators.required],
-    pack: [null, Validators.required],
     quantity: [null, Validators.required],
     price: [{ value: null, disabled: true }, Validators.required]
   });
@@ -38,14 +36,8 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   get variant(): ProductVariant {
     return this.invoiceItemForm.get('variant').value as ProductVariant;
   }
-  get pack(): Pack {
-    return this.invoiceItemForm.get('pack').value as Pack;
-  }
   get variantList(): ProductVariant[] {
     return (!this.product) ? [] : this.product.variants;
-  }
-  get packList(): Pack[] {
-    return (!this.variant) ? [] : this.variant.packs;
   }
 
   constructor(
@@ -58,10 +50,10 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
     this.applyDefaults();
 
     combineLatest([
-      this.invoiceItemForm.get('pack').valueChanges.pipe(takeUntil(this.unsubscribe$)),
+      this.invoiceItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
       this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([pack, quantity]: [Pack, number]) => {
-      const price = pack.price * quantity;
+    ]).subscribe(([variant, quantity]: [ProductVariant, number]) => {
+      const price = variant.price * quantity;
       this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
       this.ref.detectChanges();
     });
@@ -78,12 +70,6 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
   private applyDefaults(): void {
     if (!this.item.variant && this.item.product.variants && this.item.product.variants.length > 0) {
       this.item.variant = this.item.product.variants[0];
-    }
-
-    if (this.item.variant && !this.item.pack) {
-      if (this.item.variant.packs && this.item.variant.packs.length > 0) {
-        this.item.pack = this.item.variant.packs[0];
-      }
     }
   }
 

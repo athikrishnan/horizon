@@ -7,7 +7,6 @@ import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PurchaseItem } from 'src/app/models/purchase-item.model';
 import { Purchase } from 'src/app/models/purchase.model';
-import { Pack } from 'src/app/models/pack.model';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
@@ -28,7 +27,6 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
   purchaseItemForm: FormGroup = this.fb.group({
     product: [null, Validators.required],
     variant: [null, Validators.required],
-    pack: [null, Validators.required],
     quantity: [null, Validators.required],
     price: [null, Validators.required],
     unitPrice: [{ value: null, disabled: true }, Validators.required]
@@ -39,14 +37,8 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
   get variant(): ProductVariant {
     return this.purchaseItemForm.get('variant').value as ProductVariant;
   }
-  get pack(): Pack {
-    return this.purchaseItemForm.get('pack').value as Pack;
-  }
   get variantList(): ProductVariant[] {
     return (!this.product) ? [] : this.product.variants;
-  }
-  get packList(): Pack[] {
-    return (!this.variant) ? [] : this.variant.packs;
   }
 
   constructor(
@@ -79,12 +71,6 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
   private applyDefaults(): void {
     if (!this.item.variant && this.item.product.variants && this.item.product.variants.length > 0) {
       this.item.variant = this.item.product.variants[0];
-    }
-
-    if (this.item.variant && !this.item.pack) {
-      if (this.item.variant.packs && this.item.variant.packs.length > 0) {
-        this.item.pack = this.item.variant.packs[0];
-      }
     }
   }
 

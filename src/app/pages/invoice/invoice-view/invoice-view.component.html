@@ -55,7 +55,7 @@
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} <br> ({{ item.variant?.name }} * {{ item.pack?.count }})
+            {{ item.product?.name }} <br> ({{ item.variant?.name }})
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
             <span style="color: red">{{ item.product?.name }}</span>

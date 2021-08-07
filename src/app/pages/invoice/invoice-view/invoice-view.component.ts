@@ -13,7 +13,6 @@ import { Customer } from 'src/app/models/customer.model';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
 import { Invoice } from 'src/app/models/invoice.model';
 import { PickedProduct } from 'src/app/models/picked-product.model';
-import { Product } from 'src/app/models/product.model';
 import { InvoiceService } from 'src/app/services/invoice.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { InvoicePaymentComponent } from '../invoice-payment/invoice-payment.component';
@@ -89,7 +88,7 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   isIncompleteItem(item: InvoiceItem): boolean {
-    return !(!!item && !!item.product && !!item.variant && !!item.pack
+    return !(!!item && !!item.product && !!item.variant
       && !!item.quantity && !!item.price);
   }
 
@@ -98,7 +97,6 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     this.invoiceService.saveInvoiceItem(this.invoice, {
       product: pickedProduct.product,
       variant: pickedProduct.variant,
-      pack: pickedProduct.variant.packs.sort((a, b) => b.count - a.count)[0],
     } as InvoiceItem);
   }
 

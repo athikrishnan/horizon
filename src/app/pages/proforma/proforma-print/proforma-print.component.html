@@ -54,10 +54,10 @@
             <td class="align-left" style="width: 7mm">{{ (i + 1).toString().padStart(2, '0') }}</td>
             <td class="align-left">
               {{ item.product.name }}
-              ({{ item.variant.size }} {{ item.product.unit }} * {{ item.pack.count}}pkts)
+              ({{ item.variant.name }} {{ item.variant.size }} {{ item.product.unit }})
             </td>
             <td style="width: 7mm">{{ item.quantity }}</td>
-            <td style="width: 25mm">&#8377;{{ item.pack.price | number: '.2-2' }} <br> ({{ item.pack.name }})</td>
+            <td style="width: 25mm">&#8377;{{ item.variant.price | number: '.2-2' }}</td>
             <td *ngIf="isTaxProforma" style="width: 20mm">
               &#8377;{{ (item.price - (item.sgst + item.cgst)) | number: '.2-2' }}
             </td>

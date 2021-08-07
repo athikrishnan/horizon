@@ -76,7 +76,7 @@ export class SaleReturnViewComponent implements OnInit, OnDestroy {
   }
 
   isIncompleteItem(item: SaleReturnItem): boolean {
-    return !(!!item && !!item.product && !!item.variant && !!item.pack
+    return !(!!item && !!item.product && !!item.variant
       && !!item.quantity && !!item.price);
   }
 

@@ -7,7 +7,6 @@ import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProformaItem } from 'src/app/models/proforma-item.model';
 import { Proforma } from 'src/app/models/proforma.model';
-import { Pack } from 'src/app/models/pack.model';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
 import { ProformaService } from 'src/app/services/proforma.service';
@@ -28,7 +27,6 @@ export class ProformaItemFormComponent implements OnInit, OnDestroy {
   proformaItemForm: FormGroup = this.fb.group({
     product: [null, Validators.required],
     variant: [null, Validators.required],
-    pack: [null, Validators.required],
     quantity: [null, Validators.required],
     price: [{ value: null, disabled: true }, Validators.required]
   });
@@ -38,14 +36,8 @@ export class ProformaItemFormComponent implements OnInit, OnDestroy {
   get variant(): ProductVariant {
     return this.proformaItemForm.get('variant').value as ProductVariant;
   }
-  get pack(): Pack {
-    return this.proformaItemForm.get('pack').value as Pack;
-  }
   get variantList(): ProductVariant[] {
     return (!this.product) ? [] : this.product.variants;
-  }
-  get packList(): Pack[] {
-    return (!this.variant) ? [] : this.variant.packs;
   }
 
   constructor(
@@ -58,10 +50,10 @@ export class ProformaItemFormComponent implements OnInit, OnDestroy {
     this.applyDefaults();
 
     combineLatest([
-      this.proformaItemForm.get('pack').valueChanges.pipe(takeUntil(this.unsubscribe$)),
+      this.proformaItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
       this.proformaItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([pack, quantity]: [Pack, number]) => {
-      const price = pack.price * quantity;
+    ]).subscribe(([variant, quantity]: [ProductVariant, number]) => {
+      const price = variant.price * quantity;
       this.proformaItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
       this.ref.detectChanges();
     });
@@ -78,12 +70,6 @@ export class ProformaItemFormComponent implements OnInit, OnDestroy {
   private applyDefaults(): void {
     if (!this.item.variant && this.item.product.variants && this.item.product.variants.length > 0) {
       this.item.variant = this.item.product.variants[0];
-    }
-
-    if (this.item.variant && !this.item.pack) {
-      if (this.item.variant.packs && this.item.variant.packs.length > 0) {
-        this.item.pack = this.item.variant.packs[0];
-      }
     }
   }
 

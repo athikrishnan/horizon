@@ -2,7 +2,6 @@ export interface PurchaseItemDoc {
   id: string;
   product: any;
   variant: any;
-  pack: any;
   price: number;
   unitPrice: number;
   quantity: number;

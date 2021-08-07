@@ -37,7 +37,7 @@ export class InvoiceItemComponent implements OnInit {
   }
 
   isIncompleteItem(): boolean {
-    return !(!!this.item && !!this.item.product && !!this.item.variant && !!this.item.pack
+    return !(!!this.item && !!this.item.product && !!this.item.variant
       && !!this.item.quantity && !!this.item.price);
   }
 

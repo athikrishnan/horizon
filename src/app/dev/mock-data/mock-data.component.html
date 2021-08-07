@@ -15,12 +15,6 @@
 </button>
 <p class="mat-subheading-1"> Customers Count: {{ customers.length }}</p>
 <hr>
-<p class="mat-subheading-1">Packs</p>
-<button (click)="onGeneratePack()" *ngIf="!packs.length" mat-raised-button color="primary">
-  Generate Packs
-</button>
-<p class="mat-subheading-1"> Packs Count: {{ packs.length }}</p>
-<hr>
 <p class="mat-subheading-1">Slabs</p>
 <button (click)="onGenerateSlab()" *ngIf="!slabs.length" mat-raised-button color="primary">
   Generate Slabs
@@ -28,7 +22,7 @@
 <p class="mat-subheading-1"> Slabs Count: {{ slabs.length }}</p>
 <hr>
 <p class="mat-subheading-1">Products</p>
-<button (click)="onGenerateProduct()" *ngIf="slabs.length && packs.length" mat-raised-button color="primary">
+<button (click)="onGenerateProduct()" *ngIf="slabs.length" mat-raised-button color="primary">
   Generate Product
 </button>
 <p class="mat-subheading-1"> Products Count: {{ products.length }}</p>

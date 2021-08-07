@@ -13,17 +13,6 @@
         </mat-select>
         <mat-error>Required.</mat-error>
       </mat-form-field>
-      <mat-form-field fxFlex="48">
-        <mat-select formControlName="pack" placeholder="Pack">
-          <mat-option [value]="pack" *ngIf="pack" style="display: none">
-            {{ pack.name }} of {{ pack.count }}
-          </mat-option>
-          <mat-option *ngFor="let item of packList" [value]="item" [compareWith]="idCompare">
-            {{ item.name }} of {{ item.count }}
-          </mat-option>
-        </mat-select>
-        <mat-error>Required.</mat-error>
-      </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <mat-form-field fxFlex="48">

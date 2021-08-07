@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { BrandType } from '../enums/brand-type.enum';
 import { ProductUnit } from '../enums/product-unit.enum';
-import { Pack } from '../models/pack.model';
 import { ProductVariant } from '../models/product-variant.model';
 import { Product } from '../models/product.model';
 import { Slab } from '../models/slab.model';
@@ -38,7 +37,6 @@ export class SuperuserService {
     mappedProducts.forEach(product => {
       this.store.collection<Product>('products').doc(product.id).set(product);
     });
-    this.uploadPacks(mappedProducts);
   }
 
   private parseUploadedProducts(productString: string): UploadedProduct[] {
@@ -100,53 +98,8 @@ export class SuperuserService {
       buyingPrice: +uploadedProduct.buyingPrice,
       dealerPrice: +uploadedProduct.dealerPrice,
       quantity: 0,
-      packs: this.mapToPacks(uploadedProduct),
       createdAt: Date.now(),
       updatedAt: Date.now(),
     } as ProductVariant;
-  }
-
-  private mapToPacks(uploadedProduct: UploadedProduct): Pack[] {
-    const packs: Pack[] = [
-      {
-        id: '1',
-        name: 'Pack',
-        count: 1,
-        price: Math.round(+uploadedProduct.dealerPrice / +uploadedProduct.pieces * 100) / 100,
-        retailPrice: +uploadedProduct.pricePerPiece,
-        updatedAt: Date.now(),
-        createdAt: Date.now()
-      } as Pack
-    ];
-
-    if (+uploadedProduct.pieces !== 1) {
-      packs.push({
-        id: uploadedProduct.pieces,
-        name: 'Pack',
-        count: +uploadedProduct.pieces,
-        price: Math.round(+uploadedProduct.pieces * +uploadedProduct.pricePerPiece * 100) / 100,
-        retailPrice: +uploadedProduct.unitPrice,
-        updatedAt: Date.now(),
-        createdAt: Date.now()
-      } as Pack);
-    }
-
-    return packs;
-  }
-
-  private uploadPacks(products: Product[]): void {
-    const packs: Pack[] = products.flatMap(product => product.variants.flatMap(variant => variant.packs));
-    const uniquePacks: Pack[] = [];
-
-    packs.forEach(pack => {
-      if (uniquePacks.findIndex(item => item.id === pack.id) <= -1) {
-        uniquePacks.push(pack);
-      }
-    });
-
-    uniquePacks.forEach(pack => {
-      pack.price = null;
-      this.store.collection<Pack>('packs').doc(pack.id).set(pack);
-    });
   }
 }

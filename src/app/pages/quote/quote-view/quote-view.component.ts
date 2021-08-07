@@ -87,7 +87,7 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
   }
 
   isIncompleteItem(item: QuoteItem): boolean {
-    return !(!!item && !!item.product && !!item.variant && !!item.pack
+    return !(!!item && !!item.product && !!item.variant
       && !!item.quantity && !!item.price);
   }
 

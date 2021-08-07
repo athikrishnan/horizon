@@ -10,9 +10,9 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 import { Supplier } from 'src/app/models/supplier.model';
 import { PurchaseItem } from 'src/app/models/purchase-item.model';
 import { Purchase } from 'src/app/models/purchase.model';
-import { Product } from 'src/app/models/product.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { PickedProduct } from 'src/app/models/picked-product.model';
 
 @Component({
   selector: 'app-purchase-view',
@@ -76,14 +76,15 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
   }
 
   isIncompleteItem(item: PurchaseItem): boolean {
-    return !(!!item && !!item.product && !!item.variant && !!item.pack
+    return !(!!item && !!item.product && !!item.variant
       && !!item.quantity && !!item.price);
   }
 
-  onProductSelect(product: Product): void {
+  onProductPick(pickedProduct: PickedProduct): void {
     this.showProductSearch = false;
     this.purchaseService.savePurchaseItem(this.purchase, {
-      product,
+      product: pickedProduct.product,
+      variant: pickedProduct.variant
     } as PurchaseItem);
   }
 

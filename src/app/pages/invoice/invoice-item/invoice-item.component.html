@@ -4,8 +4,8 @@
 <div *ngIf="!isEditMode && item.product" fxLayout="column">
   <ng-container *ngIf="!invoice.hideTax">
     <div fxLayout="row" fxLayoutAlign="space-between">
-      <p>Price Per Unit ({{ item.pack.name }})</p>
-      <p>&#8377;{{ item.pack.price | number : '.2-2' }}</p>
+      <p>Price Per Unit ({{ item.variant.name }})</p>
+      <p>&#8377;{{ item.variant.price | number : '.2-2' }}</p>
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <p>Taxable Amount</p>

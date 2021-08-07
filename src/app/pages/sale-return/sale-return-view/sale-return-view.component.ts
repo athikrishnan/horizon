@@ -10,9 +10,9 @@ import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmat
 import { Customer } from 'src/app/models/customer.model';
 import { SaleReturnItem } from 'src/app/models/sale-return-item.model';
 import { SaleReturn } from 'src/app/models/sale-return.model';
-import { Product } from 'src/app/models/product.model';
 import { SaleReturnService } from 'src/app/services/sale-return.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { PickedProduct } from 'src/app/models/picked-product.model';
 
 @Component({
   selector: 'app-sale-return-view',
@@ -76,14 +76,15 @@ export class SaleReturnViewComponent implements OnInit, OnDestroy {
   }
 
   isIncompleteItem(item: SaleReturnItem): boolean {
-    return !(!!item && !!item.product && !!item.variant && !!item.pack
+    return !(!!item && !!item.product && !!item.variant
       && !!item.quantity && !!item.price);
   }
 
-  onProductSelect(product: Product): void {
+  onProductPick(pickedProduct: PickedProduct): void {
     this.showProductSearch = false;
     this.saleReturnService.saveSaleReturnItem(this.saleReturn, {
-      product,
+      product: pickedProduct.product,
+      variant: pickedProduct.variant
     } as SaleReturnItem);
   }
 

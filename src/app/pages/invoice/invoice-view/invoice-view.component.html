@@ -55,10 +55,11 @@
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} <br> ({{ item.variant?.name }} * {{ item.pack?.count }})
+            {{ item.variant?.name }} <br> <small>{{ item.product?.name }}</small>
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
-            <span style="color: red">{{ item.product?.name }}</span>
+            <span style="color: red">{{ item.variant?.name }}</span>
+            <br> <small>{{ item.product?.name }}</small>
           </div>
           <div fxFlex="4">{{ item.quantity }}</div>
           <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>

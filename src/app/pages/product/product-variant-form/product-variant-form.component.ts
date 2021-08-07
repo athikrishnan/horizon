@@ -24,7 +24,7 @@ export class ProductVariantFormComponent implements OnInit {
     size: [null, Validators.required],
     price: [null, Validators.required],
     buyingPrice: [null, Validators.required],
-    dealerPrice: [null, Validators.required],
+    retailPrice: [null, Validators.required],
     quantity: 0,
   });
   product: Product;

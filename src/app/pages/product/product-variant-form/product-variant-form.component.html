@@ -17,6 +17,13 @@
     <mat-error> Required. </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
+    <mat-label>Selling Price / Dealer Price</mat-label>
+    <input matInput formControlName="price" required type="number" name="productVariantPrice"
+      autocomplete="new-product-variant-price">
+    <span matSuffix>&#8377;</span>
+    <mat-error> Required. </mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>Buying Price</mat-label>
     <input matInput formControlName="buyingPrice" required type="number" name="productVariantBuyingPrice"
       autocomplete="new-product-variant-buying-price">
@@ -24,16 +31,9 @@
     <mat-error> Required. </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Dealer Price</mat-label>
-    <input matInput formControlName="dealerPrice" required type="number" name="productVariantDealerPrice"
+    <mat-label>Retail Price</mat-label>
+    <input matInput formControlName="retailPrice" required type="number" name="productVariantRetailPrice"
       autocomplete="new-product-variant-dealer-price">
-    <span matSuffix>&#8377;</span>
-    <mat-error> Required. </mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Price per piece</mat-label>
-    <input matInput formControlName="price" required type="number" name="productVariantPrice"
-      autocomplete="new-product-variant-price">
     <span matSuffix>&#8377;</span>
     <mat-error> Required. </mat-error>
   </mat-form-field>

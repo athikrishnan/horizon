@@ -48,15 +48,12 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.applyDefaults();
-
-    combineLatest([
-      this.invoiceItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
-      this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([variant, quantity]: [ProductVariant, number]) => {
-      const price = variant.price * quantity;
-      this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
-      this.ref.detectChanges();
-    });
+    this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((quantity: number) => {
+        const price = this.variant.price * quantity;
+        this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+        this.ref.detectChanges();
+      });
 
     this.invoiceItemForm.patchValue(this.item);
     this.ref.detectChanges();

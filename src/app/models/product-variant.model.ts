@@ -4,7 +4,7 @@ export interface ProductVariant {
   size: number;
   price: number;
   buyingPrice: number;
-  dealerPrice: number;
+  retailPrice: number;
   quantity: number;
   createdAt: number;
   updatedAt: number;

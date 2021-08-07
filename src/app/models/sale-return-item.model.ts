@@ -6,7 +6,6 @@ export interface SaleReturnItem {
   product: Product;
   variant: ProductVariant;
   price: number;
-  unitPrice: number;
   quantity: number;
   cgst: number;
   sgst: number;

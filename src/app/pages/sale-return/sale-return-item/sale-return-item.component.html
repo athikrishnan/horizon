@@ -3,10 +3,6 @@
 </div>
 <div *ngIf="!isEditMode && item.product" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between">
-    <p>Price Per Unit ({{ item.variant.name }})</p>
-    <p>&#8377;{{ item.unitPrice | number : '.2-2' }}</p>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="space-between">
     <p>Taxable Amount</p>
     <p>&#8377;{{ getTaxableAmount() | number : '.2-2' }}</p>
   </div>

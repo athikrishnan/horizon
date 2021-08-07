@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PurchaseItem } from 'src/app/models/purchase-item.model';
 import { Purchase } from 'src/app/models/purchase.model';
@@ -28,8 +28,7 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
     product: [null, Validators.required],
     variant: [null, Validators.required],
     quantity: [null, Validators.required],
-    price: [null, Validators.required],
-    unitPrice: [{ value: null, disabled: true }, Validators.required]
+    price: [null, Validators.required]
   });
   get product(): Product {
     return this.purchaseItemForm.get('product').value as Product;
@@ -50,14 +49,12 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.applyDefaults();
 
-    combineLatest([
-      this.purchaseItemForm.get('price').valueChanges.pipe(takeUntil(this.unsubscribe$)),
-      this.purchaseItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([price, quantity]: [string, number]) => {
-      const unitPrice = +(price.toString().replace(/,/g, '')) / quantity;
-      this.purchaseItemForm.get('unitPrice').patchValue(this.decimalPipe.transform(unitPrice, '.2-2'));
-      this.ref.detectChanges();
-    });
+    this.purchaseItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((quantity: number) => {
+        const price = this.variant.buyingPrice * quantity;
+        this.purchaseItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+        this.ref.detectChanges();
+      });
 
     this.purchaseItemForm.patchValue(this.item);
     this.ref.detectChanges();
@@ -80,7 +77,6 @@ export class PurchaseItemFormComponent implements OnInit, OnDestroy {
       let item = this.purchaseItemForm.getRawValue() as PurchaseItem;
       item = Object.assign(this.item, item);
       item.price = +(item.price.toString().replace(/,/g, ''));
-      item.unitPrice = +(item.unitPrice.toString().replace(/,/g, ''));
       this.purchaseService.savePurchaseItem(this.purchase, item).then(() => {
         this.save.emit(true);
         this.showSpinner = false;

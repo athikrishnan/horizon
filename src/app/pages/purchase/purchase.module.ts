@@ -9,8 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PurchaseItemComponent } from './purchase-item/purchase-item.component';
 import { PurchaseItemFormComponent } from './purchase-item-form/purchase-item-form.component';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
-import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
 import { StateChangedService } from 'src/app/services/state-changed.service';
+import { ProductPickerModule } from 'src/app/components/product-picker/product-picker.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,7 @@ import { StateChangedService } from 'src/app/services/state-changed.service';
     FormsModule,
     ReactiveFormsModule,
     AppPipeModule,
-    ProductSerchModule
+    ProductPickerModule
   ],
   providers: [
     StateChangedService

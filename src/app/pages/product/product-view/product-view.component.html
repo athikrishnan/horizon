@@ -35,17 +35,19 @@
     <mat-nav-list>
       <a mat-list-item>
         <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
-          <p class="mat-header-cell" fxFlex="58">Name</p>
-          <p class="mat-header-cell" style="text-align: center;" fxFlex="13">Stock</p>
-          <p class="mat-header-cell" style="text-align: right;" fxFlex="15">Price</p>
+          <p class="mat-header-cell" fxFlex="54">Name</p>
+          <p class="mat-header-cell" style="text-align: right;" fxFlex="12">Buy</p>
+          <p class="mat-header-cell" style="text-align: right;" fxFlex="12">Sell</p>
+          <p class="mat-header-cell" style="text-align: center;" fxFlex="8">Stock</p>
         </div>
       </a>
       <a *ngFor="let variant of product.variants" routerLink="/product/{{product.id}}/variant/{{variant.id}}/edit"
         mat-list-item>
         <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between">
-          <p fxFlex="58">{{ variant.name }}</p>
-          <p style="text-align: center;" fxFlex="13">{{ variant.quantity }}</p>
-          <p style="text-align: right;" fxFlex="15">&#8377;{{ variant.buyingPrice }}</p>
+          <p fxFlex="54">{{ variant.name }}</p>
+          <p style="text-align: right;" fxFlex="12">&#8377;{{ variant.buyingPrice }}</p>
+          <p style="text-align: right;" fxFlex="12">&#8377;{{ variant.price }}</p>
+          <p style="text-align: center;" fxFlex="8">{{ variant.quantity }}</p>
         </div>
       </a>
     </mat-nav-list>

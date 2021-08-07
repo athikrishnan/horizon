@@ -29,7 +29,6 @@ export class SaleReturnItemFormComponent implements OnInit, OnDestroy {
     variant: [null, Validators.required],
     quantity: [null, Validators.required],
     price: [null, Validators.required],
-    unitPrice: [{ value: null, disabled: true }, Validators.required]
   });
   get product(): Product {
     return this.saleReturnItemForm.get('product').value as Product;
@@ -50,14 +49,12 @@ export class SaleReturnItemFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.applyDefaults();
 
-    combineLatest([
-      this.saleReturnItemForm.get('price').valueChanges.pipe(takeUntil(this.unsubscribe$)),
-      this.saleReturnItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([price, quantity]: [string, number]) => {
-      const unitPrice = +(price.toString().replace(/,/g, '')) / quantity;
-      this.saleReturnItemForm.get('unitPrice').patchValue(this.decimalPipe.transform(unitPrice, '.2-2'));
-      this.ref.detectChanges();
-    });
+    this.saleReturnItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((quantity: number) => {
+        const price = this.variant.price * quantity;
+        this.saleReturnItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+        this.ref.detectChanges();
+      });
 
     this.saleReturnItemForm.patchValue(this.item);
     this.ref.detectChanges();
@@ -80,7 +77,6 @@ export class SaleReturnItemFormComponent implements OnInit, OnDestroy {
       let item = this.saleReturnItemForm.getRawValue() as SaleReturnItem;
       item = Object.assign(this.item, item);
       item.price = +(item.price.toString().replace(/,/g, ''));
-      item.unitPrice = +(item.unitPrice.toString().replace(/,/g, ''));
       this.saleReturnService.saveSaleReturnItem(this.saleReturn, item).then(() => {
         this.save.emit(true);
         this.showSpinner = false;

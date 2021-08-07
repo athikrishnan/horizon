@@ -3,7 +3,6 @@ export interface PurchaseItemDoc {
   product: any;
   variant: any;
   price: number;
-  unitPrice: number;
   quantity: number;
   cgst: number;
   sgst: number;

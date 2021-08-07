@@ -52,10 +52,11 @@
             <span style="color: #9a9a9a">{{ (i + 1).toString().padStart(2, '0') }}</span>            
           </div>
           <div fxFlex="60" *ngIf="!isIncompleteItem(item)">
-            {{ item.product?.name }} <br> ({{ item.variant?.name }} {{ item.variant?.size }}{{ item.product?.unit }})
+            {{ item.variant?.name }} <br> <small>{{ item.product?.name }}</small>
           </div>
           <div fxFlex="60" *ngIf="isIncompleteItem(item)">
-            <span style="color: red">{{ item.product?.name }}</span>
+            <span style="color: red">{{ item.variant?.name }}</span>
+            <br> <small>{{ item.product?.name }}</small>
           </div>
           <div fxFlex="4">{{ item.quantity }}</div>
           <div fxFlex="25" style="text-align: right;">&#8377;{{ item.price | number : '.2-2' }}</div>
@@ -88,6 +89,6 @@
     <button (click)="onComplete()" *ngIf="!saleReturn.completedAt" mat-raised-button color="primary">Complete</button>
   </div>
 </div>
-<app-product-search *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
-  (productSelect)="onProductSelect($event)"></app-product-search>
+<app-product-picker *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"
+  (productPick)="onProductPick($event)"></app-product-picker>
 <app-spinner *ngIf="showSpinner"></app-spinner>

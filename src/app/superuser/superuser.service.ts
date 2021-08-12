@@ -80,7 +80,7 @@ export class SuperuserService {
       brand: uploadedProduct.brand as BrandType,
       slab: { name: 'Ice Cream', hsn: '21050000', sgst: 9, cgst: 9 } as Slab,
       unit: ProductUnit.Litre,
-      category: uploadedProduct.shortName,
+      category: uploadedProduct.category,
       size: +uploadedProduct.productSize,
       images: [],
       variants: [],

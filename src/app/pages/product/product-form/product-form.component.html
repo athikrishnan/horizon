@@ -17,10 +17,12 @@
     <mat-error> Required. </mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Short Name</mat-label>
-    <input matInput formControlName="category" required autocomplete="none"
-      oninput="this.value = this.value.toUpperCase()">
-    <mat-error> Required. </mat-error>
+    <mat-label>Category</mat-label>
+    <mat-select formControlName="category" required ngDefaultControl>
+      <mat-option *ngFor="let option of categoryList" [value]="option.key">
+        {{ option.value }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
   <div fxLayout="row" fxLayoutAlign="space-between">
     <mat-form-field appearance="outline" fxFlex="48">

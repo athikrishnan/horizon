@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrandType } from 'src/app/enums/brand-type.enum';
+import { ProductCategory } from 'src/app/enums/product-category.enum';
 import { ProductUnit } from 'src/app/enums/product-unit.enum';
 import { Product } from 'src/app/models/product.model';
 import { Slab } from 'src/app/models/slab.model';
@@ -34,6 +35,14 @@ export class ProductFormComponent implements OnInit {
     { key: ProductUnit.Grams, value: 'in gms' },
     { key: ProductUnit.Litre, value: 'in mls' },
     { key: ProductUnit.Each, value: 'in nos' }
+  ];
+  categoryList: KeyValue<ProductCategory, string>[] = [
+    { key: ProductCategory.Cup, value: 'Cups' },
+    { key: ProductCategory.Cone, value: 'Cones' },
+    { key: ProductCategory.Others, value: 'Others' },
+    { key: ProductCategory.Size, value: 'Sizes' },
+    { key: ProductCategory.Special, value: 'Specials' },
+    { key: ProductCategory.Stick, value: 'Sticks' }
   ];
   get slab(): Slab {
     return this.productForm.get('slab').value as Slab;

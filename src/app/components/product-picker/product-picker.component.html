@@ -10,13 +10,27 @@
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <div style="margin: 1em" *ngIf="!selectedSize">
+    <div style="margin: 1em" *ngIf="!selectedCategory">
+      <p>Select Size (in mls)</p>
+      <mat-grid-list cols="6" rowHeight="1:1">
+        <mat-grid-tile colspan="6" *ngFor="let option of categoryList" (click)="this.selectedCategory = option.key">
+          {{ option.value }}
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+
+    <div style="margin: 1em" *ngIf="selectedCategory">
+      <button (click)="this.selectedCategory = null" mat-stroked-button color="primary">
+        <mat-icon>arrow_back</mat-icon> Showing products for category: {{ selectedCategory }}
+      </button>
+    </div>
+
+    <div style="margin: 1em" *ngIf="selectedCategory == 'Size' && !selectedSize">
       <p>Select Size (in mls)</p>
       <mat-grid-list cols="4" rowHeight="1:1">
         <mat-grid-tile *ngFor="let size of itemSizes" (click)="this.selectedSize = size">
           {{ size }}
         </mat-grid-tile>
-        <mat-grid-tile colspan="2">Others</mat-grid-tile>
       </mat-grid-list>
     </div>
 
@@ -26,17 +40,18 @@
       </button>
     </div>
 
-    <div style="margin: 0 1em;overflow-y: scroll;">
-      <mat-list *ngIf="selectedSize && variants.length > 0">
-        <mat-list-item *ngFor="let variant of variants" (click)="onVariantSelect(variant)">
-          <ng-container *ngIf="getProductByVariant(variant) as product">
+    <div style="margin: 0 1em;overflow-y: scroll;"  *ngIf="filteredProducts.length > 0">
+      <ng-container *ngFor="let product of filteredProducts">
+        <p class="mat-subheader">{{ product.name }} ({{ product.brand }})</p>
+        <mat-list>
+          <mat-list-item *ngFor="let variant of product.variants" (click)="onVariantSelect(product, variant)">
             <div fxFlex="100" fxFlexLayout="column">
               <div style="margin-bottom: 10px; font-size: 24px;">{{ variant.name }}</div>
-              <div><small>{{ product.brand }} - {{ product.name }}</small></div>
+              <div><small>stock - {{ variant.quantity }}</small></div>
             </div>
-          </ng-container>
-        </mat-list-item>
-      </mat-list>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
     </div>
 
   </div>

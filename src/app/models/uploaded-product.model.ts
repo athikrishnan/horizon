@@ -11,5 +11,6 @@ export interface UploadedProduct {
   productName: string;
   productSize: string;
   shortName: string;
+  category: string;
   unitPrice: string;
 }

@@ -29,6 +29,10 @@ const routes: Routes = [
     component: ProductStockComponent
   },
   {
+    path: ':productId/stock/:variantId',
+    component: ProductStockComponent
+  },
+  {
     path: ':productId/variant/create',
     component: ProductVariantFormComponent
   },

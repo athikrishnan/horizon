@@ -1,0 +1,24 @@
+<mat-accordion [multi]="true">
+  <mat-expansion-panel *ngFor="let product of products" [expanded]="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ product.brand }} - {{ product.name }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item *ngFor="let variant of product.variants" (click)="onVariantSelect(product, variant)"
+        [class.low]="variant.quantity < 5">
+        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxFlex="79">
+            <div>{{ variant.name }}</div>
+          </div>
+          <div fxFlex="19">
+            {{ variant.quantity }}
+          </div>
+        </div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>
+<app-spinner *ngIf="showSpinner"></app-spinner>

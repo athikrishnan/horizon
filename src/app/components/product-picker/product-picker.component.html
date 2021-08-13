@@ -45,7 +45,7 @@
         <p class="mat-subheader">{{ product.name }} ({{ product.brand }})</p>
         <mat-list>
           <mat-list-item *ngFor="let variant of product.variants" (click)="onVariantSelect(product, variant)">
-            <div fxFlex="100" fxFlexLayout="column">
+            <div fxFlex="100">
               <div style="margin-bottom: 10px; font-size: 24px;">{{ variant.name }}</div>
               <div><small>stock - {{ variant.quantity }}</small></div>
             </div>

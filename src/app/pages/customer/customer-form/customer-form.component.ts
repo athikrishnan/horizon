@@ -77,7 +77,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
 
     this.customerService.saveCustomer(customer).then(() => {
       this.showSpinner = false;
-      this.alertService.alert('Customer Saved')
+      this.alertService.alert('Customer Saved');
       this.router.navigate(['customer/' + customer.id + '/view']);
     });
   }

@@ -20,6 +20,7 @@ export class ProductStockComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = false;
   productId: string;
+  variantId: string;
   product: Product;
   stockForm: FormGroup = this.fb.group({
     variant: [null, Validators.required],
@@ -44,9 +45,14 @@ export class ProductStockComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.showSpinner = true;
     this.productId = this.route.snapshot.paramMap.get('productId');
+    this.variantId = this.route.snapshot.paramMap.get('variantId');
     this.productService.getProduct(this.productId).subscribe((product: Product) => {
       this.product = product;
       this.showSpinner = false;
+      if (this.variantId) {
+        const variant = this.product.variants.find((item) => item.id === this.variantId);
+        this.stockForm.patchValue({ variant });
+      }
       this.ref.detectChanges();
     });
 

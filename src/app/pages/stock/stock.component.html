@@ -1,5 +1,5 @@
 <mat-accordion [multi]="true">
-  <mat-expansion-panel *ngFor="let product of products" [expanded]="true">
+  <mat-expansion-panel *ngFor="let product of products">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{ product.brand }} - {{ product.name }}

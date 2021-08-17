@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductPickerComponent } from './product-picker.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [ProductPickerComponent],
@@ -12,7 +12,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    MatGridListModule
+    MatButtonToggleModule
   ],
   exports: [ProductPickerComponent]
 })

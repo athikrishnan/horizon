@@ -26,4 +26,17 @@ mat-grid-tile {
   background: #3f51b5;
   border: 1px solid white;
   color: white;
+  cursor: pointer;
+}
+
+.app-container {
+  margin: 1.5rem;
+  width: 100%;
+  .app-page {
+    width: 100%;
+    max-width: 1366px;
+  }
+}
+mat-button-toggle-group {
+  min-width: 250px;
 }

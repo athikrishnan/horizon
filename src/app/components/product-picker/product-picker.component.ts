@@ -77,4 +77,9 @@ export class ProductPickerComponent implements OnInit, OnDestroy {
       variant
     } as PickedProduct);
   }
+
+  resetCategory(): void {
+    this.selectedCategory = null;
+    this.selectedSize = null;
+  }
 }

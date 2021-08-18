@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
+import { Invoice } from 'src/app/models/invoice.model';
 import { AlertService } from 'src/app/services/alert.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { InvoiceService } from 'src/app/services/invoice.service';
 import { CustomerDiscountComponent } from '../customer-discount/customer-discount.component';
 
 @Component({
@@ -17,10 +20,12 @@ export class CustomerViewComponent implements OnInit {
   showSpinner = true;
   customerId: string;
   customer: Customer;
+  activeInvoices: Invoice[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private customerService: CustomerService,
+    private invoiceService: InvoiceService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router,
@@ -28,8 +33,12 @@ export class CustomerViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.customerId = this.route.snapshot.paramMap.get('id');
-    this.customerService.getCustomer(this.customerId).subscribe((customer: Customer) => {
+    combineLatest([
+      this.customerService.getCustomer(this.customerId),
+      this.invoiceService.getActiveInvoicesForCustomer(this.customerId)
+    ]).subscribe(([customer, invoices]: [Customer, Invoice[]]) => {
       this.customer = customer;
+      this.activeInvoices = invoices;
       this.showSpinner = false;
       this.ref.detectChanges();
     });
@@ -54,5 +63,17 @@ export class CustomerViewComponent implements OnInit {
         this.customer = customer;
         this.ref.detectChanges();
       });
+  }
+
+  onCreateInvoice(): void {
+    this.showSpinner = true;
+    this.invoiceService.createInvoiceForCustomer(this.customer).then((invoiceId: string) => {
+      this.alertService.alert('Invoice created');
+      this.router.navigate(['invoice/' + invoiceId + '/view']);
+    });
+  }
+
+  gotoInvoice(invoice: Invoice): void {
+    this.router.navigate(['invoice/' + invoice.id + '/view']);
   }
 }

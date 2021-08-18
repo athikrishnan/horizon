@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerViewComponent } from './customer-view/customer-view.component';
 import { CustomerDiscountComponent } from './customer-discount/customer-discount.component';
 import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
+import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CurrencyInputModule } from 'src/app/components/currency-input/currency-
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    CurrencyInputModule
+    CurrencyInputModule,
+    AppPipeModule
   ],
   entryComponents: [
     CustomerDiscountComponent

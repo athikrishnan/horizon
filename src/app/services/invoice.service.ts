@@ -30,6 +30,13 @@ export class InvoiceService {
     ).valueChanges().pipe(take(1));
   }
 
+  getActiveInvoicesForCustomer(customerId: string): Observable<Invoice[]> {
+    return this.store.collection<Invoice>(
+      'invoices',
+      (ref) => ref.where('customer.id', '==', customerId).where('completedAt', '==', null).orderBy('updatedAt', 'desc')
+    ).valueChanges().pipe(take(1));
+  }
+
   getRecentInvoices(): Observable<Invoice[]> {
     return this.store.collection<Invoice>(
       'invoices',

@@ -19,12 +19,13 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
   customerForm: FormGroup = this.fb.group({
     id: null,
     name: [null, Validators.required],
+    storeName: [null, Validators.required],
     address: this.fb.group({
       street: null,
       locality: null,
       city: null,
       zip: null,
-      state: null
+      state: 'Tamilnadu'
     }),
     phone: [null, Validators.required],
     email: [null, Validators.email],

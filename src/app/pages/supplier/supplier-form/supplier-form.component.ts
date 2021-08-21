@@ -22,6 +22,7 @@ export class SupplierFormComponent implements OnInit, OnDestroy {
     id: [''],
     name: [null, Validators.required],
     location: [null, Validators.required],
+    gstin: [null, Validators.required],
     phone: [null, Validators.required],
     email: [null, Validators.email]
   });

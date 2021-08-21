@@ -20,6 +20,7 @@ export class CustomerFormComponent implements OnInit, OnDestroy {
     id: null,
     name: [null, Validators.required],
     storeName: [null, Validators.required],
+    gstin: null,
     address: this.fb.group({
       street: null,
       locality: null,

@@ -6,6 +6,7 @@ export interface Customer {
   code: number;
   address: CustomerAddress;
   storeName: string;
+  gstin: string;
   phone: number;
   email: string;
   keywords: string[];

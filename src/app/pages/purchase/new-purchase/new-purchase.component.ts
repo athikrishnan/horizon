@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -16,11 +16,15 @@ import { PurchaseService } from 'src/app/services/purchase.service';
 export class NewPurchaseComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  searchForm: FormGroup = this.fb.group({
-    search: null
+  today = new Date();
+  purchaseForm: FormGroup = this.fb.group({
+    supplier: [null, Validators.required],
+    date: [null, Validators.required]
   });
-  results: Supplier[];
-  supplier: Supplier;
+  suppliers: Supplier[] = [];
+  get supplier(): Supplier {
+    return this.purchaseForm.get('supplier').value as Supplier;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -30,15 +34,16 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.showSpinner = false;
-    this.searchForm.get('search').valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(1000)
-    ).subscribe((value: string) => {
-      this.supplierService.searchSuppliersByName(value).subscribe((results: Supplier[]) => {
-        this.results = results;
-        this.ref.detectChanges();
-      });
+    this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe(suppliers => {
+      this.suppliers = suppliers;
+      if (this.suppliers.length > 0) {
+        this.purchaseForm.patchValue({
+          supplier: this.suppliers[0],
+          date: this.today
+         });
+      }
+      this.showSpinner = false;
+      this.ref.detectChanges();
     });
   }
 
@@ -47,17 +52,11 @@ export class NewPurchaseComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onSupplierSelect(supplier: Supplier): void {
-    this.supplier = supplier;
-  }
-
-  onChangeSupplier(): void {
-    this.supplier = undefined;
-  }
-
-  onCreatePurchase(supplier: Supplier): void {
+  onSubmit(): void {
     this.showSpinner = true;
-    this.purchaseService.createPurchaseForSupplier(supplier).then((purchaseId: string) => {
+    const supplier = this.purchaseForm.get('supplier').value as Supplier;
+    const date = new Date(this.purchaseForm.get('date').value);
+    this.purchaseService.createPurchaseForSupplier(supplier, date).then((purchaseId: string) => {
       this.router.navigate(['purchase/' + purchaseId + '/view']);
     });
   }

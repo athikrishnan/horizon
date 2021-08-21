@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Supplier } from '../models/supplier.model';
 import { KeywordService } from './keyword.service';
@@ -9,12 +9,17 @@ import { KeywordService } from './keyword.service';
   providedIn: 'root'
 })
 export class SupplierService {
+  private suppliers = new ReplaySubject<Supplier[]>(1);
+  suppliers$ = this.suppliers.asObservable();
   private supplierCollection: AngularFirestoreCollection<Supplier>;
 
   constructor(
     private store: AngularFirestore,
     private keywordService: KeywordService) {
     this.supplierCollection = this.store.collection<Supplier>('suppliers');
+    this.store.collection<Supplier>('suppliers', ref => ref.limit(5)).valueChanges().subscribe((suppliers) => {
+      this.suppliers.next(suppliers);
+    });
   }
 
   async saveSupplier(supplier: Supplier): Promise<string> {

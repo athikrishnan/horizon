@@ -11,6 +11,8 @@ import { PurchaseItemFormComponent } from './purchase-item-form/purchase-item-fo
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { ProductPickerModule } from 'src/app/components/product-picker/product-picker.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { ProductPickerModule } from 'src/app/components/product-picker/product-p
     FormsModule,
     ReactiveFormsModule,
     AppPipeModule,
-    ProductPickerModule
+    ProductPickerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     StateChangedService

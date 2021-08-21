@@ -4,31 +4,13 @@
       New Supplier <mat-icon>add</mat-icon>
     </a>
   </mat-list-item>
-  <div mat-subheader>Find Supplier</div>
-  <mat-list>
-    <mat-list-item>
-      <form [formGroup]="searchForm" fxFlex="100">
-        <mat-form-field appearance="outline" fxFlex="100">
-          <input formControlName="search" matInput placeholder="Type supplier's id or name" 
-            name="supplierSearch" autocomplete="new-supplier-search">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </form>
-    </mat-list-item>
-  </mat-list>
+  <div mat-subheader>All Suppliers</div>
   <mat-nav-list>
-    <a routerLink="/supplier/{{supplier.id}}/edit" mat-list-item *ngFor="let supplier of results">
+    <a routerLink="/supplier/{{supplier.id}}/edit" mat-list-item *ngFor="let supplier of suppliers">
       {{ supplier.name }}
       <mat-divider></mat-divider>
     </a>
-  </mat-nav-list>
-  <div mat-subheader>Recently Added</div>
-  <mat-nav-list>
-    <a routerLink="/supplier/{{supplier.id}}/edit" mat-list-item *ngFor="let supplier of recents">
-      {{ supplier.name }}
-      <mat-divider></mat-divider>
-    </a>
-    <mat-list-item *ngIf="!recents.length">
+    <mat-list-item *ngIf="!suppliers.length">
       <p mat-line> There are no suppliers.</p>
     </mat-list-item>
   </mat-nav-list>

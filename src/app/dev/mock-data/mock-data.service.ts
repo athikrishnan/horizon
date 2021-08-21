@@ -67,6 +67,7 @@ export class MockDataService {
       name,
       code: 0,
       location: Faker.address.city(),
+      gstin: Faker.random.uuid(),
       phone: Faker.phone.phoneNumber(),
       email: Faker.internet.email(),
       keywords: this.keywordService.generateKeywords(name),
@@ -79,9 +80,12 @@ export class MockDataService {
 
   generateCustomer(): void {
     const name = Faker.name.firstName();
+    const storeName = Faker.name.brand();
     const customer: Customer = {
       id: Faker.random.uuid(),
       name,
+      storeName,
+      gstin: Faker.random.uuid(),
       code: 0,
       address: {
         street: Faker.address.streetName(),

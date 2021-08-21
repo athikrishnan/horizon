@@ -5,6 +5,8 @@ export interface Customer {
   name: string;
   code: number;
   address: CustomerAddress;
+  storeName: string;
+  gstin: string;
   phone: number;
   email: string;
   keywords: string[];

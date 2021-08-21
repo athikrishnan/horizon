@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Supplier } from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/services/supplier.service';
 
@@ -14,11 +14,7 @@ import { SupplierService } from 'src/app/services/supplier.service';
 export class SupplierComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
-  searchForm: FormGroup = this.fb.group({
-    search: null
-  });
-  recents: Supplier[] = [];
-  results: Supplier[] = [];
+  suppliers: Supplier[] = [];
 
   constructor(
     private supplierService: SupplierService,
@@ -26,20 +22,10 @@ export class SupplierComponent implements OnInit, OnDestroy {
     private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.supplierService.getRecents().subscribe((recents: Supplier[]) => {
-      this.recents = recents;
+    this.supplierService.suppliers$.pipe(takeUntil(this.unsubscribe$)).subscribe((suppliers: Supplier[]) => {
+      this.suppliers = suppliers;
       this.showSpinner = false;
       this.ref.detectChanges();
-    });
-
-    this.searchForm.get('search').valueChanges.pipe(
-      takeUntil(this.unsubscribe$),
-      debounceTime(1000)
-    ).subscribe((value: string) => {
-      this.supplierService.searchSuppliersByName(value).subscribe((results: Supplier[]) => {
-        this.results = results;
-        this.ref.detectChanges();
-      });
     });
   }
 

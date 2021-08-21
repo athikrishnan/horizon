@@ -5,11 +5,12 @@ export interface Purchase {
   id: string;
   code: string;
   supplier: Supplier;
-  createdAt: number;
+  date: any;
   items: PurchaseItem[];
   total: number;
   totalCgst: number;
   totalSgst: number;
+  createdAt: number;
   updatedAt: number;
   completedAt: number;
 }

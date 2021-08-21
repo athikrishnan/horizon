@@ -3,6 +3,7 @@ export interface Supplier {
   name: string;
   code: number;
   location: string;
+  gstin: string;
   phone: string;
   email: string;
   keywords: string[];

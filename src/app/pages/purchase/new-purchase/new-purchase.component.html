@@ -1,26 +1,32 @@
-<div fxLayout="column" *ngIf="!supplier">
-  <p>Select Supplier</p>
-  <form [formGroup]="searchForm" fxFlex="100">
-    <mat-form-field appearance="outline" fxFlex="100">
-      <input formControlName="search" matInput placeholder="Type supplier's id or name" name="supplierSearch"
-        autocomplete="new-supplier-search">
-      <mat-icon matSuffix>search</mat-icon>
+<div fxLayout="column">
+  <p>New Purchase From</p>
+  <form [formGroup]="purchaseForm" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Purchasing From</mat-label>
+      <mat-select formControlName="supplier" placeholder="Supplier">
+        <mat-option *ngFor="let supplier of suppliers" [value]="supplier">
+          {{ supplier.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error> Required. </mat-error>
     </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label>Purchased On</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error>Required.</mat-error>
+    </mat-form-field>
+    <div fxLayoutAlign="end">
+      <button (click)="onSubmit()" mat-raised-button color="primary"> Create Purchase </button>
+    </div>
   </form>
-  <mat-list>
-    <mat-list-item (click)="onSupplierSelect(supplier)" *ngFor="let supplier of results">
-      #{{ supplier.code }} {{ supplier.name }}
-      <mat-divider></mat-divider>
-    </mat-list-item>
-  </mat-list>
 </div>
-<div fxLayout="column" *ngIf="supplier">
-  <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
-    <p class="mat-title">#{{ supplier.code }} {{ supplier.name }}</p>
-    <button (click)="onChangeSupplier()" mat-icon-button>
-      <mat-icon>highlight_off</mat-icon>
-    </button>
-  </div>
+<div fxLayout="column" *ngIf="!!supplier">  
+  <br>
+  <p>Selected Supplier Details</p>
+  <p class="mat-title">#{{ supplier.code }} {{ supplier.name }}</p>
+  <p>GST no: {{ supplier.gstin }}</p>
   <div fxLayout="column">
     <p class="mat-header-cell">Address</p>
     <p>{{ supplier.location }},</p>
@@ -29,6 +35,5 @@
   </div>
   <br>
   <br>
-  <button (click)="onCreatePurchase(supplier)" mat-raised-button color="primary"> Create Purchase </button>
 </div>
 <app-spinner *ngIf="showSpinner"></app-spinner>

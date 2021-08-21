@@ -36,10 +36,11 @@ export class PurchaseService {
     ).valueChanges().pipe(take(1));
   }
 
-  async createPurchaseForSupplier(supplier: Supplier): Promise<string> {
+  async createPurchaseForSupplier(supplier: Supplier, date: Date): Promise<string> {
     const purchase = {
       id: this.store.createId(),
       supplier,
+      date,
       createdAt: Date.now(),
       updatedAt: Date.now(),
       completedAt: null

@@ -16,6 +16,8 @@ import { StateChangedService } from 'src/app/services/state-changed.service';
 import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
 import { InvoicePaymentComponent } from './invoice-payment/invoice-payment.component';
 import { ProductPickerModule } from 'src/app/components/product-picker/product-picker.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { ProductPickerModule } from 'src/app/components/product-picker/product-p
     ReactiveFormsModule,
     AppPipeModule,
     ProductPickerModule,
-    CurrencyInputModule
+    CurrencyInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     StateChangedService,

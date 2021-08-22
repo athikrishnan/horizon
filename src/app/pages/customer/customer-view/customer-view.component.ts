@@ -65,14 +65,6 @@ export class CustomerViewComponent implements OnInit {
       });
   }
 
-  onCreateInvoice(): void {
-    this.showSpinner = true;
-    this.invoiceService.createInvoiceForCustomer(this.customer).then((invoiceId: string) => {
-      this.alertService.alert('Invoice created');
-      this.router.navigate(['invoice/' + invoiceId + '/view']);
-    });
-  }
-
   gotoInvoice(invoice: Invoice): void {
     this.router.navigate(['invoice/' + invoice.id + '/view']);
   }

@@ -1,21 +1,7 @@
 <div fxLayout="column">
   <form [formGroup]="quoteItemForm" *ngIf="product" fxFlex="100" fxLayout="column">
     <input type="hidden" formControlName="product">
-    <div fxLayout="row" fxLayoutAlign="space-between">      
-    <mat-form-field fxFlex="48">
-      <mat-select formControlName="variant" placeholder="Variant">
-        <mat-option [value]="variant" *ngIf="variant" style="display: none">
-          {{ variant.size }} {{ product.unit }}
-        </mat-option>
-        <mat-option *ngFor="let item of variantList" [value]="item" [compareWith]="idCompare">
-          {{ item.size }} {{ product.unit }}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="quoteItemForm.get('variant').hasError('required')">
-        Required.
-      </mat-error>
-    </mat-form-field>
-    </div>
+    <input type="hidden" formControlName="variant">
     <div fxLayout="row" fxLayoutAlign="space-between">
       <mat-form-field fxFlex="48">
         <mat-label>Quantity</mat-label>
@@ -36,8 +22,7 @@
     </div>
     <div fxLayout="row" fxLayoutAlign="space-between">
       <button (click)="onRemove()" mat-stroked-button color="warn">Remove</button>
-      <button (click)="onCancel()" *ngIf="!quoteItemForm.dirty" mat-raised-button
-        color="secondary">Cancel</button>
+      <button (click)="onCancel()" *ngIf="!quoteItemForm.dirty" mat-raised-button color="secondary">Cancel</button>
       <button (click)="onSave()" *ngIf="quoteItemForm.dirty" [disabled]="!quoteItemForm.valid" mat-raised-button
         color="primary">Save</button>
     </div>

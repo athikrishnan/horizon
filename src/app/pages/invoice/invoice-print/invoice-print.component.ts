@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import * as dayjs from 'dayjs';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Company } from 'src/app/models/company.model';
@@ -54,5 +55,10 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
 
   totalInWords(): string {
     return this.amountInWordsService.inWords(this.getTotal());
+  }
+
+  displayDate(date: number): string {
+    const day = dayjs(date);
+    return day.format('ddd, MMM D, YYYY');
   }
 }

@@ -8,16 +8,25 @@
       <a (click)="sidenav.toggle()" mat-list-item routerLink="/">
         <mat-icon>dashboard</mat-icon> Dashboard
       </a>
-      <a (click)="sidenav.toggle()" mat-list-item routerLink="/report">
-        <mat-icon>analytics</mat-icon> Reports
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/invoice">
+        <mat-icon>receipt</mat-icon> Sale
       </a>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/quote">
+        <mat-icon>receipt</mat-icon> Quote
+      </a>
+      <a (click)="sidenav.toggle()" mat-list-item routerLink="/purchase">
+        <mat-icon>receipt</mat-icon> Purchase
+      </a>
+      <!-- <a (click)="sidenav.toggle()" mat-list-item routerLink="/report">
+        <mat-icon>analytics</mat-icon> Reports
+      </a> -->
       <a (click)="sidenav.toggle()" mat-list-item routerLink="/stock">
         <mat-icon>inventory</mat-icon> Stock
       </a>
       <!-- <a (click)="sidenav.toggle()" mat-list-item routerLink="/showcase">
         <mat-icon>image</mat-icon> Showcase
       </a> -->
-      <mat-expansion-panel [class.mat-elevation-z0]="true">
+      <!-- <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>
           Sale
         </mat-expansion-panel-header>
@@ -25,18 +34,18 @@
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/invoice">
             <mat-icon>receipt</mat-icon> Invoice
           </a>
-          <!-- <a (click)="sidenav.toggle()" mat-list-item routerLink="/proforma">
+          <a (click)="sidenav.toggle()" mat-list-item routerLink="/proforma">
             <mat-icon>receipt</mat-icon> Proforma
           </a>
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/quote">
             <mat-icon>receipt</mat-icon> Quote
-          </a> -->
+          </a>
           <a (click)="sidenav.toggle()" mat-list-item routerLink="/income">
             <mat-icon>paid</mat-icon> Income
           </a>
         </mat-nav-list>
-      </mat-expansion-panel>
-      <mat-expansion-panel [class.mat-elevation-z0]="true">
+      </mat-expansion-panel> -->
+      <!-- <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>
           Purchase
         </mat-expansion-panel-header>
@@ -51,7 +60,7 @@
             <mat-icon>paid</mat-icon> Expense
           </a>
         </mat-nav-list>
-      </mat-expansion-panel>
+      </mat-expansion-panel> -->
       <div mat-subheader>Settings</div>
       <mat-expansion-panel [class.mat-elevation-z0]="true">
         <mat-expansion-panel-header>

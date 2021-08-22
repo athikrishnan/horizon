@@ -10,11 +10,11 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuoteRoutingModule } from './quote-routing.module';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
-import { ProductSerchModule } from 'src/app/components/product-search/product-search.module';
 import { QuotePrintService } from './quote-print.service';
 import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
+import { ProductPickerModule } from 'src/app/components/product-picker/product-picker.module';
 
 @NgModule({
   declarations: [
@@ -32,8 +32,8 @@ import { CurrencyInputModule } from 'src/app/components/currency-input/currency-
     FormsModule,
     ReactiveFormsModule,
     AppPipeModule,
-    ProductSerchModule,
-    CurrencyInputModule
+    CurrencyInputModule,
+    ProductPickerModule
   ],
   providers: [
     AmountInWordsService,

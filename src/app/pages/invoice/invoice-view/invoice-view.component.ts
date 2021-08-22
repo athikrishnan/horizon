@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as dayjs from 'dayjs';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
@@ -160,5 +161,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
     }).afterClosed().subscribe(() => {
       this.ref.detectChanges();
     });
+  }
+
+  displayDate(date: any): string {
+    const day = dayjs(date.toDate());
+    return day.format('ddd, MMM D, YYYY');
   }
 }

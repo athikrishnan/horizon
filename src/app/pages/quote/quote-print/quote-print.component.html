@@ -19,7 +19,7 @@
         <div class="light-header">Quote Details:</div>
         <div class="content">
           <span>Quote Number: {{ quote.code }}</span> <br>
-          <span>Quote Date: {{ quote.completedAt }}</span> <br>
+          <span>Quote Date: {{ displayDate(quote.completedAt) }}</span> <br>
           <span>Place of Supply: {{ quote.customer.address.state }}</span>
         </div>
       </div>
@@ -28,47 +28,47 @@
       <table style="width: 100%;">
         <thead>
           <tr>
-            <th class="align-left" width="5mm">#</th>
+            <th class="align-left" width="3mm">#</th>
             <th class="align-left">Description</th>
-            <th style="width: 7mm">Qty</th>
-            <th style="width: 25mm">Price / Unit</th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">Taxable <br> Amount</th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">CGST</th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">SGST</th>
-            <th style="width: 20mm">Amount</th>
+            <th style="width: 4mm">Qty</th>
+            <th style="width: 18mm">Price / Unit</th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">Taxable <br> Amount</th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">CGST</th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">SGST</th>
+            <th style="width: 14mm">Amount</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of quote.items; let i = index">
-            <td class="align-left" style="width: 7mm">{{ (i + 1).toString().padStart(2, '0') }}</td>
+            <td class="align-left" style="width: 4mm">{{ (i + 1).toString().padStart(2, '0') }}</td>
             <td class="align-left">
               {{ item.product.name }}
               ({{ item.variant.name }} {{ item.variant.size }} {{ item.product.unit }})
             </td>
-            <td style="width: 7mm">{{ item.quantity }}</td>
-            <td style="width: 25mm">&#8377;{{ item.variant.price | number: '.2-2' }}</td>
-            <td *ngIf="isTaxQuote" style="width: 20mm">
+            <td style="width: 4mm">{{ item.quantity }}</td>
+            <td style="width: 18mm">&#8377;{{ item.variant.price | number: '.2-2' }}</td>
+            <td *ngIf="isTaxQuote" style="width: 14mm">
               &#8377;{{ (item.price - (item.sgst + item.cgst)) | number: '.2-2' }}
             </td>
-            <td *ngIf="isTaxQuote" style="width: 20mm">
+            <td *ngIf="isTaxQuote" style="width: 14mm">
               &#8377;{{ item.cgst | number: '.2-2' }} <br> ({{ item.product.slab.cgst }} %)
             </td>
-            <td *ngIf="isTaxQuote" style="width: 20mm">
+            <td *ngIf="isTaxQuote" style="width: 14mm">
               &#8377;{{ item.sgst | number: '.2-2' }} <br> ({{ item.product.slab.sgst }} %)
             </td>
-            <td style="width: 20mm">&#8377;{{ item.price | number: '.2-2' }}</td>
+            <td style="width: 14mm">&#8377;{{ item.price | number: '.2-2' }}</td>
           </tr>
           <tr>
-            <th class="align-left" width="5mm">--</th>
+            <th class="align-left" width="3mm">--</th>
             <th class="align-left">Total</th>
-            <th style="width: 7mm">{{ getTotalQuantity() }}</th>
-            <th style="width: 25mm"></th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">
+            <th style="width: 4mm">{{ getTotalQuantity() }}</th>
+            <th style="width: 18mm"></th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">
               &#8377;{{ (quote.total - (quote.totalCgst + quote.totalSgst)) | number: '.2-2' }}
             </th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">&#8377;{{ quote.totalCgst | number: '.2-2' }}</th>
-            <th *ngIf="isTaxQuote" style="width: 20mm">&#8377;{{ quote.totalSgst | number: '.2-2' }}</th>
-            <th style="width: 20mm">&#8377;{{ quote.subTotal | number: '.2-2' }}</th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">&#8377;{{ quote.totalCgst | number: '.2-2' }}</th>
+            <th *ngIf="isTaxQuote" style="width: 14mm">&#8377;{{ quote.totalSgst | number: '.2-2' }}</th>
+            <th style="width: 14mm">&#8377;{{ quote.subTotal | number: '.2-2' }}</th>
           </tr>
         </tbody>
       </table>

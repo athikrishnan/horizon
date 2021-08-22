@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { combineLatest, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { QuoteItem } from 'src/app/models/quote-item.model';
 import { Quote } from 'src/app/models/quote.model';
@@ -48,15 +48,12 @@ export class QuoteItemFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.applyDefaults();
-
-    combineLatest([
-      this.quoteItemForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$)),
-      this.quoteItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
-    ]).subscribe(([variant, quantity]: [ProductVariant, number]) => {
-      const price = variant.price * quantity;
-      this.quoteItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
-      this.ref.detectChanges();
-    });
+    this.quoteItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((quantity: number) => {
+        const price = this.variant.price * quantity;
+        this.quoteItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+        this.ref.detectChanges();
+      });
 
     this.quoteItemForm.patchValue(this.item);
     this.ref.detectChanges();

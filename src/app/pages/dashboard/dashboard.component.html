@@ -1,6 +1,6 @@
 <div fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between" fxFlex="100">
-    <div>
+    <!-- <div>
       <p class="mat-header-cell">Today's Total</p>
       <h3 *ngIf="!report" class="mat-display-3">&#8377; 0.00</h3>
       <h3 *ngIf="report" class="mat-display-3" (click)="gotoReport()">
@@ -8,21 +8,21 @@
           &#8377; {{ report.balance | number: '.2-2' }}
         </span>
       </h3>
+    </div> -->
+    <div>
+      <p class="mat-header-cell">Active Invoices</p>
+      <mat-list-item *ngIf="!activeInvoices.length">
+        <p mat-line> There are no active invoices.</p>
+      </mat-list-item>
+      <mat-list-item *ngFor="let invoice of activeInvoices">
+        <p mat-line (click)="editInvoice(invoice.id)"> {{ invoice.customer.name }} (#{{ invoice.customer.code }})</p>
+        <p mat-line> {{ invoice.updatedAt | timeAgo }} </p>
+        <mat-divider></mat-divider>
+      </mat-list-item>
     </div>
     <button mat-mini-fab color="accent" [matMenuTriggerFor]="menu">
       <mat-icon>add</mat-icon>
     </button>
-  </div>
-  <div>
-    <p class="mat-header-cell">Active Invoices</p>
-    <mat-list-item *ngIf="!activeInvoices.length">
-      <p mat-line> There are no active invoices.</p>
-    </mat-list-item>
-    <mat-list-item *ngFor="let invoice of activeInvoices">
-      <p mat-line (click)="editInvoice(invoice.id)"> {{ invoice.customer.name }} (#{{ invoice.customer.code }})</p>
-      <p mat-line> {{ invoice.updatedAt | timeAgo }} </p>
-      <mat-divider></mat-divider>
-    </mat-list-item>
   </div>
 </div>
 
@@ -35,14 +35,14 @@
     <mat-icon>shopping_cart</mat-icon>
     <span>Product</span>
   </a>
-  <a mat-menu-item routerLink="/income/create">
+  <!-- <a mat-menu-item routerLink="/income/create">
     <mat-icon>paid</mat-icon>
     <span>Income</span>
   </a>
   <a mat-menu-item routerLink="/expense/create">
     <mat-icon>paid</mat-icon>
     <span>Expense</span>
-  </a>
+  </a> -->
   <a mat-menu-item routerLink="/customer/create">
     <mat-icon>account_box</mat-icon>
     <span>Customer</span>

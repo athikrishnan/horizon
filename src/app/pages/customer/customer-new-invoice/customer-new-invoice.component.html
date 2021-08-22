@@ -1,0 +1,14 @@
+<form [formGroup]="customerNewInvoiceForm" fxLayout="column">
+  <mat-form-field appearance="outline" fxFlex="100">
+    <mat-label>Find invoices on</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>  
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <a *ngIf="customerId" routerLink="/customer/{{customerId}}/view" mat-stroked-button>Cancel</a>
+    <button (click)="onSubmit()"  mat-raised-button color="primary"> Create Invoice </button>
+  </div>
+</form>
+<app-spinner *ngIf="showSpinner"></app-spinner>

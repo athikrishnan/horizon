@@ -2,10 +2,11 @@ export const InvoicePrintCss = `
 body {
   background: rgb(204,204,204);
   -webkit-print-color-adjust: exact;
+  font-size: 8px;
 }
 div[size="A4"] {
   background: white;
-  width: 21cm;
+  width: 13cm;
   display: block;
   margin: 0 auto;
 }
@@ -27,7 +28,7 @@ div[size="A4"] {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 32px;
+  font-size: 16px;
   width: 90%;
 }
 .left-50, .right-50 {
@@ -65,6 +66,7 @@ table, th, td {
 }
 th, td {
   text-align: right;
+  font-size: 8px;
 }
 th.align-left, td.align-left {
   text-align: left;

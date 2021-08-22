@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -16,11 +16,16 @@ import { InvoiceService } from 'src/app/services/invoice.service';
 export class NewInvoiceComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   showSpinner = true;
+  invoiceForm: FormGroup = this.fb.group({
+    customer: [null, Validators.required],
+    date: [null, Validators.required]
+  });
   searchForm: FormGroup = this.fb.group({
     search: null
   });
   results: Customer[];
   customer: Customer;
+  today = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +36,7 @@ export class NewInvoiceComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.showSpinner = false;
+    this.invoiceForm.patchValue({ date: this.today });
     this.searchForm.get('search').valueChanges.pipe(
       takeUntil(this.unsubscribe$),
       debounceTime(1000)
@@ -49,15 +55,18 @@ export class NewInvoiceComponent implements OnInit, OnDestroy {
 
   onCustomerSelect(customer: Customer): void {
     this.customer = customer;
+    this.invoiceForm.patchValue({ customer: this.customer });
   }
 
   onChangeCustomer(): void {
     this.customer = undefined;
+    this.invoiceForm.patchValue({ customer: null });
   }
 
-  onCreateInvoice(customer: Customer): void {
+  onSubmit(): void {
     this.showSpinner = true;
-    this.invoiceService.createInvoiceForCustomer(customer).then((invoiceId: string) => {
+    const date = new Date(this.invoiceForm.get('date').value);
+    this.invoiceService.createInvoiceForCustomer(this.customer, date).then((invoiceId: string) => {
       this.router.navigate(['invoice/' + invoiceId + '/view']);
     });
   }

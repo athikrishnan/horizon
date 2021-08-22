@@ -1,0 +1,22 @@
+<form [formGroup]="customerInvoiceForm" fxLayout="column">
+  <mat-form-field appearance="outline" fxFlex="100">
+    <mat-label>Find invoices on</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Required.</mat-error>
+  </mat-form-field>  
+  <div>
+    <a *ngIf="customerId" routerLink="/customer/{{customerId}}/view" mat-stroked-button>Cancel</a>
+  </div>
+</form>
+<ng-container *ngIf="invoices.length > 0">
+  <mat-list>
+    <mat-list-item *ngFor="let invoice of invoices" (click)="gotoInvoice(invoice)">
+      <p mat-line> {{ invoice.code }} ({{ invoice.items?.length || 0 }} items)</p>
+      <p mat-line> {{ invoice.updatedAt | timeAgo }} </p> 
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</ng-container>
+<app-spinner *ngIf="showSpinner"></app-spinner>

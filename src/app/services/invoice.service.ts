@@ -7,6 +7,7 @@ import { Customer } from '../models/customer.model';
 import { InvoiceItem } from '../models/invoice-item.model';
 import { Invoice } from '../models/invoice.model';
 import { AuthService } from './auth.service';
+import { KeywordService } from './keyword.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class InvoiceService {
 
   constructor(
     private store: AngularFirestore,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private keywordService: KeywordService) {
     this.invoiceCollection = this.store.collection<Invoice>('invoices');
     this.completedInvoiceCollection = this.store.collection<CompletedInvoice>('completedInvoices');
   }
@@ -37,6 +39,15 @@ export class InvoiceService {
     ).valueChanges().pipe(take(1));
   }
 
+  getCompletedInvoicesForCustomerByDate(customerId: string, date: Date): Observable<Invoice[]> {
+    const dmy: string = this.keywordService.getDMY(date);
+    return this.store.collection<Invoice>(
+      'invoices',
+      (ref) => ref.where('customer.id', '==', customerId).where('completedAt', '!=', null)
+        .where('dateKeywords', 'array-contains', dmy)
+    ).valueChanges().pipe(take(1));
+  }
+
   getRecentInvoices(): Observable<Invoice[]> {
     return this.store.collection<Invoice>(
       'invoices',
@@ -44,10 +55,12 @@ export class InvoiceService {
     ).valueChanges().pipe(take(1));
   }
 
-  async createInvoiceForCustomer(customer: Customer): Promise<string> {
+  async createInvoiceForCustomer(customer: Customer, date: Date): Promise<string> {
     const invoice = {
       id: this.store.createId(),
       customer,
+      date,
+      dateKeywords: this.keywordService.generateDateKeywords(date),
       createdAt: Date.now(),
       updatedAt: Date.now(),
       completedAt: null,

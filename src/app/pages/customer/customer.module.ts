@@ -9,13 +9,17 @@ import { CustomerViewComponent } from './customer-view/customer-view.component';
 import { CustomerDiscountComponent } from './customer-discount/customer-discount.component';
 import { CurrencyInputModule } from 'src/app/components/currency-input/currency-input.module';
 import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
+import { CustomerInvoiceComponent } from './customer-invoice/customer-invoice.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
     CustomerComponent,
     CustomerFormComponent,
     CustomerViewComponent,
-    CustomerDiscountComponent
+    CustomerDiscountComponent,
+    CustomerInvoiceComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +28,9 @@ import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
     FormsModule,
     ReactiveFormsModule,
     CurrencyInputModule,
-    AppPipeModule
+    AppPipeModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   entryComponents: [
     CustomerDiscountComponent

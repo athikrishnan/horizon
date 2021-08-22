@@ -12,6 +12,9 @@
         <button mat-menu-item (click)='onCreateInvoice()'>
           New Invoice
         </button>
+        <a mat-menu-item routerLink="/customer/{{ customer.id }}/customer-invoice">
+          Find Invoices
+        </a>
         <a mat-menu-item routerLink="/customer/{{ customer.id }}/edit">
           Edit
         </a>

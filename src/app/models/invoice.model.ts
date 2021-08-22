@@ -19,6 +19,8 @@ export interface Invoice {
   balance: number;
   totalCgst: number;
   totalSgst: number;
+  date: any;
+  dateKeywords: string[];
   updatedAt: number;
   completedAt: number;
 }

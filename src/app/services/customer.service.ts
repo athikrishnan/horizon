@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Customer } from '../models/customer.model';
+import { Invoice } from '../models/invoice.model';
 import { KeywordService } from './keyword.service';
 
 @Injectable({

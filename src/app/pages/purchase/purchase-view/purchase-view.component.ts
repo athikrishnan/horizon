@@ -13,6 +13,7 @@ import { Purchase } from 'src/app/models/purchase.model';
 import { PurchaseService } from 'src/app/services/purchase.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { PickedProduct } from 'src/app/models/picked-product.model';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-purchase-view',
@@ -105,5 +106,10 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
       this.showSpinner = false;
     });
+  }
+
+  displayDate(date: any): string {
+    const day = dayjs(date.toDate());
+    return day.format('ddd, MMM D, YYYY');
   }
 }

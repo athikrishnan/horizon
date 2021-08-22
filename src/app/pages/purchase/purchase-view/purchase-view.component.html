@@ -4,6 +4,8 @@
       <mat-expansion-panel-header>
         {{ purchase.code }}
       </mat-expansion-panel-header>
+      <p>Purchased on:</p>
+      <p><b>{{ displayDate(purchase.date) }}</b></p>
       <p>last updated at:</p>
       <p><b>{{ purchase.updatedAt | timeAgo }}</b></p>
       <ng-container *ngIf="!purchase.completedAt">
@@ -18,6 +20,7 @@
         {{ supplier.name }}
       </mat-expansion-panel-header>
       <p> # {{ supplier.code }}</p>
+      <p *ngIf="!!supplier.gstin">gst:  {{ supplier.gstin }}</p>
       <div>
         <p class="mat-header-cell">Address</p>
         <p>{{ supplier.location }},</p>
@@ -84,8 +87,10 @@
   <br>
   <mat-divider></mat-divider>
   <br>
-  <div fxLayoutAlign="end" *ngIf="purchase.items?.length">
+  <div fxLayoutAlign="space-between" *ngIf="purchase.items?.length">
     <button (click)="onComplete()" *ngIf="!purchase.completedAt" mat-raised-button color="primary">Complete</button>
+    <button (click)="onProductSearchOpen()" *ngIf="!purchase.completedAt" mat-stroked-button color="primary"> Add Item
+    </button>
   </div>
 </div>
 <app-product-picker *ngIf="showProductSearch" (cancel)="onProductSearchCancel()"

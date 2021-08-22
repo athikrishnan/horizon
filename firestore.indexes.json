@@ -9,8 +9,44 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "customer.id",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "updatedAt",
           "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "completedAt",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "updatedAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "dateKeywords",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "customer.id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "completedAt",
+          "order": "ASCENDING"
         }
       ]
     },
@@ -27,42 +63,7 @@
           "order": "DESCENDING"
         }
       ]
-    },
-    {
-      "collectionGroup": "invoices",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "completedAt",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "customer.id",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "updatedAt",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "invoices",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "dateKeywords ",
-          "order": "ARRAYS"
-        },
-        {
-          "fieldPath": "customer.id",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "completedAt",
-          "order": "ASCENDING"
-        }
-      ]
     }
-  ]
+  ],
+  "fieldOverrides": []
 }

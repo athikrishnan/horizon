@@ -9,9 +9,9 @@
         <button mat-menu-item (click)='onSetDiscount()'>
           Set Discount
         </button>
-        <button mat-menu-item (click)='onCreateInvoice()'>
+        <a mat-menu-item routerLink="/customer/{{ customer.id }}/customer-new-invoice">
           New Invoice
-        </button>
+        </a>
         <a mat-menu-item routerLink="/customer/{{ customer.id }}/customer-invoice">
           Find Invoices
         </a>

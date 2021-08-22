@@ -12,6 +12,7 @@ import { AppPipeModule } from 'src/app/pipes/app-pipe.module';
 import { CustomerInvoiceComponent } from './customer-invoice/customer-invoice.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CustomerNewInvoiceComponent } from './customer-new-invoice/customer-new-invoice.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     CustomerFormComponent,
     CustomerViewComponent,
     CustomerDiscountComponent,
-    CustomerInvoiceComponent
+    CustomerInvoiceComponent,
+    CustomerNewInvoiceComponent
   ],
   imports: [
     CommonModule,

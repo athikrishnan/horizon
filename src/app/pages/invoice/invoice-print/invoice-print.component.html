@@ -14,8 +14,10 @@
           <p class="company-name"><b>{{ company.name }}</b></p>
           <span> {{ company.address.street }}, {{ company.address.city }}</span> <br>
           <span> {{ company.address.state }} - {{ company.address.zip }}</span> <br>
-          <span> Email: {{ company.email }}</span> <br>
-          <span> Gst No: {{ company.gstin }} </span> <br>
+          <span> Phone: {{ company.phone }} <span *ngIf="company.email">| Email: {{ company.email }}</span></span> <br>          
+          <ng-container *ngIf="isTaxInvoice">
+            <span> Gst No: {{ company.gstin }}</span> <br>
+          </ng-container>
           <span><b>State Code:</b> 33</span> <br>
         </div>
       </div>
@@ -25,13 +27,19 @@
           <span> {{ invoice.customer.name }}</span> <br>
           <span> {{ invoice.customer.address.street }}, {{ invoice.customer.address.city }}</span> <br>
           <span> {{ invoice.customer.address.state }} - {{ invoice.customer.address.zip }}</span> <br>
+          <span> 
+            Phone: {{ invoice.customer.phone }} 
+            <span *ngIf="invoice.customer.email">| Email: {{ invoice.customer.email }}</span>
+          </span> <br>     
+          <ng-container *ngIf="isTaxInvoice">
+            <span> Gst No: {{ invoice.customer.gstin }}</span> <br>
+          </ng-container>
           <span><b>State Code:</b> 33</span> <br>
         </div>
         <div class="light-header">Invoice Details:</div>
         <div class="content">
           <span>Invoice Number: {{ invoice.code }}</span> <br>
           <span>Invoice Date: {{ displayDate(invoice.completedAt) }}</span> <br>
-          <span>Place of Supply: {{ invoice.customer.address.state }}</span>
         </div>
       </div>
     </div>

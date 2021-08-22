@@ -45,6 +45,24 @@
           "order": "DESCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "dateKeywords ",
+          "order": "ARRAYS"
+        },
+        {
+          "fieldPath": "customer.id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "completedAt",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ]
 }

@@ -21,6 +21,7 @@
         {{ customer.name }}
       </mat-expansion-panel-header>
       <p> # {{ customer.code }}</p>
+      <p *ngIf="!invoice.hideTax && !!customer.gstin">gst:  {{ customer.gstin }}</p>
       <div *ngIf="customer.address">
         <p class="mat-header-cell">Address</p>
         <p *ngIf="customer.address.street">{{ customer.address.street }},</p>
@@ -133,8 +134,10 @@
   <mat-divider></mat-divider>
   <br>
   <ng-contianer *ngIf="!invoice.completedAt">
-    <div fxLayoutAlign="end" *ngIf="invoice.items?.length">
+    <div fxLayoutAlign="space-between" *ngIf="invoice.items?.length">
       <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
+      <button (click)="onProductSearchOpen()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
+      </button>
     </div>
   </ng-contianer>
   <ng-contianer *ngIf="invoice.completedAt">

@@ -17,6 +17,8 @@ import { QuotePrintService } from '../quote-print.service';
 import { QuotePrintComponent } from '../quote-print/quote-print.component';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PickedProduct } from 'src/app/models/picked-product.model';
+import * as dayjs from 'dayjs';
 
 @Component({
   selector: 'app-quote-view',
@@ -91,10 +93,11 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
       && !!item.quantity && !!item.price);
   }
 
-  onProductSelect(product: Product): void {
+  onProductPick(pickedProduct: PickedProduct): void {
     this.showProductSearch = false;
     this.quoteService.saveQuoteItem(this.quote, {
-      product,
+      product: pickedProduct.product,
+      variant: pickedProduct.variant,
     } as QuoteItem);
   }
 
@@ -150,5 +153,10 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
 
   onPrint(): void {
     this.quotePrintService.print(this.quote, this.print.content.nativeElement.innerHTML);
+  }
+
+  displayQuotedDate(date: number): string {
+    const day = dayjs(date);
+    return day.format('ddd, MMM D, YYYY');
   }
 }

@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import * as dayjs from 'dayjs';
 import { Quote } from 'src/app/models/quote.model';
 import { AmountInWordsService } from 'src/app/services/amount-in-words.service';
 
@@ -36,5 +37,10 @@ export class QuotePrintComponent implements OnInit {
 
   totalInWords(): string {
     return this.amountInWordsService.inWords(this.getTotal());
+  }
+
+  displayDate(date: number): string {
+    const day = dayjs(date);
+    return day.format('ddd, MMM D, YYYY');
   }
 }

@@ -30,7 +30,7 @@
         <div class="light-header">Invoice Details:</div>
         <div class="content">
           <span>Invoice Number: {{ invoice.code }}</span> <br>
-          <span>Invoice Date: {{ invoice.completedAt }}</span> <br>
+          <span>Invoice Date: {{ displayDate(invoice.completedAt) }}</span> <br>
           <span>Place of Supply: {{ invoice.customer.address.state }}</span>
         </div>
       </div>

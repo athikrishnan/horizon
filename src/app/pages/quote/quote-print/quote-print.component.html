@@ -8,7 +8,7 @@
   </div>
   <div class="page" size="A4">
     <div style="display: flex; justify-content: space-between;">
-      <div class="full-100">
+      <div class="left-50">
         <div class="dark-header">Quoted To:</div>
         <div class="content">
           <span> {{ quote.customer.name }}</span> <br>
@@ -16,6 +16,17 @@
           <span> {{ quote.customer.address.state }} - {{ quote.customer.address.zip }}</span> <br>
           <span><b>State Code:</b> 33</span> <br>
         </div>
+
+      </div>
+      <div class="right-50">
+        <ng-container *ngIf="company">
+          <div class="dark-header">Quoted By:</div>
+          <div class="content">
+            <p class="company-name"><b>{{ company.name }}</b></p>
+            <span> Phone: {{ company.phone }} <span *ngIf="company.email">| Email: {{ company.email }}</span></span>
+            <br>
+          </div>
+        </ng-container>
         <div class="light-header">Quote Details:</div>
         <div class="content">
           <span>Quote Number: {{ quote.code }}</span> <br>

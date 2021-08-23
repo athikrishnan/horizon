@@ -44,7 +44,7 @@ div[size="A4"] {
 }
 .company-name {
   text-transform: uppercase;
-  margin: 3mm 0;
+  margin: 0;
 }
 .content {
   padding: 1mm;

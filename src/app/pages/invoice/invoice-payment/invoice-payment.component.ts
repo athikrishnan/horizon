@@ -18,7 +18,7 @@ export class InvoicePaymentComponent implements OnInit {
   showSpinner = false;
   invoice: Invoice;
   paymentForm: FormGroup = this.fb.group({
-    amount: [null, Validators.required],
+    amount: [0, [Validators.required, Validators.min(1)]],
     date: [null, Validators.required]
   });
   today = new Date();
@@ -46,7 +46,8 @@ export class InvoicePaymentComponent implements OnInit {
 
   onSave(): void {
     this.showSpinner = true;
-    const amount: number = +this.paymentForm.get('amount').value;
+    // TODO: this should be coming as number from the field itself
+    const amount: number = this.toAmount(this.paymentForm.get('amount').value);
     const date: Date = new Date(this.paymentForm.get('date').value);
     const invoicePayment: InvoicePayment = {
       invoice: this.invoice,
@@ -59,5 +60,9 @@ export class InvoicePaymentComponent implements OnInit {
       this.showSpinner = false;
       this.dialogRef.close();
     });
+  }
+
+  private toAmount(value: string): number {
+    return (value) ? +(value.replace(/,/g, '')) : null;
   }
 }

@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import { CompletedInvoiceDoc } from '../models/completed-invoice-doc.model';
 import { InvoiceDoc } from '../models/invoice-doc.model';
 import { InvoiceItemDoc } from '../models/invoice-item-doc.model';
+import { CustomerDoc } from '../models/customer-doc.model';
 
 exports.onCompletedInvoiceCreate = functions.firestore
   .document('completedInvoices/{docId}')
@@ -10,6 +11,7 @@ exports.onCompletedInvoiceCreate = functions.firestore
     const completedInvoiceDoc: CompletedInvoiceDoc = snapshot.data() as CompletedInvoiceDoc;
     const invoice = completedInvoiceDoc.invoice as InvoiceDoc;
 
+    // update stock changes
     invoice.items.forEach(async (item: InvoiceItemDoc) => {
       let quantity = item.variant.quantity - item.quantity;
       if (quantity < 0) { quantity = 0; }
@@ -25,5 +27,18 @@ exports.onCompletedInvoiceCreate = functions.firestore
         createdAt: Date.now()
       });
     });
+
+    // update customer balance
+    await admin.firestore().collection('customers')
+      .where('id', '==', invoice.customer.id).limit(1).get()
+      .then(async (query) => {
+        if (query.docs.length === 1) {
+          const customerDoc: CustomerDoc = query.docs[0].data() as CustomerDoc;
+          customerDoc.account.balance += invoice.total;
+          customerDoc.updatedAt = Date.now();
+          await admin.firestore().collection('customers').doc(customerDoc.id).set(customerDoc);
+        }
+        return query;
+      });
     return;
   });

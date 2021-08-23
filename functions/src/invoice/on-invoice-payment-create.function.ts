@@ -4,7 +4,7 @@ import { InvoicePaymentDoc } from '../models/invoice-payment-doc.model';
 import { InvoiceDoc } from '../models/invoice-doc.model';
 import { CompletedInvoiceDoc } from '../models/completed-invoice-doc.model';
 import { TransactionDoc } from '../models/transaction-doc.model';
-import { DateKeywordsGenerator } from '../utils/date-keywords-generator';
+import { CustomerDoc } from '../models/customer-doc.model';
 
 exports.onInvoicePaymentCreate = functions.firestore
   .document('invoicePayments/{docId}')
@@ -47,12 +47,26 @@ exports.onInvoicePaymentCreate = functions.firestore
       type: 'InvoicePayment',
       isDebit: false,
       amount: invoicePaymentDoc.amount,
-      date: new Date(),
-      dateKeywords: (new DateKeywordsGenerator()).generate(new Date()),
+      date: invoicePaymentDoc.date,
+      dateKeywords: invoicePaymentDoc.dateKeywords,
       createdBy: invoicePaymentDoc.recievedBy,
       updatedAt: Date.now(),
       createdAt: Date.now()
     } as TransactionDoc)
+
+    // update customer balance
+    await admin.firestore().collection('customers')
+      .where('id', '==', invoice.customer.id).limit(1).get()
+      .then(async (query) => {
+        if (query.docs.length === 1) {
+          const customerDoc: CustomerDoc = query.docs[0].data() as CustomerDoc;
+          customerDoc.account.balance -= invoicePaymentDoc.amount;
+          customerDoc.account.received += invoicePaymentDoc.amount;
+          customerDoc.updatedAt = Date.now();
+          await admin.firestore().collection('customers').doc(customerDoc.id).set(customerDoc);
+        }
+        return query;
+      });
 
     return;
   });

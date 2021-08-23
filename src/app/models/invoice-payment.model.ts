@@ -8,6 +8,8 @@ export interface InvoicePayment {
   amount: number;
   paidBy: Customer;
   recievedBy: User;
+  date: any;
+  dateKeywords: string[];
   createdAt: number;
   updatedAt: number;
 }

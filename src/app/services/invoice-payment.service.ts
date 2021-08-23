@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { InvoicePayment } from 'src/app/models/invoice-payment.model';
 import { AuthService } from './auth.service';
 

@@ -97,6 +97,7 @@ export class MockDataService {
       phone: Faker.phone.phoneNumber(),
       email: Faker.internet.email(),
       keywords: this.keywordService.generateKeywords(name),
+      account: { balance: 0, received: 0 },
       createdAt: Date.now(),
       updatedAt: Date.now()
     };

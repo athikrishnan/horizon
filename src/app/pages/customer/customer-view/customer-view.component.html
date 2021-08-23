@@ -33,6 +33,14 @@
     <p>
       <mat-divider></mat-divider>
     </p>
+    <p class="mat-title">Account Information</p>
+    <ng-container *ngIf="customer.account">
+      <p>Received: {{ customer.account.received }} &#8377;</p>
+      <p>Balance: {{ customer.account.balance }} &#8377;</p>
+    </ng-container>
+    <p>
+      <mat-divider></mat-divider>
+    </p>
     <p class="mat-title">Address Information</p>
     <ng-container *ngIf="customer.address">
       <p *ngIf="customer.address.street">{{ customer.address.street }},</p>

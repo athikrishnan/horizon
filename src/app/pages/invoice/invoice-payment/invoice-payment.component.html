@@ -10,8 +10,15 @@
       <div style="text-align: right;">&#8377;{{ (invoice.balance || 0) | number : '.2-2' }}</div>
     </div>
     <br>
-    <form [formGroup]="paymentForm">
-      <mat-form-field fxFlex="100">
+    <form [formGroup]="paymentForm" fxLayout="column">
+      <mat-form-field appearance="outline">
+        <mat-label>Paid on</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" required [max]="today">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>Required.</mat-error>
+      </mat-form-field>  
+      <mat-form-field>
         <mat-label>Amount</mat-label>
         <app-currency-input matInput formControlName="amount" #amount></app-currency-input>
         <span matSuffix>&#8377;</span>

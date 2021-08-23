@@ -8,7 +8,7 @@
   </div>
   <div class="page" size="A4">
     <div style="display: flex; justify-content: space-between;">
-      <div class="left-50">
+      <div class="left-50" *ngIf="company">
         <div class="dark-header">Sold By:</div>
         <div class="content">
           <p class="company-name"><b>{{ company.name }}</b></p>

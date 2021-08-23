@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { CustomerAccount } from '../models/customer-account.model';
 import { Customer } from '../models/customer.model';
 import { Invoice } from '../models/invoice.model';
 import { KeywordService } from './keyword.service';
@@ -24,6 +25,7 @@ export class CustomerService {
     if (isNew) {
       customer.id = this.store.createId();
       customer.createdAt = Date.now();
+      customer.account = { balance: 0, received: 0 } as CustomerAccount;
     }
     customer.updatedAt = Date.now();
     customer.keywords = this.keywordService.generateKeywords(customer.name);

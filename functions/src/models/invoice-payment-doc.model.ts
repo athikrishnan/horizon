@@ -4,6 +4,8 @@ export interface InvoicePaymentDoc {
   amount: number;
   paidBy: any;
   recievedBy: any;
+  date: any,
+  dateKeywords: string[];
   createdAt: number;
   updatedAt: number;
 }

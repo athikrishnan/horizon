@@ -12,6 +12,10 @@ export interface CustomerDoc {
   phone: number;
   email: string;
   keywords: string[];
+  account: {
+    balance: number;
+    received: number;
+  }
   createdAt: number;
   updatedAt: number;
 }

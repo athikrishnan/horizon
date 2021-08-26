@@ -14,7 +14,8 @@
           <p class="company-name"><b>{{ company.name }}</b></p>
           <span> {{ company.address.street }}, {{ company.address.city }}</span> <br>
           <span> {{ company.address.state }} - {{ company.address.zip }}</span> <br>
-          <span> Phone: {{ company.phone }} <span *ngIf="company.email">| Email: {{ company.email }}</span></span> <br>          
+          <span> Phone: {{ company.phone }} </span> <br>
+          <span *ngIf="company.email">Email: {{ company.email }}</span> <br>   
           <ng-container *ngIf="isTaxInvoice">
             <span> Gst No: {{ company.gstin }}</span> <br>
           </ng-container>
@@ -65,17 +66,17 @@
               ({{ item.variant.name }} {{ item.variant.size }} {{ item.product.unit }})
             </td>
             <td style="width: 4mm">{{ item.quantity }}</td>
-            <td style="width: 12mm">&#8377;{{ item.variant.price | number: '.2-2' }}</td>
+            <td style="width: 12mm">{{ item.variant.price | number: '.2-2' }}</td>
             <td *ngIf="isTaxInvoice" style="width: 14mm">
-              &#8377;{{ (item.price - (item.sgst + item.cgst)) | number: '.2-2' }}
+              {{ (item.price - (item.sgst + item.cgst)) | number: '.2-2' }}
             </td>
             <td *ngIf="isTaxInvoice" style="width: 14mm">
-              &#8377;{{ item.cgst | number: '.2-2' }} <br> ({{ item.product.slab.cgst }} %)
+              {{ item.cgst | number: '.2-2' }} <br> ({{ item.product.slab.cgst }} %)
             </td>
             <td *ngIf="isTaxInvoice" style="width: 14mm">
-              &#8377;{{ item.sgst | number: '.2-2' }} <br> ({{ item.product.slab.sgst }} %)
+              {{ item.sgst | number: '.2-2' }} <br> ({{ item.product.slab.sgst }} %)
             </td>
-            <td style="width: 14mm">&#8377;{{ item.price | number: '.2-2' }}</td>
+            <td style="width: 14mm">{{ item.price | number: '.2-2' }}</td>
           </tr>
           <tr>
             <th class="align-left" width="3mm">--</th>
@@ -83,11 +84,11 @@
             <th style="width: 4mm">{{ getTotalQuantity() }}</th>
             <th style="width: 12mm"></th>
             <th *ngIf="isTaxInvoice" style="width: 14mm">
-              &#8377;{{ (invoice.total - (invoice.totalCgst + invoice.totalSgst)) | number: '.2-2' }}
+              {{ (invoice.total - (invoice.totalCgst + invoice.totalSgst)) | number: '.2-2' }}
             </th>
-            <th *ngIf="isTaxInvoice" style="width: 14mm">&#8377;{{ invoice.totalCgst | number: '.2-2' }}</th>
-            <th *ngIf="isTaxInvoice" style="width: 14mm">&#8377;{{ invoice.totalSgst | number: '.2-2' }}</th>
-            <th style="width: 14mm">&#8377;{{ invoice.subTotal | number: '.2-2' }}</th>
+            <th *ngIf="isTaxInvoice" style="width: 14mm">{{ invoice.totalCgst | number: '.2-2' }}</th>
+            <th *ngIf="isTaxInvoice" style="width: 14mm">{{ invoice.totalSgst | number: '.2-2' }}</th>
+            <th style="width: 14mm">{{ invoice.subTotal | number: '.2-2' }}</th>
           </tr>
         </tbody>
       </table>
@@ -111,27 +112,27 @@
         <div class="dark-header">Amounts</div>
         <div class="amount-item" *ngIf="invoice.hasDiscount">
           <span>Discount ({{ invoice.discount }}%)</span>
-          <span>&#8377;{{ invoice.discountAmount | number: '.2-2' }}</span>
+          <span>{{ invoice.discountAmount | number: '.2-2' }}</span>
         </div>
         <div class="amount-item">
           <span>Sub Total</span>
-          <span>&#8377;{{ invoice.total | number: '.2-2' }}</span>
+          <span>{{ invoice.total | number: '.2-2' }}</span>
         </div>
         <div class="amount-item bb-1">
           <span>Round off</span>
-          <span>- &#8377;{{ getRoundoff() | number: '.2-2' }}</span>
+          <span>- {{ getRoundoff() | number: '.2-2' }}</span>
         </div>
         <div class="amount-item">
           <span><b>Total</b></span>
-          <span><b>&#8377;{{ getTotal() | number: '.2-2' }}</b></span>
+          <span><b>{{ getTotal() | number: '.2-2' }}</b></span>
         </div>
         <div class="amount-item bb-1">
           <span>Received</span>
-          <span>&#8377;{{ invoice.received | number: '.2-2' }}</span>
+          <span>{{ invoice.received | number: '.2-2' }}</span>
         </div>
         <div class="amount-item">
           <span>Balance</span>
-          <span>&#8377;{{ invoice.balance | number: '.2-2' }}</span>
+          <span>{{ invoice.balance | number: '.2-2' }}</span>
         </div>
       </div>
     </div>

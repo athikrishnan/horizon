@@ -2,7 +2,7 @@ export const QuotePrintCss = `
 body {
   background: rgb(204,204,204);
   -webkit-print-color-adjust: exact;
-  font-size: 8px;
+  font-size: 14px;
 }
 div[size="A4"] {
   background: white;
@@ -70,7 +70,7 @@ table, th, td {
 }
 th, td {
   text-align: right;
-  font-size: 8px;
+  font-size: 12px;
 }
 th.align-left, td.align-left {
   text-align: left;

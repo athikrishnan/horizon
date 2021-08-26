@@ -71,7 +71,7 @@ import { LoginComponent } from './components/login/login.component';
     },
     ScreenTrackingService,
     UserTrackingService,
-    PerformanceMonitoringService
+    PerformanceMonitoringService,
   ]
 })
 export class AppModule { }

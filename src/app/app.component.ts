@@ -1,6 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AngularFireAnalytics } from '@angular/fire/analytics';
 import { NavigationEnd, RouteConfigLoadEnd, RouteConfigLoadStart, Router, RouterEvent } from '@angular/router';
+import { AppUpdateService } from './app-update.service';
 import { User } from './models/user.model';
 import { AuthService } from './services/auth.service';
 
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private analytics: AngularFireAnalytics) {
+    private analytics: AngularFireAnalytics,
+    private appUpdateService: AppUpdateService) {
     this.analytics.logEvent('app_start', { time: new Date() });
     this.router.events.subscribe((event: RouterEvent): void => {
       if (event instanceof RouteConfigLoadStart) {
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
         this.isLoginPage = event.url === '/login';
       }
     });
+    this.appUpdateService.checkForUpdates();
   }
 
   ngOnInit(): void {

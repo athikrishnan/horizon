@@ -56,10 +56,12 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
       takeUntil(this.unsubscribe$),
       distinctUntilChanged((a, b) => a && b && a.updatedAt === b.updatedAt)
     ).subscribe((quote: Quote) => {
-      this.quote = quote;
-      this.showSpinner = false;
-      this.discountForm.patchValue({ discount: (this.quote.discount || 0.01) });
-      this.ref.detectChanges();
+      if (!!quote) {
+        this.quote = quote;
+        this.discountForm.patchValue({ discount: (this.quote.discount || 0.01) });
+        this.showSpinner = false;
+        this.ref.detectChanges();
+      }
     });
   }
 

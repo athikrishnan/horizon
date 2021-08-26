@@ -15,10 +15,10 @@
           <mat-checkbox [checked]="!quote.hideTax" (change)="onTaxStateChange($event)">Tax Quote</mat-checkbox>
         </form>
         <br>
-        <button *ngIf="!quote.completedAt" (click)="onDelete()" mat-stroked-button color="warn">
-          Delete
-        </button>
       </ng-container>
+      <button (click)="onDelete()" mat-stroked-button color="warn">
+        Delete
+      </button>
     </mat-expansion-panel>
     <mat-expansion-panel [class.mat-elevation-z5]="true" fxFlex="48" style="height: max-content;">
       <mat-expansion-panel-header>

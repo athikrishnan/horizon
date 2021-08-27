@@ -19,6 +19,7 @@ import { StateChangedService } from 'src/app/services/state-changed.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PickedProduct } from 'src/app/models/picked-product.model';
 import * as dayjs from 'dayjs';
+import { CompleteConfirmationComponent } from 'src/app/components/complete-confirmation/complete-confirmation.component';
 
 @Component({
   selector: 'app-quote-view',
@@ -143,13 +144,17 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
   }
 
   onComplete(): void {
-    this.showSpinner = true;
-    this.quote.completedAt = Date.now();
-    this.ref.detectChanges();
-    this.stateChangedService.stateChanged(this.quote);
-    this.quoteService.saveQuote(this.quote).then(() => {
-      this.ref.detectChanges();
-      this.showSpinner = false;
+    this.dialog.open(CompleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.showSpinner = true;
+        this.quote.completedAt = Date.now();
+        this.ref.detectChanges();
+        this.stateChangedService.stateChanged(this.quote);
+        this.quoteService.saveQuote(this.quote).then(() => {
+          this.ref.detectChanges();
+          this.showSpinner = false;
+        });
+      }
     });
   }
 
@@ -160,5 +165,10 @@ export class QuoteViewComponent implements OnInit, OnDestroy {
   displayQuotedDate(date: number): string {
     const day = dayjs(date);
     return day.format('ddd, MMM D, YYYY');
+  }
+
+  canComplete(): boolean {
+    return this.quote && !this.quote.completedAt && this.quote.items && this.quote.items.length > 0
+      && !this.quote.items.find(item => this.isIncompleteItem(item));
   }
 }

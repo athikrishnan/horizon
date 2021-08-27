@@ -127,7 +127,7 @@
   <br>
   <ng-contianer *ngIf="!quote.completedAt">
     <div fxLayoutAlign="space-between" *ngIf="quote.items?.length">
-      <button (click)="onComplete()" *ngIf="!quote.completedAt" mat-raised-button color="primary">Complete</button>
+      <button (click)="onComplete()" [disabled]="!canComplete()" mat-raised-button color="primary">Complete</button>
       <button (click)="onProductSearchOpen()" *ngIf="!quote.completedAt" mat-stroked-button color="primary"> Add Item
       </button>
     </div>

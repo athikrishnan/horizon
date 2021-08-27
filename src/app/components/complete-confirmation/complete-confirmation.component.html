@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirm Completion</h1>
+<div mat-dialog-content>
+  <p>You are about to complete this item. This operation cannot be reverted!</p>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between">
+  <button [mat-dialog-close]="true" mat-stroked-button color="secondary">Continue Complete</button>
+  <button [mat-dialog-close]="false" mat-raised-button color="primary" cdkFocusInitial>Cancel</button>
+</div>

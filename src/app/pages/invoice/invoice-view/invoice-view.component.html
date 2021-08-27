@@ -137,7 +137,7 @@
   <br>
   <ng-contianer *ngIf="!invoice.completedAt">
     <div fxLayoutAlign="space-between" *ngIf="invoice.items?.length">
-      <button (click)="onComplete()" *ngIf="!invoice.completedAt" mat-raised-button color="primary">Complete</button>
+      <button (click)="onComplete()" [disabled]="!canComplete()" mat-raised-button color="primary">Complete</button>
       <button (click)="onProductSearchOpen()" *ngIf="!invoice.completedAt" mat-stroked-button color="primary"> Add Item
       </button>
     </div>

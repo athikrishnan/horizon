@@ -50,9 +50,11 @@ export class InvoiceItemFormComponent implements OnInit, OnDestroy {
     this.applyDefaults();
     this.invoiceItemForm.get('quantity').valueChanges.pipe(takeUntil(this.unsubscribe$))
       .subscribe((quantity: number) => {
-        const price = this.variant.price * quantity;
-        this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
-        this.ref.detectChanges();
+        if (this.variant) {
+          const price = this.variant.price * quantity;
+          this.invoiceItemForm.get('price').patchValue(this.decimalPipe.transform(price, '.2-2'));
+          this.ref.detectChanges();
+        }
       });
 
     this.invoiceItemForm.patchValue(this.item);

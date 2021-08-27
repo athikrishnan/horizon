@@ -16,6 +16,7 @@ import { SETTINGS, USE_EMULATOR as FIRESTORE_EMULATOR } from '@angular/fire/fire
 import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
 import { AngularFireAuth, USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { LoginComponent } from './components/login/login.component';
+import { CompleteConfirmationComponent } from './components/complete-confirmation/complete-confirmation.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LoginComponent } from './components/login/login.component';
     ToolbarComponent,
     PageNotFoundComponent,
     DeleteConfirmationComponent,
-    LoginComponent
+    LoginComponent,
+    CompleteConfirmationComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ import { PurchaseService } from 'src/app/services/purchase.service';
 import { StateChangedService } from 'src/app/services/state-changed.service';
 import { PickedProduct } from 'src/app/models/picked-product.model';
 import * as dayjs from 'dayjs';
+import { CompleteConfirmationComponent } from 'src/app/components/complete-confirmation/complete-confirmation.component';
 
 @Component({
   selector: 'app-purchase-view',
@@ -98,18 +99,27 @@ export class PurchaseViewComponent implements OnInit, OnDestroy {
   }
 
   onComplete(): void {
-    this.showSpinner = true;
-    this.purchase.completedAt = Date.now();
-    this.ref.detectChanges();
-    this.stateChangedService.stateChanged(this.purchase);
-    this.purchaseService.completePurchase(this.purchase).then(() => {
-      this.ref.detectChanges();
-      this.showSpinner = false;
+    this.dialog.open(CompleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.showSpinner = true;
+        this.purchase.completedAt = Date.now();
+        this.ref.detectChanges();
+        this.stateChangedService.stateChanged(this.purchase);
+        this.purchaseService.completePurchase(this.purchase).then(() => {
+          this.ref.detectChanges();
+          this.showSpinner = false;
+        });
+      }
     });
   }
 
   displayDate(date: any): string {
     const day = dayjs(date.toDate());
     return day.format('ddd, MMM D, YYYY');
+  }
+
+  canComplete(): boolean {
+    return this.purchase && !this.purchase.completedAt && this.purchase.items && this.purchase.items.length > 0
+      && !this.purchase.items.find(item => this.isIncompleteItem(item));
   }
 }

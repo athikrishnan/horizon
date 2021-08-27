@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as dayjs from 'dayjs';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { CompleteConfirmationComponent } from 'src/app/components/complete-confirmation/complete-confirmation.component';
 import { DeleteConfirmationComponent } from 'src/app/components/delete-confirmation/delete-confirmation.component';
 import { Customer } from 'src/app/models/customer.model';
 import { InvoiceItem } from 'src/app/models/invoice-item.model';
@@ -141,13 +142,17 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   }
 
   onComplete(): void {
-    this.showSpinner = true;
-    this.invoice.completedAt = Date.now();
-    this.ref.detectChanges();
-    this.stateChangedService.stateChanged(this.invoice);
-    this.invoiceService.completeInvoice(this.invoice).then(() => {
-      this.ref.detectChanges();
-      this.showSpinner = false;
+    this.dialog.open(CompleteConfirmationComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.showSpinner = true;
+        this.invoice.completedAt = Date.now();
+        this.ref.detectChanges();
+        this.stateChangedService.stateChanged(this.invoice);
+        this.invoiceService.completeInvoice(this.invoice).then(() => {
+          this.ref.detectChanges();
+          this.showSpinner = false;
+        });
+      }
     });
   }
 
@@ -166,5 +171,10 @@ export class InvoiceViewComponent implements OnInit, OnDestroy {
   displayDate(date: any): string {
     const day = dayjs(date.toDate());
     return day.format('ddd, MMM D, YYYY');
+  }
+
+  canComplete(): boolean {
+    return this.invoice && !this.invoice.completedAt && this.invoice.items && this.invoice.items.length > 0
+      && !this.invoice.items.find(item => this.isIncompleteItem(item));
   }
 }

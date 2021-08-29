@@ -56,14 +56,6 @@ export class ProductStockComponent implements OnInit, OnDestroy {
       this.ref.detectChanges();
     });
 
-    this.stockForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$))
-      .subscribe((variant: ProductVariant) => {
-        this.stockForm.patchValue({
-          current: (variant) ? variant.quantity : null,
-          isDebit: false
-        });
-      });
-
     combineLatest([
       this.stockForm.get('change').valueChanges.pipe(takeUntil(this.unsubscribe$)),
       this.stockForm.get('isDebit').valueChanges.pipe(takeUntil(this.unsubscribe$))
@@ -74,6 +66,14 @@ export class ProductStockComponent implements OnInit, OnDestroy {
         this.stockForm.get('quantity').setValue(quantity, { emitEvent: false });
       }
     });
+
+    this.stockForm.get('variant').valueChanges.pipe(takeUntil(this.unsubscribe$))
+      .subscribe((variant: ProductVariant) => {
+        this.stockForm.patchValue({
+          current: (variant) ? variant.quantity : null,
+          isDebit: false
+        });
+      });
   }
 
   ngOnDestroy(): void {

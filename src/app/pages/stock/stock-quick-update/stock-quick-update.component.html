@@ -1,0 +1,27 @@
+<div *ngIf="product" fxFlex="100">
+  <p class="mat-title"> {{ variant.name }} <small>( {{ product.name }} )</small></p>
+  <form [formGroup]="stockForm" fxLayout="column" #form="ngForm">
+    <ng-container *ngIf="variant">
+      <p>Current Quantity: {{ variant.quantity }}</p>
+      <mat-checkbox formControlName="isDebit">Is Debit</mat-checkbox>
+      <br>
+      <mat-form-field appearance="outline">
+        <mat-label *ngIf="!stockForm.get('isDebit').value">Increase By</mat-label>
+        <mat-label *ngIf="stockForm.get('isDebit').value">Decrese By</mat-label>
+        <input matInput type="number" formControlName="change" autocomplete="new-change">
+        <mat-error> Required. </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>New Quantity</mat-label>
+        <input matInput type="number" formControlName="quantity" autocomplete="new-quantity">
+        <mat-error> Required. </mat-error>
+      </mat-form-field>
+    </ng-container>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <button (click)="onCancel()" mat-stroked-button>Cancel</button>
+      <button (click)="onSave()" [disabled]="!stockForm.dirty || !stockForm.valid" mat-raised-button
+        color="primary">Save</button>
+    </div>
+  </form>
+</div>
+<app-spinner *ngIf="showSpinner"></app-spinner>

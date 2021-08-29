@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProductVariant } from 'src/app/models/product-variant.model';
 import { Product } from 'src/app/models/product.model';
 import { ProductPickerService } from 'src/app/services/product-picker.service';
+import { StockQuickUpdateComponent } from './stock-quick-update/stock-quick-update.component';
 
 @Component({
   selector: 'app-stock',
@@ -20,7 +22,7 @@ export class StockComponent implements OnInit, OnDestroy {
   constructor(
     private productPickerService: ProductPickerService,
     private ref: ChangeDetectorRef,
-    private router: Router) { }
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.productPickerService.products$.pipe(takeUntil(this.unsubscribe$)).subscribe((products) => {
@@ -36,6 +38,6 @@ export class StockComponent implements OnInit, OnDestroy {
   }
 
   onVariantSelect(product: Product, variant: ProductVariant): void {
-    this.router.navigate(['product/' + product.id + '/stock/' + variant.id]);
+    this.dialog.open(StockQuickUpdateComponent, { data: { product, variant }});
   }
 }
